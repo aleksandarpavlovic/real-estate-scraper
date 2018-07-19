@@ -17,7 +17,7 @@ public class HaloOglasiCriteriaTransformer {
     private static final HashMap<String, String> urlMappings;
     private static final HashMap<String, Integer> roomCountMappings;
     private static final HashMap<String, Integer> unitIdMappings;
-    private static final HashMap<String, Integer> floorMappings;
+    private static final HashMap<Integer, Integer> floorMappings;
 
     private static final String URL_PRODAJA_STANOVA = "/nekretnine/prodaja-stanova";
     private static final String URL_IZDAVANJE_STANOVA = "/nekretnine/izdavanje-stanova";
@@ -82,15 +82,19 @@ public class HaloOglasiCriteriaTransformer {
         criteriaDefinitionMappings.put(LODJA, "12100019");
         criteriaDefinitionMappings.put(BALKON, "12100018");
         criteriaDefinitionMappings.put(FRANCUSKI_BALKON, "12100018");
-        criteriaDefinitionMappings.put(PODRUM, "12100008");
         criteriaDefinitionMappings.put(GARAZA, "12100016");
         criteriaDefinitionMappings.put(PARKING, "12100017");
+
         criteriaDefinitionMappings.put(BROJ_SOBA, "broj_soba_order_i");
+
         criteriaDefinitionMappings.put(CENA, "defaultunit_cena_d");
+
         criteriaDefinitionMappings.put(KVADRATURA, "defaultunit_kvadratura_d");
+
         criteriaDefinitionMappings.put(SPRATNOST, "sprat_order_i");
 
         roomCountMappings = new HashMap<>();
+        roomCountMappings.put(BROJ_SOBA_0, 1);
         roomCountMappings.put(BROJ_SOBA_0_5, 1);
         roomCountMappings.put(BROJ_SOBA_1_0, 2);
         roomCountMappings.put(BROJ_SOBA_1_5, 3);
@@ -130,7 +134,7 @@ public class HaloOglasiCriteriaTransformer {
 
         private HaloOglasiRequest transform() {
             HaloOglasiRequest request = new HaloOglasiRequest();
-            for(BaseCriteria criteria: criteriaList) {
+            for (BaseCriteria criteria: criteriaList) {
                 if (criteria instanceof SingleValueCriteria)
                     transformSingleValueCriteria((SingleValueCriteria) criteria, request);
                 else if (criteria instanceof RangeCriteria)

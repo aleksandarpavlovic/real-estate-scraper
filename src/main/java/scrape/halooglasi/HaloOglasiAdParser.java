@@ -11,6 +11,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class HaloOglasiAdParser {
     public List<Advertisement> parse(Document doc) {
@@ -28,7 +29,7 @@ public class HaloOglasiAdParser {
                 BigDecimal roomCount = parseRoomCount(rawAd);
                 BigDecimal area = parseSurfaceArea(rawAd);
 
-                ads.add(new Advertisement(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, adThumbnail, publishDate, advertiserType, area, roomCount));
+                ads.add(new Advertisement(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, adThumbnail, publishDate, advertiserType, area, roomCount, Optional.empty()));
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -56,7 +57,7 @@ public class HaloOglasiAdParser {
             return getImage(imageUrl, directoryPath);
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Image url: " + imageUrl);
+            System.out.println("Image baseUrl: " + imageUrl);
             return null;
         }
     }

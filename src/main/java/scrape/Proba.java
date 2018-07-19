@@ -1,7 +1,5 @@
 package scrape;
 
-import com.gargoylesoftware.htmlunit.BrowserVersion;
-import com.gargoylesoftware.htmlunit.WebClient;
 import com.google.gson.Gson;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -12,7 +10,6 @@ import scrape.halooglasi.HaloOglasiCriteriaTransformer;
 import scrape.halooglasi.HaloOglasiRequest;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,9 +19,10 @@ private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\
     HaloOglasiAdParser parser = new HaloOglasiAdParser();
 
     public void testHaloOglasi(String request) {
-        try (WebClient webClient = new WebClient(BrowserVersion.FIREFOX_52)) {
-            Long startTime = System.currentTimeMillis();
-            Document doc = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
+        Long startTime = System.currentTimeMillis();
+        Document doc = null;
+        try {
+            doc = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
                     .method(Connection.Method.POST)
                     .header("Accept", "application/json, text/javascript, */*; q=0.01")
                     .header("Accept-Encoding", "gzip, deflate, br")
@@ -36,23 +34,21 @@ private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\
                     .requestBody(request)
                     .header("Content-Type", "application/json")
                     .post();
-            System.out.println(String.format("Page loading time with JSoup: {%f} seconds", (float)(System.currentTimeMillis() - startTime) / 1000));
-
-            String[] ads = doc.text().replaceFirst("[{].*?ListHTML\":\"", "").replace("\",\"GridHTML.*?$", "").split("\",\"GridHTML.*?ListHTML\":\"");
-            if (ads.length > 0)
-                ads[ads.length - 1] = ads[ads.length - 1].replaceFirst("\",\"GridHTML.*$", "");
-            Document adsOnly = Jsoup.parse(String.join("", ads));
-            List<Advertisement> adsPOJOs = parser.parse(adsOnly);
-            adsPOJOs.forEach(ad -> System.out.println(ad));
-
-            Gson gson = new Gson();
-            gson.toJson(ads[0]);
-            gson.toJsonTree(ads[0]);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        System.out.println(String.format("Page loading time with JSoup: {%f} seconds", (float) (System.currentTimeMillis() - startTime) / 1000));
+
+        String[] ads = doc.text().replaceFirst("[{].*?ListHTML\":\"", "").replace("\",\"GridHTML.*?$", "").split("\",\"GridHTML.*?ListHTML\":\"");
+        if (ads.length > 0)
+            ads[ads.length - 1] = ads[ads.length - 1].replaceFirst("\",\"GridHTML.*$", "");
+        Document adsOnly = Jsoup.parse(String.join("", ads));
+        List<Advertisement> adsPOJOs = parser.parse(adsOnly);
+        adsPOJOs.forEach(ad -> System.out.println(ad));
+
+        Gson gson = new Gson();
+        gson.toJson(ads[0]);
+        gson.toJsonTree(ads[0]);
     }
 
     public static void main(String[] args) {

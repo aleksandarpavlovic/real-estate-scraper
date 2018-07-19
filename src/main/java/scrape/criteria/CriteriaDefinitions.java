@@ -34,7 +34,7 @@ public class CriteriaDefinitions {
     public static final String STRUJA = "struja";
     public static final String GAS = "gas";
 
-    public static final String UKNJIZENO = "uknjizeno";
+    public static final String UKNJIZENO = "registered";
 
     public static final String TIP_STANA = "tip stana";
     public static final String SALONAC = "salonac";
@@ -48,11 +48,11 @@ public class CriteriaDefinitions {
     public static final String LODJA = "lodja";
     public static final String BALKON = "balkon";
     public static final String FRANCUSKI_BALKON = "francuski balkon";
-    public static final String PODRUM = "podrum";
     public static final String GARAZA = "garaza";
     public static final String PARKING = "parking";
 
     public static final String BROJ_SOBA = "broj soba";
+    public static final String BROJ_SOBA_0 = "0";
     public static final String BROJ_SOBA_0_5 = "0.5";
     public static final String BROJ_SOBA_1_0 = "1.0";
     public static final String BROJ_SOBA_1_5 = "1.5";
@@ -70,10 +70,14 @@ public class CriteriaDefinitions {
     public static final String KVADRATURA = "kvadratura";
 
     public static final String SPRATNOST = "spratnost";
-    public static final String SUTEREN = "suteren";
-    public static final String NISKO_PRIZEMLJE = "nisko prizemlje";
-    public static final String PRIZEMLJE = "prizemlje";
-    public static final String VISOKO_PRIZEMLJE = "visoko prizemlje";
+//    public static final String SUTEREN = "suteren";
+//    public static final String NISKO_PRIZEMLJE = "nisko prizemlje";
+//    public static final String PRIZEMLJE = "prizemlje";
+//    public static final String VISOKO_PRIZEMLJE = "visoko prizemlje";
+    public static final Integer SUTEREN = -4;
+    public static final Integer NISKO_PRIZEMLJE = -3;
+    public static final Integer PRIZEMLJE = -2;
+    public static final Integer VISOKO_PRIZEMLJE = -1;
 
     public static final CriteriaDefinition adCategory;
     public static final CriteriaDefinition advertiser;
@@ -94,11 +98,11 @@ public class CriteriaDefinitions {
         realtyBuild = new CriteriaDefinition(GRADNJA, STAROGRADNJA, NOVOGRADNJA, IZGRADNJA);
         heating = new CriteriaDefinition(GREJANJE, CENTRALNO, ETAZNO, STRUJA, GAS);
         appartmentType = new CriteriaDefinition(TIP_STANA, SALONAC, DUPLEX, PENTHOUSE, POTKROVLJE, DVORISNI);
-        facilities = new CriteriaDefinition(PRATECI_OBJEKTI, TERASA, LODJA, BALKON, FRANCUSKI_BALKON, PODRUM, GARAZA, PARKING);
-        roomCount = new CriteriaDefinition(BROJ_SOBA, BROJ_SOBA_0_5, BROJ_SOBA_1_0, BROJ_SOBA_1_5, BROJ_SOBA_2_0, BROJ_SOBA_2_5, BROJ_SOBA_3_0, BROJ_SOBA_3_5, BROJ_SOBA_4_0, BROJ_SOBA_4_5, BROJ_SOBA_5_0, BROJ_SOBA_5_p);
+        facilities = new CriteriaDefinition(PRATECI_OBJEKTI, TERASA, LODJA, BALKON, FRANCUSKI_BALKON, GARAZA, PARKING);
+        roomCount = new CriteriaDefinition(BROJ_SOBA, BROJ_SOBA_0, BROJ_SOBA_0_5, BROJ_SOBA_1_0, BROJ_SOBA_1_5, BROJ_SOBA_2_0, BROJ_SOBA_2_5, BROJ_SOBA_3_0, BROJ_SOBA_3_5, BROJ_SOBA_4_0, BROJ_SOBA_4_5, BROJ_SOBA_5_0, BROJ_SOBA_5_p);
         price = new CriteriaDefinition(CENA);
         surfaceArea = new CriteriaDefinition(KVADRATURA);
-        floor = new CriteriaDefinition(SPRATNOST, SUTEREN, NISKO_PRIZEMLJE, PRIZEMLJE, VISOKO_PRIZEMLJE);
+        floor = new CriteriaDefinition(SPRATNOST);
     }
     @Getter
     @Setter
