@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import realties.Realty;
 import scrape.criteria.*;
 import scrape.halooglasi.HaloOglasiAdParser;
 import scrape.halooglasi.HaloOglasiCriteriaTransformer;
@@ -43,7 +44,7 @@ private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\
         if (ads.length > 0)
             ads[ads.length - 1] = ads[ads.length - 1].replaceFirst("\",\"GridHTML.*$", "");
         Document adsOnly = Jsoup.parse(String.join("", ads));
-        List<Advertisement> adsPOJOs = parser.parse(adsOnly);
+        List<Realty> adsPOJOs = parser.parse(adsOnly);
         adsPOJOs.forEach(ad -> System.out.println(ad));
 
         Gson gson = new Gson();

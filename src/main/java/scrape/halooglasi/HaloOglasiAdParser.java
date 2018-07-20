@@ -2,7 +2,8 @@ package scrape.halooglasi;
 
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import scrape.Advertisement;
+import realties.Apartment;
+import realties.Realty;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -14,8 +15,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class HaloOglasiAdParser {
-    public List<Advertisement> parse(Document doc) {
-        List<Advertisement> ads = new LinkedList<>();
+    public List<Realty> parse(Document doc) {
+        List<Realty> ads = new LinkedList<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 BigDecimal price = parsePrice(rawAd);
@@ -29,7 +30,7 @@ public class HaloOglasiAdParser {
                 BigDecimal roomCount = parseRoomCount(rawAd);
                 BigDecimal area = parseSurfaceArea(rawAd);
 
-                ads.add(new Advertisement(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, adThumbnail, publishDate, advertiserType, area, roomCount, Optional.empty()));
+                ads.add(new Apartment(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, adThumbnail, publishDate, advertiserType, area, Optional.empty(), roomCount));
             } catch(Exception e) {
                 e.printStackTrace();
             }

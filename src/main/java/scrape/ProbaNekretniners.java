@@ -3,6 +3,7 @@ package scrape;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import realties.Realty;
 import scrape.criteria.*;
 import scrape.nekretnine_rs.NekretnineRsAdParser;
 import scrape.nekretnine_rs.NekretnineRsCriteriaTransformer;
@@ -30,7 +31,7 @@ public class ProbaNekretniners {
             System.out.println(String.format("Page loading time with JSoup: {%f} seconds", (float) (System.currentTimeMillis() - startTime) / 1000));
             Document doc = response.parse();
             NekretnineRsAdParser parser = new NekretnineRsAdParser();
-            List<Advertisement> ads = parser.parse(doc);
+            List<Realty> ads = parser.parse(doc);
             ads.forEach(System.out::println);
             System.out.println("kraj");
         } catch (IOException e) {

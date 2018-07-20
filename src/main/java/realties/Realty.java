@@ -1,10 +1,18 @@
-package scrape;
+package realties;
+
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Optional;
 
-public class Advertisement {
+@Getter
+@Setter
+@NoArgsConstructor
+public abstract class Realty {
     private String title;
     private String description;
     private String realtyType;
@@ -15,10 +23,10 @@ public class Advertisement {
     private LocalDate publishDate;
     private String advertiserType;
     private BigDecimal surfaceArea;
-    private BigDecimal roomCount;
     private Optional<Boolean> registered;
 
-    public Advertisement(String title, String description, String realtyType, String adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, String advertiserType, BigDecimal surfaceArea, BigDecimal roomCount, Optional<Boolean> registered) {
+    @Builder
+    public Realty(String title, String description, String realtyType, String adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, String advertiserType, BigDecimal surfaceArea, Optional<Boolean> registered) {
         this.title = title;
         this.description = description;
         this.realtyType = realtyType;
@@ -29,7 +37,6 @@ public class Advertisement {
         this.publishDate = publishDate;
         this.advertiserType = advertiserType;
         this.surfaceArea = surfaceArea;
-        this.roomCount = roomCount;
         this.registered = registered;
     }
 
@@ -40,7 +47,7 @@ public class Advertisement {
                 + System.lineSeparator() + "Ad type: \t\t\t" + adType + System.lineSeparator() + "Price: \t\t\t\t" + price
                 + System.lineSeparator() + "Url: \t\t\t\t" + url + System.lineSeparator() + "Thumbnail Url: \t\t" + imageUrl
                 + System.lineSeparator() + "Publish date: \t\t" + publishDate + System.lineSeparator() + "Advertiser: \t\t" + advertiserType
-                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + System.lineSeparator() + "Rooms: \t\t\t\t" + roomCount
+                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + System.lineSeparator()
                 + (registered.isPresent() ? System.lineSeparator() + "Registration: \t\t" + registration : "");
     }
 }

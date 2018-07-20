@@ -3,7 +3,8 @@ package scrape.nekretnine_rs;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import scrape.Advertisement;
+import realties.Apartment;
+import realties.Realty;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,8 +23,8 @@ public class NekretnineRsAdParser {
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
     Pattern realtyTypePattern = Pattern.compile(".*?\\Q|\\E.*?\\Q|\\E ([a-zA-Z]+)");
 
-    public List<Advertisement> parse(Document doc) {
-        List<Advertisement> ads = new LinkedList<>();
+    public List<Realty> parse(Document doc) {
+        List<Realty> ads = new LinkedList<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 BigDecimal price = parsePrice(rawAd);
@@ -41,7 +42,7 @@ public class NekretnineRsAdParser {
                 BigDecimal roomCount = parseRoomCount(adData);
                 Optional<Boolean> registered = parseRegistered(adData);
 
-                ads.add(new Advertisement(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, thumbnailUrl, publishDate, advertiserType, area, roomCount, registered));
+                ads.add(new Apartment(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, thumbnailUrl, publishDate, advertiserType, area, registered, roomCount));
             } catch (Exception e) {
                 e.printStackTrace();
             }
