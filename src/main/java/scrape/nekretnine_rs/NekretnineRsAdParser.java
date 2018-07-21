@@ -4,7 +4,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import realties.Apartment;
+import realties.House;
+import realties.Land;
 import realties.Realty;
+import realties.enums.AdSource;
+import realties.enums.AdvertiserType;
+import realties.enums.AreaMeasurementUnit;
+import realties.enums.RoomCount;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -21,33 +27,121 @@ public class NekretnineRsAdParser {
     Pattern surfaceAreaPattern = Pattern.compile("(^[0-9]+)");
     Pattern publishDatePattern = Pattern.compile("(^[0-9\\.]+)");
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
-    Pattern realtyTypePattern = Pattern.compile(".*?\\Q|\\E.*?\\Q|\\E ([a-zA-Z]+)");
 
-    public List<Realty> parse(Document doc) {
+    public List<Realty> parseApartments(Document doc) {
         List<Realty> ads = new LinkedList<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
-                BigDecimal price = parsePrice(rawAd);
-                String thumbnailUrl = parseThumbnailUrl(rawAd);
-                LocalDate publishDate = parsePublishDate(rawAd);
-                String advertiserType = parseAdvertiserType(rawAd);
-                String adTitle = parseAdTitle(rawAd);
                 String adUrl = parseAdUrl(rawAd);
-                String realtyType = parseRealtyType(rawAd);
-                BigDecimal area = parseSurfaceArea(rawAd);
+                Apartment apartment = Apartment.builder()
+                        .title(parseAdTitle(rawAd))
+                        .description(parseAdDescription(rawAd))
+                        .publishDate(parsePublishDate(rawAd))
+                        .url(adUrl)
+                        .imageUrl(parseThumbnailUrl(rawAd))
+                        .advertiserType(getAdvertiserType(parseAdvertiserType(rawAd)))
+                        .price(parsePrice(rawAd))
+                        .surfaceArea(parseSurfaceArea(rawAd))
+                        .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
+                        .build();
 
-                Document adDoc = getAdDocument(adUrl);
-                Element adData = adDoc.selectFirst("div.oglasData");
-                String adDesc = parseAdDescription(adData);
-                BigDecimal roomCount = parseRoomCount(adData);
-                Optional<Boolean> registered = parseRegistered(adData);
-
-                ads.add(new Apartment(adTitle, adDesc, realtyType, "Prodaja", price, adUrl, thumbnailUrl, publishDate, advertiserType, area, registered, roomCount));
+                updateApartment(apartment);
+                ads.add(apartment);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
         return ads;
+    }
+
+    public List<Realty> parseHouses(Document doc) {
+        List<Realty> ads = new LinkedList<>();
+        for (Element rawAd: doc.select("div.resultList.fixed")) {
+            try {
+                String adUrl = parseAdUrl(rawAd);
+                House house = House.builder()
+                        .title(parseAdTitle(rawAd))
+                        .description(parseAdDescription(rawAd))
+                        .publishDate(parsePublishDate(rawAd))
+                        .url(adUrl)
+                        .imageUrl(parseThumbnailUrl(rawAd))
+                        .advertiserType(getAdvertiserType(parseAdvertiserType(rawAd)))
+                        .price(parsePrice(rawAd))
+                        .surfaceArea(parseSurfaceArea(rawAd))
+                        .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
+                        .build();
+
+                updateHouse(house);
+                ads.add(house);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ads;
+    }
+
+    public List<Realty> parseLand(Document doc) {
+        List<Realty> ads = new LinkedList<>();
+        for (Element rawAd: doc.select("div.resultList.fixed")) {
+            try {
+                String adUrl = parseAdUrl(rawAd);
+                Land land = Land.builder()
+                        .title(parseAdTitle(rawAd))
+                        .description(parseAdDescription(rawAd))
+                        .publishDate(parsePublishDate(rawAd))
+                        .url(adUrl)
+                        .imageUrl(parseThumbnailUrl(rawAd))
+                        .advertiserType(getAdvertiserType(parseAdvertiserType(rawAd)))
+                        .price(parsePrice(rawAd))
+                        .surfaceArea(parseSurfaceArea(rawAd))
+                        .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
+                        .build();
+
+                updateLand(land);
+                ads.add(land);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return ads;
+    }
+
+    private Apartment updateApartment(Apartment apartment) {
+        Document adDoc = getAdDocument(apartment.getUrl());
+        Element adData = adDoc.selectFirst("div.oglasData");
+
+        apartment.setSource(AdSource.NEKRETNINE_RS);
+        apartment.setExternalId(parseId(adData));
+        apartment.setDescription(parseAdDescription(adData));
+        apartment.setRoomCount(getRoomCount(parseRoomCount(adData)));
+        apartment.setRegistered(parseRegistered(adData));
+
+        return apartment;
+    }
+
+    private House updateHouse(House house) {
+        Document adDoc = getAdDocument(house.getUrl());
+        Element adData = adDoc.selectFirst("div.oglasData");
+
+        house.setSource(AdSource.NEKRETNINE_RS);
+        house.setExternalId(parseId(adData));
+        house.setDescription(parseAdDescription(adData));
+        house.setRoomCount(getRoomCount(parseRoomCount(adData)));
+        house.setRegistered(parseRegistered(adData));
+
+        return house;
+    }
+
+    private Land updateLand(Land land) {
+        Document adDoc = getAdDocument(land.getUrl());
+        Element adData = adDoc.selectFirst("div.oglasData");
+
+        land.setSource(AdSource.NEKRETNINE_RS);
+        land.setExternalId(parseId(adData));
+        land.setDescription(parseAdDescription(adData));
+        land.setRegistered(parseRegistered(adData));
+
+        return land;
     }
 
     private Document getAdDocument(String url) {
@@ -60,6 +154,14 @@ public class NekretnineRsAdParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String parseId(Element rawAd) {
+        Element elem = rawAd.selectFirst("div.sLeftGrid > ul > li > div:containsOwn(ID) + div");
+        if (elem == null)
+            return "";
+        else
+            return elem.ownText();
     }
 
     private BigDecimal parsePrice(Element rawAd) {
@@ -115,22 +217,21 @@ public class NekretnineRsAdParser {
             return null;
     }
 
+    private AdvertiserType getAdvertiserType(String advertiserType) {
+        if ("Vlasnik".equals(advertiserType))
+            return AdvertiserType.OWNER;
+        if ("Zastupnik".equals(advertiserType))
+            return AdvertiserType.AGENCY;
+        if ("Investitor".equals(advertiserType))
+            return AdvertiserType.INVESTOR;
+        throw new EnumConstantNotPresentException(AdvertiserType.class, advertiserType);
+    }
+
     private String parseAdTitle(Element rawAd) {
         Element elem = rawAd.selectFirst("div.resultInfo h2 a");
         if (elem == null)
             return null;
         return elem.ownText();
-    }
-
-    private String parseRealtyType(Element rawAd) {
-        Element elem = rawAd.selectFirst("div.timeCat");
-        if (elem == null)
-            return null;
-        Matcher matcher = realtyTypePattern.matcher(elem.ownText());
-        if (matcher.find()) {
-            return matcher.group(1);
-        } else
-            return null;
     }
 
     private String parseThumbnailUrl(Element rawAd) {
@@ -159,6 +260,27 @@ public class NekretnineRsAdParser {
         if (elem == null)
             return null;
         return new BigDecimal(elem.ownText());
+    }
+
+    private RoomCount getRoomCount(BigDecimal roomCount) {
+        if (roomCount == null)
+            return RoomCount.NA;
+        else if (roomCount.compareTo(BigDecimal.ZERO) == 0)
+            return RoomCount.RC_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(1)) == 0)
+            return RoomCount.RC_1_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(2)) == 0)
+            return RoomCount.RC_2_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(3)) == 0)
+            return RoomCount.RC_3_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(4)) == 0)
+            return RoomCount.RC_4_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(5)) == 0)
+            return RoomCount.RC_5_0;
+        else if (roomCount.compareTo(BigDecimal.valueOf(5)) > 0)
+            return RoomCount.RC_5_p;
+        else
+            return RoomCount.NA;
     }
 
     private Optional<Boolean> parseRegistered(Element rawAd) {

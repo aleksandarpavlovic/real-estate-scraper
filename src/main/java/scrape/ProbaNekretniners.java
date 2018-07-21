@@ -31,7 +31,7 @@ public class ProbaNekretniners {
             System.out.println(String.format("Page loading time with JSoup: {%f} seconds", (float) (System.currentTimeMillis() - startTime) / 1000));
             Document doc = response.parse();
             NekretnineRsAdParser parser = new NekretnineRsAdParser();
-            List<Realty> ads = parser.parse(doc);
+            List<Realty> ads = parser.parseApartments(doc);
             ads.forEach(System.out::println);
             System.out.println("kraj");
         } catch (IOException e) {

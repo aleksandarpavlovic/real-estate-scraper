@@ -205,8 +205,8 @@ public class HaloOglasiCriteriaTransformer {
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
-                        .from(getFloorMapping((String)criteria.getFrom()))
-                        .to(getFloorMapping((String)criteria.getTo()))
+                        .from(getFloorMapping((Integer)criteria.getFrom()))
+                        .to(getFloorMapping((Integer)criteria.getTo()))
                         .build()
                 );
             }
@@ -232,7 +232,7 @@ public class HaloOglasiCriteriaTransformer {
             return mappings;
         }
 
-        private Integer getFloorMapping(String floor) {
+        private Integer getFloorMapping(Integer floor) {
             Integer floorMapping = floorMappings.get(floor);
             if (floorMapping == null) {
                 floorMapping = Integer.valueOf(floor) + 10;

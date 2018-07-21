@@ -79,7 +79,7 @@ public class NekretnineRsRequest {
                 urlBuilder.append(path);
         }
         urlBuilder.append("/poredjaj-po/datumu_nanize")
-                .append("/lista/po-stranici/50")
+                .append("/lista/po_stranici/50")
                 .append("/stranica/").append(pageNumber);
 
         return urlBuilder.toString();

@@ -1,9 +1,12 @@
 package realties;
 
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import realties.enums.AdType;
+import realties.enums.AdvertiserType;
+import realties.enums.AreaMeasurementUnit;
+import realties.enums.RoomCount;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,16 +16,20 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 public abstract class Home extends Realty {
-    private BigDecimal roomCount;
+    private RoomCount roomCount;
 
-    @Builder
-    public Home(String title, String description, String realtyType, String adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, String advertiserType, BigDecimal surfaceArea, Optional<Boolean> registered, BigDecimal roomCount) {
-        super(title, description, realtyType, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, registered);
+    public Home(String externalId, String title, String description, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, Optional<Boolean> registered, RoomCount roomCount) {
+        super(externalId, title, description, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, areaMeasurementUnit, registered);
         this.roomCount = roomCount;
     }
 
     @Override
     public String toString() {
         return super.toString() + System.lineSeparator() + "Room count: " + roomCount;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj) && obj instanceof Home;
     }
 }

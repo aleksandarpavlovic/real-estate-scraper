@@ -26,8 +26,6 @@ public class CriteriaDefinitions {
     public static final String NOVOGRADNJA = "novogradnja";
     public static final String IZGRADNJA = "u izgradnji";
 
-    // TODO vidi sta ces sa stanjem stana. ta kategorija ne postoji na nekretnine.rs
-
     public static final String GREJANJE = "grejanje";
     public static final String CENTRALNO = "centralno";
     public static final String ETAZNO = "etazno";
@@ -70,10 +68,6 @@ public class CriteriaDefinitions {
     public static final String KVADRATURA = "kvadratura";
 
     public static final String SPRATNOST = "spratnost";
-//    public static final String SUTEREN = "suteren";
-//    public static final String NISKO_PRIZEMLJE = "nisko prizemlje";
-//    public static final String PRIZEMLJE = "prizemlje";
-//    public static final String VISOKO_PRIZEMLJE = "visoko prizemlje";
     public static final Integer SUTEREN = -4;
     public static final Integer NISKO_PRIZEMLJE = -3;
     public static final Integer PRIZEMLJE = -2;

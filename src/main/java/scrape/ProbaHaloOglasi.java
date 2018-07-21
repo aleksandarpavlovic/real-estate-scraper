@@ -15,8 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Proba {
-private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\":[{\"FieldName\":\"grad_id_l-lokacija_id_l-mikrolokacija_id_l\",\"FieldValues\":[535590]}],\"FieldQueries\":[],\"FieldORQueries\":[{\"FieldName\":\"CategoryIds\",\"FieldValues\":[\"12\"]}],\"HasValueQueries\":[],\"GeoPolygonQuery\":{},\"CategoryId\":\"12\",\"SearchTypeIds\":[2,3],\"SortFields\":[{\"FieldName\":\"ValidFromForDisplay\",\"Ascending\":false}],\"GetAllGeolocations\":false,\"ItemsPerPage\":20,\"PageNumber\":1,\"IsGrid\":false,\"fetchBanners\":false,\"QuasiTaxonomy\":\"/beograd-novi-beograd-bezanijska-kosa-2\",\"BaseTaxonomy\":\"/nekretnine/prodaja-stanova\",\"RenderSEOWidget\":true}";
+public class ProbaHaloOglasi {
     HaloOglasiAdParser parser = new HaloOglasiAdParser();
 
     public void testHaloOglasi(String request) {
@@ -44,7 +43,7 @@ private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\
         if (ads.length > 0)
             ads[ads.length - 1] = ads[ads.length - 1].replaceFirst("\",\"GridHTML.*$", "");
         Document adsOnly = Jsoup.parse(String.join("", ads));
-        List<Realty> adsPOJOs = parser.parse(adsOnly);
+        List<Realty> adsPOJOs = parser.parseApartments(adsOnly);
         adsPOJOs.forEach(ad -> System.out.println(ad));
 
         Gson gson = new Gson();
@@ -53,7 +52,7 @@ private static String requestBody = "{\"RangeQueries\":[],\"MultiFieldORQueries\
     }
 
     public static void main(String[] args) {
-        Proba proba = new Proba();
+        ProbaHaloOglasi proba = new ProbaHaloOglasi();
         HaloOglasiCriteriaTransformer transformer = new HaloOglasiCriteriaTransformer();
         HaloOglasiRequest request = transformer.transform(testCriteria());
         Gson gson = new Gson();

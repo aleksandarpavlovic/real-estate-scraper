@@ -4,6 +4,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import realties.enums.AdType;
+import realties.enums.AdvertiserType;
+import realties.enums.AreaMeasurementUnit;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -13,16 +16,13 @@ import java.util.Optional;
 @Setter
 @NoArgsConstructor
 public class Land extends Realty{
-    private String landType;
-
     @Builder
-    public Land(String title, String description, String realtyType, String adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, String advertiserType, BigDecimal surfaceArea, Optional<Boolean> registered, String landType) {
-        super(title, description, realtyType, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, registered);
-        this.landType = landType;
+    public Land(String externalId, String title, String description, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, Optional<Boolean> registered) {
+        super(externalId, title, description, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, areaMeasurementUnit, registered);
     }
 
     @Override
-    public String toString() {
-        return super.toString() + System.lineSeparator() + "Land type: " + landType;
+    public boolean equals(Object obj) {
+        return super.equals(obj) && obj instanceof Land;
     }
 }
