@@ -233,10 +233,7 @@ public class HaloOglasiAdParser {
                 if (firstDotIndex < 0)
                     break;
                 if (area.length() - firstDotIndex > 3)
-                   try{ area = area.substring(0, firstDotIndex) + area.substring(firstDotIndex + 1);}
-                   catch (IndexOutOfBoundsException e) {
-                    System.out.println("error");
-                   }
+                   area = area.substring(0, firstDotIndex) + area.substring(firstDotIndex + 1);
                 else
                     break;
             }

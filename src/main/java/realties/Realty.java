@@ -54,8 +54,8 @@ public abstract class Realty {
                 + System.lineSeparator() + "Ad type: \t\t\t" + adType + System.lineSeparator() + "Price: \t\t\t\t" + price
                 + System.lineSeparator() + "Url: \t\t\t\t" + url + System.lineSeparator() + "Thumbnail Url: \t\t" + imageUrl
                 + System.lineSeparator() + "Publish date: \t\t" + publishDate + System.lineSeparator() + "Advertiser: \t\t" + advertiserType
-                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + System.lineSeparator()
-                + (registered.isPresent() ? System.lineSeparator() + "Registration: \t\t" + registration : "");
+                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + " " + areaMeasurementUnit + System.lineSeparator()
+                + (registered.isPresent() ? "Registration: \t\t" + registration : "");
     }
 
     @Override

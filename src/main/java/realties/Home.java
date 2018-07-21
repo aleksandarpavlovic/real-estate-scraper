@@ -25,7 +25,7 @@ public abstract class Home extends Realty {
 
     @Override
     public String toString() {
-        return super.toString() + System.lineSeparator() + "Room count: " + roomCount;
+        return super.toString() + System.lineSeparator() + "Room count: \t\t" + roomCount;
     }
 
     @Override
