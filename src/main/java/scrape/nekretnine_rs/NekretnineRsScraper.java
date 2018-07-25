@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document;
 import realties.Realty;
 import realties.enums.RealtyType;
 import scrape.Scraper;
-import scrape.criteria.BaseCriteria;
+import scrape.Search;
 
 import java.io.IOException;
 import java.util.*;
@@ -16,13 +16,13 @@ public class NekretnineRsScraper extends Scraper {
     private final NekretnineRsAdParser parser = new NekretnineRsAdParser();
     NekretnineRsRequest request;
 
-    public NekretnineRsScraper(List<BaseCriteria> criteriaList) {
-        super(criteriaList);
-        request = transformer.transform(criteriaList);
+    public NekretnineRsScraper(Search search) {
+        super(search);
+        request = transformer.transform(search.getCriteria());
     }
 
     @Override
-    public List<Realty> scrape() throws IOException{
+    public List<Realty> scrapeNext() throws IOException{
         List<Realty> results = executeRequest(request);
         request = request.nextPageRequest();
         return results;

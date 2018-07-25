@@ -1,13 +1,17 @@
 package scrape.halooglasi;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.parser.Parser;
 import realties.Realty;
 import realties.enums.RealtyType;
 import scrape.Scraper;
-import scrape.criteria.BaseCriteria;
+import scrape.Search;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -19,14 +23,14 @@ public class HaloOglasiScraper extends Scraper {
     private final Gson gson;
     HaloOglasiRequest request;
 
-    public HaloOglasiScraper(List<BaseCriteria> criteriaList) {
-        super(criteriaList);
+    public HaloOglasiScraper(Search search) {
+        super(search);
         this.gson = new Gson();
-        request = criteriaTransformer.transform(criteriaList);
+        request = criteriaTransformer.transform(search.getCriteria());
     }
 
     @Override
-    public List<Realty> scrape() throws IOException {
+    public List<Realty> scrapeNext() throws IOException {
         Gson gson = new Gson();
         List<Realty> results = executeRequest(gson.toJson(request));
         request = request.nextPageRequest();
@@ -35,7 +39,7 @@ public class HaloOglasiScraper extends Scraper {
 
     private List<Realty> executeRequest(String request) throws IOException{
         try {
-            Document response = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
+            Connection.Response response = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
                     .method(Connection.Method.POST)
                     .header("Accept", "application/json, text/javascript, */*; q=0.01")
                     .header("Accept-Encoding", "gzip, deflate, br")
@@ -46,8 +50,8 @@ public class HaloOglasiScraper extends Scraper {
                     .ignoreContentType(true)
                     .requestBody(request)
                     .header("Content-Type", "application/json")
-                    .post();
-            Document doc = prepareForParsing(response);
+                    .execute();
+            Document doc = prepareForParsing(response.body());
             return extractRealties(doc);
         } catch (IOException e) {
             e.printStackTrace();
@@ -78,5 +82,17 @@ public class HaloOglasiScraper extends Scraper {
         if (ads.length > 0)
             ads[ads.length - 1] = ads[ads.length - 1].replaceFirst("\",\"GridHTML.*$", "");
         return Jsoup.parse(String.join("", ads));
+    }
+
+    private Document prepareForParsing(String response) {
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.fromJson(response, JsonElement.class);
+        JsonObject jsonObject = jsonElement.getAsJsonObject();
+        JsonArray jsonAds = jsonObject.getAsJsonArray("Ads");
+        StringBuilder sb = new StringBuilder();
+        for (JsonElement jsonAd: jsonAds) {
+            sb.append(jsonAd.getAsJsonObject().get("ListHTML").getAsString());
+        }
+        return Jsoup.parse(Parser.unescapeEntities(sb.toString(), true));
     }
 }

@@ -3,7 +3,7 @@ package scrape.nekretnine_rs;
 import java.util.HashMap;
 import java.util.Map;
 
-public class NekretnineRsLocationTransformer {
+public class NekretnineRsLocationMapper {
     private static final Map<String, String> cityMappings;
     private static final Map<String, String> locationMappings;
 
@@ -283,4 +283,5 @@ public class NekretnineRsLocationTransformer {
     public static String getLocation(String id) {
         return locationMappings.get(id);
     }
+
 }

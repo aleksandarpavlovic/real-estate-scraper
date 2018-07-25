@@ -1,5 +1,6 @@
 package scrape.halooglasi;
 
+import realties.enums.*;
 import scrape.criteria.BaseCriteria;
 import scrape.criteria.MultivalueCriteria;
 import scrape.criteria.RangeCriteria;
@@ -7,15 +8,15 @@ import scrape.criteria.SingleValueCriteria;
 
 import java.util.*;
 
-import static scrape.criteria.CriteriaDefinitions.*;
+import static scrape.criteria.definitions.CriteriaDefinitions.*;
 
 public class HaloOglasiCriteriaTransformer {
     private static final String STRING_CONCATENATOR = "|";
 
-    private static final HashMap<String, String> criteriaDefinitionMappings;
-    private static final HashMap<String, List<String>> criteriaDefinitionMultiMappings;
+    private static final HashMap<Object, String> criteriaDefinitionMappings;
+    private static final HashMap<Object, List<String>> criteriaDefinitionMultiMappings;
     private static final HashMap<String, String> urlMappings;
-    private static final HashMap<String, Integer> roomCountMappings;
+    private static final HashMap<RoomCount, Integer> roomCountMappings;
     private static final HashMap<String, Integer> unitIdMappings;
     private static final HashMap<Integer, Integer> floorMappings;
 
@@ -23,7 +24,6 @@ public class HaloOglasiCriteriaTransformer {
     private static final String URL_IZDAVANJE_STANOVA = "/nekretnine/izdavanje-stanova";
     private static final String URL_PRODAJA_KUCA = "/nekretnine/prodaja-kuca";
     private static final String URL_IZDAVANJE_KUCA = "/nekretnine/izdavanje-kuca";
-    private static final String URL_IZDAVANJE_SOBA = "/nekretnine/izdavanje-soba";
     private static final String URL_PRODAJA_PLACEVA = "/nekretnine/prodaja-zemljista";
     private static final String URL_IZDAVANJE_PLACEVA = "/nekretnine/izdavanje-zemljista";
 
@@ -34,88 +34,86 @@ public class HaloOglasiCriteriaTransformer {
     static {
         urlMappings = new HashMap<>();
 
-        urlMappings.put(PRODAJA + STRING_CONCATENATOR + STAN, URL_PRODAJA_STANOVA);
-        urlMappings.put(IZDAVANJE + STRING_CONCATENATOR + STAN, URL_IZDAVANJE_STANOVA);
-        urlMappings.put(PRODAJA + STRING_CONCATENATOR + KUCA, URL_PRODAJA_KUCA);
-        urlMappings.put(IZDAVANJE + STRING_CONCATENATOR + KUCA, URL_IZDAVANJE_KUCA);
-        urlMappings.put(IZDAVANJE + STRING_CONCATENATOR + SOBA, URL_IZDAVANJE_SOBA);
-        urlMappings.put(PRODAJA + STRING_CONCATENATOR + PLAC, URL_PRODAJA_PLACEVA);
-        urlMappings.put(IZDAVANJE + STRING_CONCATENATOR + PLAC, URL_IZDAVANJE_PLACEVA);
+        urlMappings.put(AdType.SELL + STRING_CONCATENATOR + RealtyType.APARTMENT, URL_PRODAJA_STANOVA);
+        urlMappings.put(AdType.RENT + STRING_CONCATENATOR + RealtyType.APARTMENT, URL_IZDAVANJE_STANOVA);
+        urlMappings.put(AdType.SELL + STRING_CONCATENATOR + RealtyType.HOUSE, URL_PRODAJA_KUCA);
+        urlMappings.put(AdType.RENT + STRING_CONCATENATOR + RealtyType.HOUSE, URL_IZDAVANJE_KUCA);
+        urlMappings.put(AdType.SELL + STRING_CONCATENATOR + RealtyType.LAND, URL_PRODAJA_PLACEVA);
+        urlMappings.put(AdType.RENT + STRING_CONCATENATOR + RealtyType.LAND, URL_IZDAVANJE_PLACEVA);
 
 
 
         criteriaDefinitionMappings = new HashMap<>();
         criteriaDefinitionMultiMappings = new HashMap<>();
 
-        criteriaDefinitionMappings.put(OGLASIVAC, "oglasivac_nekretnine_id_l");
-        criteriaDefinitionMappings.put(AGENCIJA, "387238");
-        criteriaDefinitionMappings.put(VLASNIK, "387237");
-        criteriaDefinitionMappings.put(INVESTITOR, "387300");
+        criteriaDefinitionMappings.put(ADVERTISER, "oglasivac_nekretnine_id_l");
+        criteriaDefinitionMappings.put(AdvertiserType.AGENCY, "387238");
+        criteriaDefinitionMappings.put(AdvertiserType.OWNER, "387237");
+        criteriaDefinitionMappings.put(AdvertiserType.INVESTOR, "387300");
 
-        criteriaDefinitionMappings.put(TIP_NEKRETNINE, "CategoryIds");
-        criteriaDefinitionMappings.put(STAN, "12");
-        criteriaDefinitionMappings.put(KUCA, "24");
-        criteriaDefinitionMappings.put(SOBA, "62");
-        criteriaDefinitionMappings.put(PLAC, "26");
+        criteriaDefinitionMappings.put(REALTY_TYPE, "CategoryIds");
+        criteriaDefinitionMappings.put(RealtyType.APARTMENT, "12");
+        criteriaDefinitionMappings.put(RealtyType.HOUSE, "24");
+        criteriaDefinitionMappings.put(RealtyType.LAND, "26");
 
-        criteriaDefinitionMappings.put(GRADNJA, "tip_objekta_id_l");
-        criteriaDefinitionMappings.put(STAROGRADNJA, "387234");
-        criteriaDefinitionMappings.put(NOVOGRADNJA, "387235");
-        criteriaDefinitionMappings.put(IZGRADNJA, "387296");
+        criteriaDefinitionMappings.put(BUILD_TYPE, "tip_objekta_id_l");
+        criteriaDefinitionMappings.put(BuildType.OLD_BUILD, "387234");
+        criteriaDefinitionMappings.put(BuildType.NEW_BUILD, "387235");
+        criteriaDefinitionMappings.put(BuildType.UNDER_CONSTRUCTION, "387296");
 
-        criteriaDefinitionMappings.put(GREJANJE, "grejanje_id_l");
-        criteriaDefinitionMappings.put(CENTRALNO, "1542");
-        criteriaDefinitionMappings.put(ETAZNO, "1543");
-        criteriaDefinitionMultiMappings.put(STRUJA, Arrays.asList(TA_PEC, NORVESKI_RADIJATOR, MERMERNI_RADIJATOR));
-        criteriaDefinitionMappings.put(GAS, "1545");
+        criteriaDefinitionMappings.put(HEATING_TYPE, "grejanje_id_l");
+        criteriaDefinitionMappings.put(HeatingType.CENTRAL, "1542");
+        criteriaDefinitionMappings.put(HeatingType.OWN_CENTRAL, "1543");
+        criteriaDefinitionMultiMappings.put(HeatingType.ELECTRIC, Arrays.asList(TA_PEC, NORVESKI_RADIJATOR, MERMERNI_RADIJATOR));
+        criteriaDefinitionMappings.put(HeatingType.GAS, "1545");
 
-        criteriaDefinitionMappings.put(UKNJIZENO, "12000004");
+        criteriaDefinitionMappings.put(RegistrationType.REGISTERED, "12000004");
 
-        criteriaDefinitionMappings.put(TIP_STANA, "dodatno_id_ls");
-        criteriaDefinitionMappings.put(SALONAC, "12000012");
-        criteriaDefinitionMappings.put(DUPLEX, "12000013");
-        criteriaDefinitionMappings.put(PENTHOUSE, "12000014");
-        criteriaDefinitionMappings.put(POTKROVLJE, "12000021");
+        criteriaDefinitionMappings.put(APARTMENT_TYPE, "dodatno_id_ls");
+        criteriaDefinitionMappings.put(ApartmentType.WITH_SALON, "12000012");
+        criteriaDefinitionMappings.put(ApartmentType.DUPLEX, "12000013");
+        criteriaDefinitionMappings.put(ApartmentType.PENTHOUSE, "12000014");
+        criteriaDefinitionMappings.put(ApartmentType.LOFT, "12000021");
 
-        criteriaDefinitionMappings.put(PRATECI_OBJEKTI, "ostalo_id_ls");
-        criteriaDefinitionMappings.put(TERASA, "12100001");
-        criteriaDefinitionMappings.put(LODJA, "12100019");
-        criteriaDefinitionMappings.put(BALKON, "12100018");
-        criteriaDefinitionMappings.put(FRANCUSKI_BALKON, "12100018");
-        criteriaDefinitionMappings.put(GARAZA, "12100016");
-        criteriaDefinitionMappings.put(PARKING, "12100017");
+        criteriaDefinitionMappings.put(FACILITIES, "ostalo_id_ls");
+        criteriaDefinitionMappings.put(Facilities.TERRASSE, "12100001");
+        criteriaDefinitionMappings.put(Facilities.LOGGIA, "12100019");
+        criteriaDefinitionMappings.put(Facilities.BALCONY, "12100018");
+        criteriaDefinitionMappings.put(Facilities.FRENCH_BALCONY, "12100018");
+        criteriaDefinitionMappings.put(Facilities.GARAGE, "12100016");
+        criteriaDefinitionMappings.put(Facilities.PARKING, "12100017");
 
-        criteriaDefinitionMappings.put(BROJ_SOBA, "broj_soba_order_i");
+        criteriaDefinitionMappings.put(ROOM_COUNT, "broj_soba_order_i");
 
-        criteriaDefinitionMappings.put(CENA, "defaultunit_cena_d");
+        criteriaDefinitionMappings.put(PRICE, "defaultunit_cena_d");
 
-        criteriaDefinitionMappings.put(KVADRATURA, "defaultunit_kvadratura_d");
+        criteriaDefinitionMappings.put(SURFACE_AREA, "defaultunit_kvadratura_d");
 
-        criteriaDefinitionMappings.put(SPRATNOST, "sprat_order_i");
+        criteriaDefinitionMappings.put(FLOOR, "sprat_order_i");
 
         roomCountMappings = new HashMap<>();
-        roomCountMappings.put(BROJ_SOBA_0, 1);
-        roomCountMappings.put(BROJ_SOBA_0_5, 1);
-        roomCountMappings.put(BROJ_SOBA_1_0, 2);
-        roomCountMappings.put(BROJ_SOBA_1_5, 3);
-        roomCountMappings.put(BROJ_SOBA_2_0, 4);
-        roomCountMappings.put(BROJ_SOBA_2_5, 5);
-        roomCountMappings.put(BROJ_SOBA_3_0, 7);
-        roomCountMappings.put(BROJ_SOBA_3_5, 8);
-        roomCountMappings.put(BROJ_SOBA_4_0, 9);
-        roomCountMappings.put(BROJ_SOBA_4_5, 10);
-        roomCountMappings.put(BROJ_SOBA_5_0, 11);
-        roomCountMappings.put(BROJ_SOBA_5_p, 12);
+        roomCountMappings.put(RoomCount.RC_0, 1);
+        roomCountMappings.put(RoomCount.RC_0_5, 1);
+        roomCountMappings.put(RoomCount.RC_1_0, 2);
+        roomCountMappings.put(RoomCount.RC_1_5, 3);
+        roomCountMappings.put(RoomCount.RC_2_0, 4);
+        roomCountMappings.put(RoomCount.RC_2_5, 5);
+        roomCountMappings.put(RoomCount.RC_3_0, 7);
+        roomCountMappings.put(RoomCount.RC_3_5, 8);
+        roomCountMappings.put(RoomCount.RC_4_0, 9);
+        roomCountMappings.put(RoomCount.RC_4_5, 10);
+        roomCountMappings.put(RoomCount.RC_5_0, 11);
+        roomCountMappings.put(RoomCount.RC_5_p, 12);
 
         unitIdMappings = new HashMap<>();
-        unitIdMappings.put(CENA, 4);
-        unitIdMappings.put(KVADRATURA, 1);
+        unitIdMappings.put(PRICE, 4);
+        unitIdMappings.put(SURFACE_AREA, 1);
 
         floorMappings = new HashMap<>();
-        floorMappings.put(SUTEREN, 1);
-        floorMappings.put(NISKO_PRIZEMLJE, 2);
-        floorMappings.put(PRIZEMLJE, 3);
-        floorMappings.put(VISOKO_PRIZEMLJE, 8);
+        floorMappings.put(SUBTERRAIN, 1);
+        floorMappings.put(LOW_GROUND_FLOOR, 2);
+        floorMappings.put(GROUND_FLOOR, 3);
+        floorMappings.put(HIGH_GROUND_FLOOR, 8);
     }
 
     public HaloOglasiRequest transform(List<? extends BaseCriteria> criteriaList) {
@@ -124,8 +122,8 @@ public class HaloOglasiCriteriaTransformer {
     }
 
     private class PerRequestTransformer {
-        private String adType;
-        private String realtyType;
+        private AdType adType;
+        private RealtyType realtyType;
         private final List<? extends BaseCriteria> criteriaList;
 
         private PerRequestTransformer(List<? extends BaseCriteria> criteriaList) {
@@ -156,20 +154,20 @@ public class HaloOglasiCriteriaTransformer {
         }
         private void transformSingleValueCriteria(SingleValueCriteria criteria, HaloOglasiRequest request) {
             String criteriaName = criteria.getName();
-            if (TIP_OGLASA.equals(criteriaName)) {
-                this.adType = (String) criteria.getValue();
+            if (AD_TYPE.equals(criteriaName)) {
+                this.adType = ((SingleValueCriteria<AdType>)criteria).getValue();
                 resolveBaseTaxonomy(request);
-            } else if (TIP_NEKRETNINE.equals(criteriaName)) {
-                this.realtyType = (String) criteria.getValue();
+            } else if (REALTY_TYPE.equals(criteriaName)) {
+                this.realtyType = ((SingleValueCriteria<RealtyType>)criteria).getValue();
                 request.setCategoryId(criteriaDefinitionMappings.get(criteria.getValue()));
-                request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(TIP_NEKRETNINE), criteriaDefinitionMappings.get(criteria.getValue())));
+                request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(REALTY_TYPE), criteriaDefinitionMappings.get(criteria.getValue())));
                 resolveBaseTaxonomy(request);
-            } else if (UKNJIZENO.equals(criteriaName)) {
-                Boolean criteriaValue = (Boolean) criteria.getValue();
-                if (criteriaValue == Boolean.TRUE)
-                    request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(TIP_STANA), criteriaDefinitionMappings.get(UKNJIZENO)));
-            } else if (TIP_STANA.equals(criteriaName)) {
-                request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(TIP_STANA), criteriaDefinitionMappings.get(criteria.getValue())));
+            } else if (REGISTERED.equals(criteriaName)) {
+                RegistrationType registration = ((SingleValueCriteria<RegistrationType>)criteria).getValue();
+                if (registration == RegistrationType.REGISTERED)
+                    request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(APARTMENT_TYPE), criteriaDefinitionMappings.get(RegistrationType.REGISTERED)));
+            } else if (APARTMENT_TYPE.equals(criteriaName)) {
+                request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(APARTMENT_TYPE), criteriaDefinitionMappings.get(criteria.getValue())));
             }
         }
 
@@ -184,7 +182,7 @@ public class HaloOglasiCriteriaTransformer {
 
         private void transformRangeCriteria(RangeCriteria criteria, HaloOglasiRequest request) {
             String criteriaName = criteria.getName();
-            if (BROJ_SOBA.equals(criteriaName))
+            if (ROOM_COUNT.equals(criteriaName))
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
@@ -192,7 +190,7 @@ public class HaloOglasiCriteriaTransformer {
                         .to(roomCountMappings.get(criteria.getTo()))
                         .build()
                 );
-            else if (CENA.equals(criteriaName) || KVADRATURA.equals(criteriaName))
+            else if (PRICE.equals(criteriaName) || SURFACE_AREA.equals(criteriaName))
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
@@ -201,7 +199,7 @@ public class HaloOglasiCriteriaTransformer {
                         .unitId(unitIdMappings.get(criteriaName))
                         .build()
                 );
-            else if (SPRATNOST.equals(criteriaName)) {
+            else if (FLOOR.equals(criteriaName)) {
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
@@ -213,13 +211,13 @@ public class HaloOglasiCriteriaTransformer {
         }
 
         private void transformMultivalueCriteria(MultivalueCriteria criteria, HaloOglasiRequest request) {
-            if (Arrays.asList(OGLASIVAC, GRADNJA, GREJANJE, PRATECI_OBJEKTI).contains(criteria.getName()))
+            if (Arrays.asList(ADVERTISER, BUILD_TYPE, HEATING_TYPE, FACILITIES).contains(criteria.getName()))
                 request.updateFieldOrQueries(new HaloOglasiRequest.FieldORQuery(criteriaDefinitionMappings.get(criteria.getName()), getMappings(criteria.getValues())));
         }
 
-        private List<String> getMappings(List<String> values) {
+        private List<String> getMappings(List<Object> values) {
             List<String> mappings = new ArrayList<>();
-            for (String value: values) {
+            for (Object value: values) {
                 String mapping = criteriaDefinitionMappings.get(value);
                 if (mapping != null)
                     mappings.add(mapping);

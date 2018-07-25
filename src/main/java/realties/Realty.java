@@ -48,14 +48,14 @@ public abstract class Realty {
 
     @Override
     public String toString() {
-        String registration = registered.isPresent() ? registered.get() ? "uknjizeno" : "neuknjizeno" : "";
-        return "Ad source: \t\t\t" + source + System.lineSeparator() + "External Id: \t\t" + externalId + System.lineSeparator()
-                + "Title: \t\t\t\t" + title + System.lineSeparator() + "Description: \t\t" + description + System.lineSeparator()
+        String registration = registered.isPresent() ? registered.get() ? "Registered" : "Unregistered" : "";
+        return "Ad source: \t\t\t" + source + System.lineSeparator() + "External Id: \t\t" + externalId
+                + System.lineSeparator() + "Title: \t\t\t\t" + title + System.lineSeparator() + "Description: \t\t" + description
                 + System.lineSeparator() + "Ad type: \t\t\t" + adType + System.lineSeparator() + "Price: \t\t\t\t" + price
                 + System.lineSeparator() + "Url: \t\t\t\t" + url + System.lineSeparator() + "Thumbnail Url: \t\t" + imageUrl
                 + System.lineSeparator() + "Publish date: \t\t" + publishDate + System.lineSeparator() + "Advertiser: \t\t" + advertiserType
-                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + " " + areaMeasurementUnit + System.lineSeparator()
-                + (registered.isPresent() ? "Registration: \t\t" + registration : "");
+                + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + " " + areaMeasurementUnit
+                + (registered.isPresent() ?  System.lineSeparator() + "Registration: \t\t" + registration : "");
     }
 
     @Override

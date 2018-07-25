@@ -4,7 +4,12 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import realties.Realty;
-import scrape.criteria.*;
+import realties.enums.*;
+import scrape.criteria.BaseCriteria;
+import scrape.criteria.MultivalueCriteria;
+import scrape.criteria.RangeCriteria;
+import scrape.criteria.SingleValueCriteria;
+import scrape.criteria.definitions.CriteriaDefinitions;
 import scrape.nekretnine_rs.NekretnineRsAdParser;
 import scrape.nekretnine_rs.NekretnineRsCriteriaTransformer;
 import scrape.nekretnine_rs.NekretnineRsRequest;
@@ -42,16 +47,16 @@ public class ProbaNekretniners {
 
     public static List<BaseCriteria> testCriteria() {
         List<BaseCriteria> criteriaList = new ArrayList<>();
-        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.TIP_OGLASA, CriteriaDefinitions.PRODAJA));
-        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.TIP_NEKRETNINE, CriteriaDefinitions.STAN));
-        criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.OGLASIVAC, Arrays.asList(CriteriaDefinitions.AGENCIJA, CriteriaDefinitions.VLASNIK, CriteriaDefinitions.INVESTITOR)));
-        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.UKNJIZENO, true));
-//        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.TIP_STANA, CriteriaDefinitions.DUPLEX));
-        criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.GREJANJE, Arrays.asList(CriteriaDefinitions.GAS, CriteriaDefinitions.STRUJA, CriteriaDefinitions.CENTRALNO)));
-        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.CENA, 12, 123123));
-        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.KVADRATURA, 12, 123));
-        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.BROJ_SOBA, CriteriaDefinitions.BROJ_SOBA_0_5, CriteriaDefinitions.BROJ_SOBA_5_0));
-        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.SPRATNOST, CriteriaDefinitions.NISKO_PRIZEMLJE, 5));
+        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.AD_TYPE, AdType.SELL));
+        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT));
+        criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.ADVERTISER, Arrays.asList(AdvertiserType.values())));
+        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.REGISTERED, true));
+//        criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.APARTMENT_TYPE, CriteriaDefinitions.DUPLEX));
+        criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.HEATING_TYPE, Arrays.asList(HeatingType.GAS, HeatingType.ELECTRIC, HeatingType.CENTRAL)));
+        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.PRICE, 12, 123123));
+        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.SURFACE_AREA, 12, 123));
+        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5, RoomCount.RC_5_0));
+        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.FLOOR, CriteriaDefinitions.LOW_GROUND_FLOOR, 5));
         return criteriaList;
     }
 }
