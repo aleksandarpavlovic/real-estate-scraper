@@ -2,13 +2,19 @@ package scrape;
 
 import realties.Realty;
 import realties.enums.AdType;
+import realties.enums.AreaMeasurementUnit;
 import realties.enums.RealtyType;
+import realties.util.UnitConversionUtil;
 import scrape.criteria.BaseCriteria;
+import scrape.criteria.RangeWithUnitCriteria;
 import scrape.criteria.SingleValueCriteria;
 import scrape.criteria.definitions.CriteriaDefinitions;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Scraper {
     protected final Search search;
@@ -21,7 +27,37 @@ public abstract class Scraper {
         this.realtyType = determineRealtyType(search.getCriteria());
     }
 
-    public abstract List<Realty> scrapeNext() throws IOException;
+    public List<Realty> scrapeNext() throws IOException {
+        return filterResults(doScrapeNext());
+    }
+
+    protected abstract List<Realty> doScrapeNext() throws IOException;
+
+    private List<Realty> filterResults(List<Realty> results) {
+        List<Realty> filteredResults = results;
+        for (BaseCriteria criteria: search.getCriteria()) {
+            if (CriteriaDefinitions.PRICE_PER_AREA_UNIT.equals(criteria.getName())) {
+                AreaMeasurementUnit criteriaUnit = ((RangeWithUnitCriteria<Integer, AreaMeasurementUnit>)criteria).getUnit();
+                BigDecimal from = BigDecimal.valueOf(((RangeWithUnitCriteria<Integer, AreaMeasurementUnit>) criteria).getFrom());
+                BigDecimal to = BigDecimal.valueOf(((RangeWithUnitCriteria<Integer, AreaMeasurementUnit>) criteria).getTo());
+                filteredResults = filteredResults.stream().filter(realty -> isPricePerAreaUnitInRange(realty, from, to, criteriaUnit)).collect(Collectors.toList());
+            }
+            break;
+        }
+        return filteredResults;
+    }
+
+    private boolean isPricePerAreaUnitInRange(Realty realty, BigDecimal from, BigDecimal to, AreaMeasurementUnit rangeUnit) {
+        if (realty.getSurfaceArea() == null || realty.getPrice() == null)
+            return true;
+        BigDecimal pricePerAreaUnit = realty.getPrice().divide(realty.getSurfaceArea(), 2, RoundingMode.CEILING);
+        return isInRange(UnitConversionUtil.convertArea(pricePerAreaUnit, rangeUnit, realty.getAreaMeasurementUnit()), from, to);
+    }
+
+    private boolean isInRange(BigDecimal value, BigDecimal from, BigDecimal to) {
+        return value.compareTo(from) >= 0
+                && value.compareTo(to) <= 0;
+    }
 
     private AdType determineAdType(List<BaseCriteria> criteriaList) {
         for (BaseCriteria criteria: criteriaList) {

@@ -30,7 +30,7 @@ public class HaloOglasiScraper extends Scraper {
     }
 
     @Override
-    public List<Realty> scrapeNext() throws IOException {
+    protected List<Realty> doScrapeNext() throws IOException {
         Gson gson = new Gson();
         List<Realty> results = executeRequest(gson.toJson(request));
         request = request.nextPageRequest();

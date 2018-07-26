@@ -1,10 +1,7 @@
 package scrape.halooglasi;
 
 import realties.enums.*;
-import scrape.criteria.BaseCriteria;
-import scrape.criteria.MultivalueCriteria;
-import scrape.criteria.RangeCriteria;
-import scrape.criteria.SingleValueCriteria;
+import scrape.criteria.*;
 
 import java.util.*;
 
@@ -17,7 +14,7 @@ public class HaloOglasiCriteriaTransformer {
     private static final HashMap<Object, List<String>> criteriaDefinitionMultiMappings;
     private static final HashMap<String, String> urlMappings;
     private static final HashMap<RoomCount, Integer> roomCountMappings;
-    private static final HashMap<String, Integer> unitIdMappings;
+    private static final HashMap<Object, Integer> unitIdMappings;
     private static final HashMap<Integer, Integer> floorMappings;
 
     private static final String URL_PRODAJA_STANOVA = "/nekretnine/prodaja-stanova";
@@ -106,8 +103,8 @@ public class HaloOglasiCriteriaTransformer {
         roomCountMappings.put(RoomCount.RC_5_p, 12);
 
         unitIdMappings = new HashMap<>();
-        unitIdMappings.put(PRICE, 4);
-        unitIdMappings.put(SURFACE_AREA, 1);
+        unitIdMappings.put(AreaMeasurementUnit.SQUARE_METER, 1);
+        unitIdMappings.put(AreaMeasurementUnit.ARE, 2);
 
         floorMappings = new HashMap<>();
         floorMappings.put(SUBTERRAIN, 1);
@@ -190,14 +187,23 @@ public class HaloOglasiCriteriaTransformer {
                         .to(roomCountMappings.get(criteria.getTo()))
                         .build()
                 );
-            else if (PRICE.equals(criteriaName) || SURFACE_AREA.equals(criteriaName))
+            else if (PRICE.equals(criteriaName))
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
                         .from((Integer)criteria.getFrom())
                         .to((Integer)criteria.getTo())
-                        .unitId(unitIdMappings.get(criteriaName))
+                        .unitId(4)
                         .build()
+                );
+            else if (SURFACE_AREA.equals(criteriaName))
+                request.updateRangeQueries(
+                        HaloOglasiRequest.RangeQuery.builder()
+                                .fieldName(criteriaDefinitionMappings.get(criteriaName))
+                                .from((Integer)criteria.getFrom())
+                                .to((Integer)criteria.getTo())
+                                .unitId(unitIdMappings.getOrDefault(((RangeWithUnitCriteria)criteria).getUnit(), 1))
+                                .build()
                 );
             else if (FLOOR.equals(criteriaName)) {
                 request.updateRangeQueries(

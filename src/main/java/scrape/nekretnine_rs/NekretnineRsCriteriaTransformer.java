@@ -2,8 +2,10 @@ package scrape.nekretnine_rs;
 
 import realties.enums.*;
 import realties.locations.Location;
+import realties.util.UnitConversionUtil;
 import scrape.criteria.*;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -121,10 +123,15 @@ public class NekretnineRsCriteriaTransformer {
         } else if (PRICE.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("cena", concatenate(criteria.getFrom(), criteria.getTo())));
         } else if (SURFACE_AREA.equals(criteriaName)) {
-            request.updatePath(new NekretnineRsRequest.Path("kvadratura", concatenate(criteria.getFrom(), criteria.getTo())));
+            RangeWithUnitCriteria<Integer, AreaMeasurementUnit> areaCriteria = (RangeWithUnitCriteria)criteria;
+            request.updatePath(new NekretnineRsRequest.Path("kvadratura", concatenate(convertAreaToM2(areaCriteria.getFrom(), areaCriteria.getUnit()), convertAreaToM2(areaCriteria.getTo(), areaCriteria.getUnit()))));
         } else if (FLOOR.equals(criteriaName)) {
             updateFloors(criteria, request);
         }
+    }
+
+    private Integer convertAreaToM2(Integer value, AreaMeasurementUnit unit) {
+        return UnitConversionUtil.convertArea(BigDecimal.valueOf(value), unit, AreaMeasurementUnit.SQUARE_METER).toBigInteger().intValueExact();
     }
 
     private void updateFloors(RangeCriteria<Integer> criteria, NekretnineRsRequest request) {

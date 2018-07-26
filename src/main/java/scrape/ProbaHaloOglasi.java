@@ -1,10 +1,7 @@
 package scrape;
 
 import realties.enums.*;
-import scrape.criteria.BaseCriteria;
-import scrape.criteria.MultivalueCriteria;
-import scrape.criteria.RangeCriteria;
-import scrape.criteria.SingleValueCriteria;
+import scrape.criteria.*;
 import scrape.criteria.definitions.CriteriaDefinitions;
 import scrape.halooglasi.HaloOglasiScraper;
 
@@ -42,7 +39,7 @@ public class ProbaHaloOglasi {
         criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.APARTMENT_TYPE, ApartmentType.DUPLEX));
         criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.HEATING_TYPE, Arrays.asList(HeatingType.GAS)));
         criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.PRICE, 12, 123123));
-        criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.SURFACE_AREA, 12, 123));
+        criteriaList.add(new RangeWithUnitCriteria<>(CriteriaDefinitions.SURFACE_AREA, 12, 123, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5, RoomCount.RC_5_0));
         criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.FLOOR, CriteriaDefinitions.HIGH_GROUND_FLOOR, 20));
         return criteriaList;

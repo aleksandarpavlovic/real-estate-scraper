@@ -22,7 +22,7 @@ public class NekretnineRsScraper extends Scraper {
     }
 
     @Override
-    public List<Realty> scrapeNext() throws IOException{
+    protected List<Realty> doScrapeNext() throws IOException{
         List<Realty> results = executeRequest(request);
         request = request.nextPageRequest();
         return results;
