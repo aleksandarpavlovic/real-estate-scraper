@@ -38,7 +38,8 @@ public class CriteriaDefinitions {
     public static final RangeWithUnitCriteriaDefinition areaAreCD;
     public static final String SURFACE_AREA = "kvadratura";
 
-    public static final RangeWithUnitCriteriaDefinition pricePerAreaUnitCD;
+    public static final RangeWithUnitCriteriaDefinition pricePerM2CD;
+    public static final RangeWithUnitCriteriaDefinition pricePerAreCD;
     public static final String PRICE_PER_AREA_UNIT = "cena po kvadratu";
 
     public static final RangeSingleSelectCriteriaDefinition floorCD;
@@ -61,7 +62,8 @@ public class CriteriaDefinitions {
         priceCD = new RangeCriteriaDefinition(PRICE);
         areaM2CD = new RangeWithUnitCriteriaDefinition(SURFACE_AREA, AreaMeasurementUnit.SQUARE_METER);
         areaAreCD = new RangeWithUnitCriteriaDefinition(SURFACE_AREA, AreaMeasurementUnit.ARE);
-        pricePerAreaUnitCD = new RangeWithUnitCriteriaDefinition(PRICE_PER_AREA_UNIT, AreaMeasurementUnit.values());
+        pricePerM2CD = new RangeWithUnitCriteriaDefinition(PRICE_PER_AREA_UNIT, AreaMeasurementUnit.SQUARE_METER);
+        pricePerAreCD = new RangeWithUnitCriteriaDefinition(PRICE_PER_AREA_UNIT, AreaMeasurementUnit.ARE);
         floorCD = new RangeSingleSelectCriteriaDefinition(FLOOR, new Integer[]{SUBTERRAIN, LOW_GROUND_FLOOR, GROUND_FLOOR, HIGH_GROUND_FLOOR, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30});
     }
 }
