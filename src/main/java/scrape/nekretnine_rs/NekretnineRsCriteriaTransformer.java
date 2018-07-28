@@ -91,8 +91,8 @@ public class NekretnineRsCriteriaTransformer {
                 transformRangeCriteria((RangeCriteria) criteria, request);
             else if (criteria instanceof LocationCriteria)
                 transformLocationCriteria((LocationCriteria) criteria, request);
-            else if (criteria instanceof MultivalueCriteria)
-                transformMultivalueCriteria((MultivalueCriteria) criteria, request);
+            else if (criteria instanceof MultiValueCriteria)
+                transformMultivalueCriteria((MultiValueCriteria) criteria, request);
         }
         request.setBaseUrl("https://www.nekretnine.rs");
         request.setPageNumber(1);
@@ -154,7 +154,7 @@ public class NekretnineRsCriteriaTransformer {
         }
     }
 
-    private void transformMultivalueCriteria(MultivalueCriteria criteria, NekretnineRsRequest request) {
+    private void transformMultivalueCriteria(MultiValueCriteria criteria, NekretnineRsRequest request) {
         String criteriaName = criteria.getName();
         if (ADVERTISER.equals(criteriaName)) {
             List<String> mappings = (List<String>) criteria.getValues().stream().map(criteriaDefinitionMappings::get).collect(Collectors.toList());

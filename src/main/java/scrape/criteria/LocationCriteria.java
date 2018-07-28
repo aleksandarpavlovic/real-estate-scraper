@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class LocationCriteria extends MultivalueCriteria<Location>{
+public class LocationCriteria extends MultiValueCriteria<Location> {
 
     public LocationCriteria(String name, List<Location> locations) {
         super(name, locations);

@@ -35,13 +35,7 @@ public class LocationsGenerator {
         bezanijskaKosa.addSublocation(locationCreator.create("1_13_3", "Bežanijska kosa III"));
         beograd.addSublocation(bezanijskaKosa);
 
-        Location borca = locationCreator.create("1_14", "Borča");
-        bezanijskaKosa.addSublocation(locationCreator.create("1_14_1", "Borča I "));
-        bezanijskaKosa.addSublocation(locationCreator.create("1_14_2", "Borča II "));
-        bezanijskaKosa.addSublocation(locationCreator.create("1_14_3", "Borča III"));
-        bezanijskaKosa.addSublocation(locationCreator.create("1_14_4", "Borča IV"));
-        bezanijskaKosa.addSublocation(locationCreator.create("1_14_5", "Borča V"));
-        beograd.addSublocation(borca);
+        beograd.addSublocation(locationCreator.create("1_14", "Borča"));
 
         Location bgCentar = locationCreator.create("1_15", "Centar");
         bgCentar.addSublocation(locationCreator.create("1_15_1", "Beograđanka"));
@@ -56,27 +50,14 @@ public class LocationsGenerator {
 
         beograd.addSublocation(locationCreator.create("1_16", "Cerak"));
         beograd.addSublocation(locationCreator.create("1_17", "Cerak vinogradi"));
-
-        Location dedinje = locationCreator.create("1_18", "Dedinje");
-        dedinje.addSublocation(locationCreator.create("1_18_1", "Dedinje (25. maj)"));
-        dedinje.addSublocation(locationCreator.create("1_18_2", "Dedinje (Beli dvor)"));
-        dedinje.addSublocation(locationCreator.create("1_18_3", "Dedinje (RTV Pink)"));
-        beograd.addSublocation(dedinje);
-
-        Location dorcol = locationCreator.create("1_19", "Dorćol");
-        dorcol.addSublocation(locationCreator.create("1_19_1", "Donji Dorćol"));
-        dorcol.addSublocation(locationCreator.create("1_19_2", "Dunavski kej"));
-        dorcol.addSublocation(locationCreator.create("1_19_3", "Gornji Dorćol"));
-        dorcol.addSublocation(locationCreator.create("1_19_4", "Strahinjića Bana"));
-        beograd.addSublocation(dorcol);
-
+        beograd.addSublocation(locationCreator.create("1_18", "Dedinje"));
+        beograd.addSublocation(locationCreator.create("1_19", "Dorćol"));
         beograd.addSublocation(locationCreator.create("1_20", "Filmski grad"));
         beograd.addSublocation(locationCreator.create("1_21", "Galenika"));
         beograd.addSublocation(locationCreator.create("1_22", "Golf naselje"));
         beograd.addSublocation(locationCreator.create("1_23", "Grocka"));
         beograd.addSublocation(locationCreator.create("1_24", "Gundulićev venac"));
         beograd.addSublocation(locationCreator.create("1_25", "Institut za majku i dete"));
-        beograd.addSublocation(locationCreator.create("1_26", "Jabučki rit"));
         beograd.addSublocation(locationCreator.create("1_27", "Julino brdo"));
         beograd.addSublocation(locationCreator.create("1_28", "Kalemegdan"));
         beograd.addSublocation(locationCreator.create("1_29", "Kaluđerica"));
@@ -88,12 +69,7 @@ public class LocationsGenerator {
         beograd.addSublocation(locationCreator.create("1_35", "Kopitareva gradina "));
         beograd.addSublocation(locationCreator.create("1_36", "Kosančićev venac"));
         beograd.addSublocation(locationCreator.create("1_37", "Košutnjak"));
-
-        Location kumodraz = locationCreator.create("1_38", "Kumodraž");
-        kumodraz.addSublocation(locationCreator.create("1_38_1", "Kumodraž I"));
-        kumodraz.addSublocation(locationCreator.create("1_38_2", "Kumodraž II"));
-        beograd.addSublocation(kumodraz);
-
+        beograd.addSublocation(locationCreator.create("1_38", "Kumodraž"));
         beograd.addSublocation(locationCreator.create("1_39", "Labudovo brdo"));
         beograd.addSublocation(locationCreator.create("1_40", "Ledine"));
         beograd.addSublocation(locationCreator.create("1_41", "Leštane"));
@@ -109,18 +85,8 @@ public class LocationsGenerator {
         medakovic.addSublocation(locationCreator.create("1_46_4", "Medaković III"));
         beograd.addSublocation(medakovic);
 
-        Location miljakovac = locationCreator.create("1_47", "Miljakovac");
-        miljakovac.addSublocation(locationCreator.create("1_47_1", "Miljakovac I"));
-        miljakovac.addSublocation(locationCreator.create("1_47_2", "Miljakovac II"));
-        miljakovac.addSublocation(locationCreator.create("1_47_3", "Miljakovac III"));
-        beograd.addSublocation(miljakovac);
-
-        Location mirijevo = locationCreator.create("1_48", "Mirijevo");
-        mirijevo.addSublocation(locationCreator.create("1_48_1", "Mirijevo I"));
-        mirijevo.addSublocation(locationCreator.create("1_48_2", "Mirijevo II"));
-        mirijevo.addSublocation(locationCreator.create("1_48_3", "Mirijevo III"));
-        mirijevo.addSublocation(locationCreator.create("1_48_4", "Mirijevo IV"));
-        beograd.addSublocation(mirijevo);
+        beograd.addSublocation(locationCreator.create("1_47", "Miljakovac"));
+        beograd.addSublocation(locationCreator.create("1_48", "Mirijevo"));
 
         Location nbg = locationCreator.create("1_49", "Novi Beograd");
         nbg.addSublocation(locationCreator.create("1_49_2", "Blok 1 (Fontana)"));
@@ -162,14 +128,10 @@ public class LocationsGenerator {
         nbg.addSublocation(locationCreator.create("1_49_39", "Blok 65"));
         nbg.addSublocation(locationCreator.create("1_49_40", "Blok 67"));
         nbg.addSublocation(locationCreator.create("1_49_41", "Blok 67a"));
-        nbg.addSublocation(locationCreator.create("1_49_42", "Blok 7 (Paviljoni)"));
+        nbg.addSublocation(locationCreator.create("1_49_42", "Paviljoni"));
         nbg.addSublocation(locationCreator.create("1_49_43", "Blok 70 (Kineski TC)"));
         nbg.addSublocation(locationCreator.create("1_49_44", "Blok 70a"));
-        nbg.addSublocation(locationCreator.create("1_49_45", "Blok 71"));
-        nbg.addSublocation(locationCreator.create("1_49_46", "Blok 72"));
-        nbg.addSublocation(locationCreator.create("1_49_47", "Blok 7a (Paviljoni)"));
-        nbg.addSublocation(locationCreator.create("1_49_48", "Blok 8 (Paviljoni)"));
-        nbg.addSublocation(locationCreator.create("1_49_49", "Blok 8a (Paviljoni)"));
+        nbg.addSublocation(locationCreator.create("1_49_45", "Dr Ivana Ribara"));
         nbg.addSublocation(locationCreator.create("1_49_50", "Blok 9a (Dom Zdravlja)"));
         nbg.addSublocation(locationCreator.create("1_49_51", "Blok 2"));
         beograd.addSublocation(nbg);
@@ -361,7 +323,6 @@ public class LocationsGenerator {
         noviSad.addSublocation(locationCreator.create("2_39","Rotkvarija"));
         noviSad.addSublocation(locationCreator.create("2_40","Sajam"));
         noviSad.addSublocation(locationCreator.create("2_41","Sajlovo"));
-        noviSad.addSublocation(locationCreator.create("2_42","Sajmište"));
         noviSad.addSublocation(locationCreator.create("2_43","Salajka"));
         noviSad.addSublocation(locationCreator.create("2_44","Satelit"));
         noviSad.addSublocation(locationCreator.create("2_45","Savina"));
@@ -468,12 +429,10 @@ public class LocationsGenerator {
         pancevo.addSublocation(locationCreator.create("7_3","Kotež 1"));
         pancevo.addSublocation(locationCreator.create("7_4","Kotež 2"));
         pancevo.addSublocation(locationCreator.create("7_5","Kudeljarski nasip"));
-        pancevo.addSublocation(locationCreator.create("7_6","Nova misa"));
-        pancevo.addSublocation(locationCreator.create("7_7","Nova misa vinogradi"));
+        pancevo.addSublocation(locationCreator.create("7_6","Misa"));
         pancevo.addSublocation(locationCreator.create("7_8","Novi svet"));
         pancevo.addSublocation(locationCreator.create("7_9","Sodara"));
-        pancevo.addSublocation(locationCreator.create("7_10","Strelište 1"));
-        pancevo.addSublocation(locationCreator.create("7_11","Strelište 2"));
+        pancevo.addSublocation(locationCreator.create("7_10","Strelište"));
         pancevo.addSublocation(locationCreator.create("7_12","Tesla"));
         pancevo.addSublocation(locationCreator.create("7_13","Tip stanko"));
         pancevo.addSublocation(locationCreator.create("7_14","Vojlovica"));

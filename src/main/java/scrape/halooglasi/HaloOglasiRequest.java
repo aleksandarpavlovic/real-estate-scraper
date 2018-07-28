@@ -77,6 +77,12 @@ public class HaloOglasiRequest {
         updateList(fieldORQueries, newQuery);
     }
 
+    public void updateMultiFieldOrQueries(FieldORQuery newQuery) {
+        if (multiFieldORQueries == null)
+            multiFieldORQueries = new ArrayList<>();
+        updateList(multiFieldORQueries, newQuery);
+    }
+
     private void updateList(List<FieldORQuery> queries, FieldORQuery newQuery) {
          for(FieldORQuery query: queries) {
              if (query.getFieldName().equals(newQuery.getFieldName())) {

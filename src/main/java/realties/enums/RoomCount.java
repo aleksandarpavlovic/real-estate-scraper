@@ -1,7 +1,6 @@
 package realties.enums;
 
 public enum RoomCount {
-    NA,
     RC_0,
     RC_0_5,
     RC_1_0,

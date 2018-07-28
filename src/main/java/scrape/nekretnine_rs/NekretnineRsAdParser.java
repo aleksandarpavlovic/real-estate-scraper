@@ -264,7 +264,7 @@ public class NekretnineRsAdParser {
 
     private RoomCount getRoomCount(BigDecimal roomCount) {
         if (roomCount == null)
-            return RoomCount.NA;
+            return null;
         else if (roomCount.compareTo(BigDecimal.ZERO) == 0)
             return RoomCount.RC_0;
         else if (roomCount.compareTo(BigDecimal.valueOf(1)) == 0)
@@ -280,7 +280,7 @@ public class NekretnineRsAdParser {
         else if (roomCount.compareTo(BigDecimal.valueOf(5)) > 0)
             return RoomCount.RC_5_p;
         else
-            return RoomCount.NA;
+            return null;
     }
 
     private Optional<Boolean> parseRegistered(Element rawAd) {

@@ -1,6 +1,7 @@
 package scrape.halooglasi;
 
 import realties.enums.*;
+import realties.locations.Location;
 import scrape.criteria.*;
 
 import java.util.*;
@@ -27,6 +28,8 @@ public class HaloOglasiCriteriaTransformer {
     private static final String TA_PEC = "1544";
     private static final String NORVESKI_RADIJATOR = "1548";
     private static final String MERMERNI_RADIJATOR = "1549";
+
+    private static final String LOKACIJA = "grad_id_l-lokacija_id_l-mikrolokacija_id_l";
 
     static {
         urlMappings = new HashMap<>();
@@ -134,8 +137,10 @@ public class HaloOglasiCriteriaTransformer {
                     transformSingleValueCriteria((SingleValueCriteria) criteria, request);
                 else if (criteria instanceof RangeCriteria)
                     transformRangeCriteria((RangeCriteria) criteria, request);
-                else if (criteria instanceof MultivalueCriteria)
-                    transformMultivalueCriteria((MultivalueCriteria) criteria, request);
+                else if (criteria instanceof LocationCriteria)
+                    transformLocationCriteria((LocationCriteria) criteria, request);
+                else if (criteria instanceof MultiValueCriteria)
+                    transformMultivalueCriteria((MultiValueCriteria) criteria, request);
             }
             request.setSearchTypeIds(Arrays.asList(2,3));
             request.setSortFields(Arrays.asList(new HaloOglasiRequest.SortField()));
@@ -216,7 +221,18 @@ public class HaloOglasiCriteriaTransformer {
             }
         }
 
-        private void transformMultivalueCriteria(MultivalueCriteria criteria, HaloOglasiRequest request) {
+        private void transformLocationCriteria(LocationCriteria criteria, HaloOglasiRequest request) {
+            List<String> locations = new LinkedList<>();
+            for (Location location: criteria.getValues()) {
+                List<String> haloOglasiLocation = HaloOglasiLocationMapper.getLocation(location.getId());
+                if (haloOglasiLocation != null)
+                    locations.addAll(haloOglasiLocation);
+            }
+            if (!locations.isEmpty())
+                request.updateMultiFieldOrQueries(new HaloOglasiRequest.FieldORQuery(LOKACIJA, locations));
+        }
+
+        private void transformMultivalueCriteria(MultiValueCriteria criteria, HaloOglasiRequest request) {
             if (Arrays.asList(ADVERTISER, BUILD_TYPE, HEATING_TYPE, FACILITIES).contains(criteria.getName()))
                 request.updateFieldOrQueries(new HaloOglasiRequest.FieldORQuery(criteriaDefinitionMappings.get(criteria.getName()), getMappings(criteria.getValues())));
         }

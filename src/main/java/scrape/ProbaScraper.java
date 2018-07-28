@@ -40,7 +40,7 @@ public class ProbaScraper {
         criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT));
         criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.REGISTERED, RegistrationType.REGISTERED));
         criteriaList.add(new SingleValueCriteria<>(CriteriaDefinitions.APARTMENT_TYPE, ApartmentType.DUPLEX));
-        criteriaList.add(new MultivalueCriteria(CriteriaDefinitions.HEATING_TYPE, Arrays.asList(HeatingType.GAS)));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.HEATING_TYPE, Arrays.asList(HeatingType.GAS)));
         criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.PRICE, 12, 123123));
         criteriaList.add(new RangeWithUnitCriteria<>(CriteriaDefinitions.SURFACE_AREA, 12, 123, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new RangeCriteria<>(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5, RoomCount.RC_5_0));
