@@ -32,6 +32,7 @@ public class NekretnineRsAdParser {
                 Apartment apartment = Apartment.builder()
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(adUrl)
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -58,6 +59,7 @@ public class NekretnineRsAdParser {
                 House house = House.builder()
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(adUrl)
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -84,6 +86,7 @@ public class NekretnineRsAdParser {
                 Land land = Land.builder()
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(adUrl)
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -246,6 +249,13 @@ public class NekretnineRsAdParser {
 
     private String parseAdDescription(Element rawAd) {
         Element elem = rawAd.selectFirst("div.sRightGrid > h4:containsOwn(Opis) ~ p");
+        if (elem == null)
+            return null;
+        return elem.ownText();
+    }
+
+    private String parseLocation(Element rawAd) {
+        Element elem = rawAd.selectFirst("div.resultInfo > div.resultOtherWrap > div.resultData");
         if (elem == null)
             return null;
         return elem.ownText();

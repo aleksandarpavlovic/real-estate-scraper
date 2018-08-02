@@ -18,6 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class HaloOglasiAdParser {
     Pattern areaUnitPattern = Pattern.compile("[0-9.,]+ (.*)");
@@ -31,6 +32,7 @@ public class HaloOglasiAdParser {
                         .externalId(parseId(rawAd))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(parseAdUrl(rawAd))
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -59,6 +61,7 @@ public class HaloOglasiAdParser {
                         .externalId(parseId(rawAd))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(parseAdUrl(rawAd))
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -87,6 +90,7 @@ public class HaloOglasiAdParser {
                         .externalId(parseId(rawAd))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
+                        .location(parseLocation(rawAd))
                         .publishDate(parsePublishDate(rawAd))
                         .url(parseAdUrl(rawAd))
                         .imageUrl(parseThumbnailUrl(rawAd))
@@ -211,8 +215,11 @@ public class HaloOglasiAdParser {
     }
 
     private String parseLocation(Element rawAd) {
-        // TODO
-        return null;
+        Element elem = rawAd.selectFirst("ul.subtitle-places");
+        if (elem == null)
+            return null;
+
+        return elem.children().stream().map(sublocation -> sublocation.ownText()).collect(Collectors.joining(", "));
     }
 
     private BigDecimal parseSurfaceArea(Element rawAd) {

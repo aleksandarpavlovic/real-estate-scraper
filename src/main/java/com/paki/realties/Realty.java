@@ -26,6 +26,7 @@ public abstract class Realty {
     private String title;
     @Lob
     private String description;
+    private String location;
     @Enumerated(EnumType.STRING)
     private AdType adType;
     @Column(precision = 20, scale = 2)
@@ -42,10 +43,11 @@ public abstract class Realty {
     @Enumerated(EnumType.STRING)
     private RegistrationType registered;
 
-    public Realty(String externalId, String title, String description, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+    public Realty(String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
         this.externalId = externalId;
         this.title = title;
         this.description = description;
+        this.location = location;
         this.adType = adType;
         this.price = price;
         this.url = url;
@@ -61,7 +63,7 @@ public abstract class Realty {
     public String toString() {
         return "Ad source: \t\t\t" + source + System.lineSeparator() + "External Id: \t\t" + externalId
                 + System.lineSeparator() + "Title: \t\t\t\t" + title + System.lineSeparator() + "Description: \t\t" + description
-                + System.lineSeparator() + "Ad type: \t\t\t" + adType + System.lineSeparator() + "Price: \t\t\t\t" + price
+                + System.lineSeparator() + "Ad type: \t\t\t" + adType + System.lineSeparator() + "Location: \t\t\t" + location + System.lineSeparator() + "Price: \t\t\t\t" + price
                 + System.lineSeparator() + "Url: \t\t\t\t" + url + System.lineSeparator() + "Thumbnail Url: \t\t" + imageUrl
                 + System.lineSeparator() + "Publish date: \t\t" + publishDate + System.lineSeparator() + "Advertiser: \t\t" + advertiserType
                 + System.lineSeparator() + "Area: \t\t\t\t" + surfaceArea + " " + areaMeasurementUnit

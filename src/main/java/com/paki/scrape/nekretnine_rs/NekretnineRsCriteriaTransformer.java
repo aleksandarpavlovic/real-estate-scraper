@@ -16,9 +16,9 @@ public class NekretnineRsCriteriaTransformer {
 
     private static final String VALUE_SEPARATOR = "_";
 
-    private static final HashMap<Object, String> criteriaDefinitionMappings;
-    private static final HashMap<Object, List<String>> criteriaDefinitionMultiMappings;
-    private static final HashMap<RoomCount, Integer> roomCountMappings;
+    private static final HashMap<String, String> criteriaDefinitionMappings;
+    private static final HashMap<String, List<String>> criteriaDefinitionMultiMappings;
+    private static final HashMap<String, Integer> roomCountMappings;
     private static final List<String> pathOrder;
     private static final HashMap<Integer, String> lowFloorMappings;
 
@@ -27,51 +27,51 @@ public class NekretnineRsCriteriaTransformer {
         roomCountMappings = new HashMap<>();
         criteriaDefinitionMultiMappings = new HashMap<>();
 
-        criteriaDefinitionMappings.put(AdType.SELL, "prodaja");
-        criteriaDefinitionMappings.put(AdType.RENT, "izdavanje");
+        criteriaDefinitionMappings.put(AdType.SELL.name(), "prodaja");
+        criteriaDefinitionMappings.put(AdType.RENT.name(), "izdavanje");
 
-        criteriaDefinitionMappings.put(RealtyType.APARTMENT, "stanovi");
-        criteriaDefinitionMappings.put(RealtyType.HOUSE, "kuce");
-        criteriaDefinitionMappings.put(RealtyType.LAND, "zemljista");
+        criteriaDefinitionMappings.put(RealtyType.APARTMENT.name(), "stanovi");
+        criteriaDefinitionMappings.put(RealtyType.HOUSE.name(), "kuce");
+        criteriaDefinitionMappings.put(RealtyType.LAND.name(), "zemljista");
 
-        criteriaDefinitionMappings.put(ApartmentType.WITH_SALON, "Salonac");
-        criteriaDefinitionMappings.put(ApartmentType.DUPLEX, "dupleks");
-        criteriaDefinitionMappings.put(ApartmentType.PENTHOUSE, "penthaus");
-        criteriaDefinitionMappings.put(ApartmentType.LOFT, "Potkrovlje");
-        criteriaDefinitionMappings.put(ApartmentType.WITH_YARD, "dvorisni-stan");
+        criteriaDefinitionMappings.put(ApartmentType.WITH_SALON.name(), "Salonac");
+        criteriaDefinitionMappings.put(ApartmentType.DUPLEX.name(), "dupleks");
+        criteriaDefinitionMappings.put(ApartmentType.PENTHOUSE.name(), "penthaus");
+        criteriaDefinitionMappings.put(ApartmentType.LOFT.name(), "Potkrovlje");
+        criteriaDefinitionMappings.put(ApartmentType.WITH_YARD.name(), "dvorisni-stan");
 
-        criteriaDefinitionMappings.put(AdvertiserType.AGENCY, "Zastupnik");
-        criteriaDefinitionMappings.put(AdvertiserType.OWNER, "Vlasnik");
-        criteriaDefinitionMappings.put(AdvertiserType.INVESTOR, "Investitor");
+        criteriaDefinitionMappings.put(AdvertiserType.AGENCY.name(), "Zastupnik");
+        criteriaDefinitionMappings.put(AdvertiserType.OWNER.name(), "Vlasnik");
+        criteriaDefinitionMappings.put(AdvertiserType.INVESTOR.name(), "Investitor");
 
-        criteriaDefinitionMultiMappings.put(BuildType.OLD_BUILD, Arrays.asList("standardna", "starogradnja"));
-        criteriaDefinitionMappings.put(BuildType.NEW_BUILD, "novogradnja");
-        criteriaDefinitionMappings.put(BuildType.UNDER_CONSTRUCTION, "u-izgradnji");
+        criteriaDefinitionMultiMappings.put(BuildType.OLD_BUILD.name(), Arrays.asList("standardna", "starogradnja"));
+        criteriaDefinitionMappings.put(BuildType.NEW_BUILD.name(), "novogradnja");
+        criteriaDefinitionMappings.put(BuildType.UNDER_CONSTRUCTION.name(), "u-izgradnji");
 
-        criteriaDefinitionMappings.put(Facilities.TERRASSE, "terasa");
-        criteriaDefinitionMappings.put(Facilities.LOGGIA, "lodja");
-        criteriaDefinitionMappings.put(Facilities.BALCONY, "balkon");
-        criteriaDefinitionMappings.put(Facilities.FRENCH_BALCONY, "francuski-balkon");
-        criteriaDefinitionMappings.put(Facilities.GARAGE, "garaza");
-        criteriaDefinitionMappings.put(Facilities.PARKING, "parking");
+        criteriaDefinitionMappings.put(Facilities.TERRASSE.name(), "terasa");
+        criteriaDefinitionMappings.put(Facilities.LOGGIA.name(), "lodja");
+        criteriaDefinitionMappings.put(Facilities.BALCONY.name(), "balkon");
+        criteriaDefinitionMappings.put(Facilities.FRENCH_BALCONY.name(), "francuski-balkon");
+        criteriaDefinitionMappings.put(Facilities.GARAGE.name(), "garaza");
+        criteriaDefinitionMappings.put(Facilities.PARKING.name(), "parking");
 
-        criteriaDefinitionMultiMappings.put(HeatingType.CENTRAL, Arrays.asList("centralno-grejanje", "daljinsko-grejanje"));
-        criteriaDefinitionMappings.put(HeatingType.OWN_CENTRAL, "etazno-grejanje-grejno-telo");
-        criteriaDefinitionMappings.put(HeatingType.ELECTRIC, "struja");
-        criteriaDefinitionMappings.put(HeatingType.GAS, "gas");
+        criteriaDefinitionMultiMappings.put(HeatingType.CENTRAL.name(), Arrays.asList("centralno-grejanje", "daljinsko-grejanje"));
+        criteriaDefinitionMappings.put(HeatingType.OWN_CENTRAL.name(), "etazno-grejanje-grejno-telo");
+        criteriaDefinitionMappings.put(HeatingType.ELECTRIC.name(), "struja");
+        criteriaDefinitionMappings.put(HeatingType.GAS.name(), "gas");
 
-        roomCountMappings.put(RoomCount.RC_0, 0);
-        roomCountMappings.put(RoomCount.RC_0_5, 1);
-        roomCountMappings.put(RoomCount.RC_1_0, 1);
-        roomCountMappings.put(RoomCount.RC_1_5, 2);
-        roomCountMappings.put(RoomCount.RC_2_0, 2);
-        roomCountMappings.put(RoomCount.RC_2_5, 3);
-        roomCountMappings.put(RoomCount.RC_3_0, 3);
-        roomCountMappings.put(RoomCount.RC_3_5, 4);
-        roomCountMappings.put(RoomCount.RC_4_0, 4);
-        roomCountMappings.put(RoomCount.RC_4_5, 5);
-        roomCountMappings.put(RoomCount.RC_5_0, 5);
-        roomCountMappings.put(RoomCount.RC_5_p, 1000);
+        roomCountMappings.put(RoomCount.RC_0.name(), 0);
+        roomCountMappings.put(RoomCount.RC_0_5.name(), 1);
+        roomCountMappings.put(RoomCount.RC_1_0.name(), 1);
+        roomCountMappings.put(RoomCount.RC_1_5.name(), 2);
+        roomCountMappings.put(RoomCount.RC_2_0.name(), 2);
+        roomCountMappings.put(RoomCount.RC_2_5.name(), 3);
+        roomCountMappings.put(RoomCount.RC_3_0.name(), 3);
+        roomCountMappings.put(RoomCount.RC_3_5.name(), 4);
+        roomCountMappings.put(RoomCount.RC_4_0.name(), 4);
+        roomCountMappings.put(RoomCount.RC_4_5.name(), 5);
+        roomCountMappings.put(RoomCount.RC_5_0.name(), 5);
+        roomCountMappings.put(RoomCount.RC_5_p.name(), 1000);
 
         pathOrder = Arrays.asList("stambeni-objekti", "zemljista", "izdavanje-prodaja", "grad", "deo-grada", "tip-stanovi", "prateci-objekti-povrsine", "stanje-objekta", "vrsta-grejanja", "vrsta-goriva", "kvadratura", "cena", "na-spratu", "sobe");
 
@@ -105,7 +105,7 @@ public class NekretnineRsCriteriaTransformer {
         if (AD_TYPE.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("izdavanje-prodaja", criteriaDefinitionMappings.get(criteria.getValue())));
         } else if (REALTY_TYPE.equals(criteriaName)) {
-            if (Arrays.asList(RealtyType.APARTMENT, RealtyType.HOUSE).contains(criteria.getValue()))
+            if (Arrays.asList(RealtyType.APARTMENT.name(), RealtyType.HOUSE.name()).contains(criteria.getValue()))
                 request.updatePath(new NekretnineRsRequest.Path("stambeni-objekti", criteriaDefinitionMappings.get(criteria.getValue())));
             else
                 request.updatePath(new NekretnineRsRequest.Path("zemljista", null));
@@ -157,7 +157,7 @@ public class NekretnineRsCriteriaTransformer {
     private void transformMultivalueCriteria(MultiValueCriteria criteria, NekretnineRsRequest request) {
         String criteriaName = criteria.getName();
         if (ADVERTISER.equals(criteriaName)) {
-            List<String> mappings = (List<String>) criteria.getValues().stream().map(criteriaDefinitionMappings::get).collect(Collectors.toList());
+            List<String> mappings = criteria.getValues().stream().map(criteriaDefinitionMappings::get).collect(Collectors.toList());
             request.setAdvertiser(Optional.of(mappings));
         } else if (BUILD_TYPE.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("stanje-objekta", concatenate(getMappings(criteria.getValues()))));
