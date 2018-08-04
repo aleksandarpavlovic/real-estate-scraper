@@ -1,12 +1,13 @@
 package com.paki.dto.criteria;
 
-import com.paki.dto.CriteriaDTOType;
 import com.paki.dto.ValueDTO;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class SingleValueCriteriaDTO extends CriteriaDTO{
     private ValueDTO value;
 

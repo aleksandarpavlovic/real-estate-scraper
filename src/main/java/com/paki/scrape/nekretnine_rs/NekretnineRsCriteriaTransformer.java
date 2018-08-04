@@ -189,10 +189,12 @@ public class NekretnineRsCriteriaTransformer {
                     cities.add(city);
             }
         }
+        List<NekretnineRsRequest.Path> locationPaths = new ArrayList<>();
         if (!cities.isEmpty())
-            request.updatePath(new NekretnineRsRequest.Path("grad", concatenate(cities)));
+            locationPaths.add(new NekretnineRsRequest.Path("grad", concatenate(cities)));
         if (!sublocations.isEmpty())
-            request.updatePath(new NekretnineRsRequest.Path("deo-grada", concatenate(sublocations)));
+            locationPaths.add(new NekretnineRsRequest.Path("deo-grada", concatenate(sublocations)));
+        request.getDivergentPaths().add(new NekretnineRsRequest.DivergentPaths(locationPaths));
     }
 
     private List<String> listIntersection(List<String> first, List<String> second) {

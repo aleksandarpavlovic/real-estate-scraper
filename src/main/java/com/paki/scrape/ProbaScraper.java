@@ -1,17 +1,20 @@
 package com.paki.scrape;
 
+import com.google.gson.*;
+import com.paki.dto.realties.RealtiesDTOTransformer;
+import com.paki.dto.realties.RealtyDTO;
 import com.paki.realties.Realty;
 import com.paki.realties.enums.*;
+import com.paki.realties.locations.LocationsGenerator;
 import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
 import com.paki.scrape.halooglasi.HaloOglasiScraper;
 import com.paki.scrape.nekretnine_rs.NekretnineRsScraper;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.reflect.Type;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProbaScraper {
 
@@ -27,9 +30,34 @@ public class ProbaScraper {
             List<Realty> hoResults = hoScraper.scrapeNext();
             List<Realty> nrsResults = nrsScraper.scrapeNext();
             List<Realty> nrsResults2 = nrsScraper.scrapeNext();
-            hoResults.forEach(System.out::println);
-            nrsResults.forEach(System.out::println);
-            nrsResults2.forEach(System.out::println);
+//            hoResults.forEach(System.out::println);
+//            nrsResults.forEach(System.out::println);
+//            nrsResults2.forEach(System.out::println);
+
+
+
+            class CollectionAdapter implements JsonSerializer<Collection<?>> {
+                @Override
+                public JsonElement serialize(Collection<?> src, Type typeOfSrc, JsonSerializationContext context) {
+                    if (src == null || src.isEmpty()) // exclusion is made here
+                        return null;
+
+                    JsonArray array = new JsonArray();
+
+                    for (Object child : src) {
+                        JsonElement element = context.serialize(child);
+                        array.add(element);
+                    }
+
+                    return array;
+                }
+            }
+
+            RealtiesDTOTransformer transformer = new RealtiesDTOTransformer();
+            List<RealtyDTO> dtos = hoResults.stream().map(transformer::transformRealtyToDTO).collect(Collectors.toList());
+            Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Collection.class, new CollectionAdapter()).create();
+            List<String> jsons = dtos.stream().map(gson::toJson).collect(Collectors.toList());
+            jsons.forEach(System.out::println);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -46,6 +74,8 @@ public class ProbaScraper {
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 123, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5.name(), RoomCount.RC_5_0.name()));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.FLOOR, CriteriaDefinitions.HIGH_GROUND_FLOOR, 1));
+        criteriaList.add(new LocationCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList(LocationsGenerator.getLocations().get(0), LocationsGenerator.getLocations().get(2), LocationsGenerator.getLocations().get(1).getSublocations().get(0)))));
+
         return criteriaList;
     }
 }

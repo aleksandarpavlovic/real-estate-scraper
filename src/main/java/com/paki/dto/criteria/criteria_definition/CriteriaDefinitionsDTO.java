@@ -1,4 +1,4 @@
-package com.paki.dto.criteria_definition;
+package com.paki.dto.criteria.criteria_definition;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

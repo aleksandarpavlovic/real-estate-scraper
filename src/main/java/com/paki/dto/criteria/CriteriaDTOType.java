@@ -1,4 +1,4 @@
-package com.paki.dto;
+package com.paki.dto.criteria;
 
 public enum CriteriaDTOType {
     SINGLE_SELECT,

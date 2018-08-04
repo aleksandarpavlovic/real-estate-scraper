@@ -1,10 +1,10 @@
-package com.paki.dto;
+package com.paki.dto.criteria;
 
 import com.google.gson.*;
-import com.paki.dto.criteria.*;
-import com.paki.dto.criteria_definition.CriteriaDefinitionDTO;
-import com.paki.dto.criteria_definition.CriteriaDefinitionsDTO;
-import com.paki.dto.criteria_definition.LocationCriteriaDefinitionDTO;
+import com.paki.dto.ValueDTO;
+import com.paki.dto.criteria.criteria_definition.CriteriaDefinitionDTO;
+import com.paki.dto.criteria.criteria_definition.CriteriaDefinitionsDTO;
+import com.paki.dto.criteria.criteria_definition.LocationCriteriaDefinitionDTO;
 import com.paki.realties.enums.*;
 import com.paki.realties.locations.Location;
 import com.paki.realties.locations.LocationsGenerator;
@@ -15,7 +15,7 @@ import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DTOTransformer {
+public class CriteriaDTOTransformer {
     private static String TIP_OGLASA = "Tip oglasa";
     private static String TIP_NEKRETNINE = "Tip nekretnine";
     private static String OGLASIVAC = "Oglašivač";
@@ -205,7 +205,7 @@ public class DTOTransformer {
     private List<ValueDTO> transformToValueDTOs(List<String> values) {
         if (values == null)
             return Collections.emptyList();
-        return values.stream().map(value -> new ValueDTO(value.toString(), criteria2dtoMappings.get(value))).collect(Collectors.toList());
+        return values.stream().map(value -> new ValueDTO(value, criteria2dtoMappings.get(value))).collect(Collectors.toList());
     }
 
     private ValueDTO transformToValueDTO(Object value) {
@@ -251,8 +251,8 @@ public class DTOTransformer {
     }
 
     public static void main(String[] args) {
-        DTOTransformer dtoTransformer = new DTOTransformer();
-        CriteriaDefinitionsDTO dto = dtoTransformer.transformCriteriaDefinitionsToDTO(CriteriaDefinitions.apartmentCriteriaDefinitions);
+        CriteriaDTOTransformer criteriaDtoTransformer = new CriteriaDTOTransformer();
+        CriteriaDefinitionsDTO dto = criteriaDtoTransformer.transformCriteriaDefinitionsToDTO(CriteriaDefinitions.apartmentCriteriaDefinitions);
 
         class CollectionAdapter implements JsonSerializer<Collection<?>> {
             @Override
@@ -275,7 +275,7 @@ public class DTOTransformer {
         String json = gson.toJson(dto);
         System.out.println(json);
         List<BaseCriteria> criteriaList = testCriteria();
-        List<CriteriaDTO> criteriaDTOS = criteriaList.stream().map(dtoTransformer::transformCriteriaToDTO).collect(Collectors.toList());
+        List<CriteriaDTO> criteriaDTOS = criteriaList.stream().map(criteriaDtoTransformer::transformCriteriaToDTO).collect(Collectors.toList());
         json = gson.toJson(criteriaDTOS);
         System.out.println(json);
     }
