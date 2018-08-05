@@ -10,7 +10,7 @@ import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
-import com.paki.scrape.scraper.nekretnine_rs.NekretnineRsScraper;
+import com.paki.scrape.scraper.nekretniners.NekretnineRsScraper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

@@ -1,4 +1,4 @@
-package com.paki.scrape.scraper.nekretnine_rs;
+package com.paki.scrape.scraper.nekretniners;
 
 import java.util.HashMap;
 import java.util.Map;

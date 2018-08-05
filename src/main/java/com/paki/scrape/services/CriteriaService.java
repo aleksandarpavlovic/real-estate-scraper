@@ -6,12 +6,14 @@ import com.paki.scrape.criteria.BaseCriteria;
 import com.paki.scrape.criteria.LocationCriteria;
 import com.paki.scrape.criteria.SingleValueCriteria;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
+import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+@Service
 public class CriteriaService {
 
     /**

@@ -20,6 +20,8 @@ public abstract class Realty {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+    private Long scrapeRunNumber;
+
     @Enumerated(EnumType.STRING)
     private AdSource source;
     private String externalId;

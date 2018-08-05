@@ -1,6 +1,6 @@
 package com.paki.scrape.entities;
 
-import com.paki.scrape.top_ad.TopAdCondition;
+import com.paki.scrape.topad.TopAdCondition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

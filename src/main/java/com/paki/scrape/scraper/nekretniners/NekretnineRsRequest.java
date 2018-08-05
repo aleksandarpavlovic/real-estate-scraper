@@ -1,4 +1,4 @@
-package com.paki.scrape.scraper.nekretnine_rs;
+package com.paki.scrape.scraper.nekretniners;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

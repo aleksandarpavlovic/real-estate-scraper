@@ -1,4 +1,4 @@
-package com.paki.scrape.top_ad;
+package com.paki.scrape.topad;
 
 import java.util.Collections;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.paki.scrape.top_ad;
+package com.paki.scrape.topad;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,4 +1,4 @@
-package com.paki.dto.criteria.criteria_definition;
+package com.paki.dto.criteria.definition;
 
 import com.paki.dto.ValueDTO;
 import com.paki.dto.criteria.CriteriaDTOType;

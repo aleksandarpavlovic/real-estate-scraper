@@ -1,4 +1,4 @@
-package com.paki.scrape.scraper.nekretnine_rs;
+package com.paki.scrape.scraper.nekretniners;
 
 import com.paki.realties.Apartment;
 import com.paki.realties.House;

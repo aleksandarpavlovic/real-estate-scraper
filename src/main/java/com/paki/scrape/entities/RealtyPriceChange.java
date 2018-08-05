@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class RealtyPriceChange {
     @Id()
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -21,14 +22,17 @@ public class RealtyPriceChange {
     @ManyToOne
     private Realty realty;
 
+    private Long changeRunNumber;
+
     private LocalDateTime changeDate;
 
     @Column(precision = 20, scale = 2)
     private BigDecimal delta;
 
     @Builder
-    public RealtyPriceChange(Realty realty, LocalDateTime changeDate, BigDecimal delta) {
+    public RealtyPriceChange(Realty realty, Long changeRunNumber, LocalDateTime changeDate, BigDecimal delta) {
         this.realty = realty;
+        this.changeRunNumber = changeRunNumber;
         this.changeDate = changeDate;
         this.delta = delta;
     }

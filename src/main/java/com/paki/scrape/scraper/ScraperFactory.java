@@ -3,8 +3,10 @@ package com.paki.scrape.scraper;
 import com.paki.scrape.entities.ScraperType;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
-import com.paki.scrape.scraper.nekretnine_rs.NekretnineRsScraper;
+import com.paki.scrape.scraper.nekretniners.NekretnineRsScraper;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ScraperFactory {
     public Scraper createScraper(ScraperType scraperType, Search search) {
         switch (scraperType) {

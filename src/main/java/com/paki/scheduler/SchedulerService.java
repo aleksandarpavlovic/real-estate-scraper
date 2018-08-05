@@ -1,25 +1,40 @@
 package com.paki.scheduler;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+@Service
 public class SchedulerService {
-    private final ScheduledThreadPoolExecutor scheduler;
-    ScheduledFuture scheduledJob = null;
-    Runnable job;
+    public static final int MIN_JOB_PERIOD = 15;
 
-    public SchedulerService(Runnable job) {
+    private ScheduledThreadPoolExecutor scheduler;
+    private ScheduledFuture scheduledJob = null;
+    private Runnable job = null;
+
+    @Autowired
+    public SchedulerService() {
         scheduler = new ScheduledThreadPoolExecutor(1);
         scheduler.setRemoveOnCancelPolicy(true);
+    }
+
+    public void schedule(Runnable job, int periodInMinutes) {
+        if (this.job != null) {
+            if (this.scheduledJob != null)
+                this.scheduledJob.cancel(false);
+        }
         this.job = wrappedJob(job);
+        schedule(periodInMinutes);
     }
 
     public void schedule(int periodInMinutes) {
         if (scheduledJob != null) {
             scheduledJob.cancel(false);
         }
-        scheduledJob = scheduler.scheduleWithFixedDelay(job, 0, periodInMinutes, TimeUnit.MINUTES);
+        scheduledJob = scheduler.scheduleWithFixedDelay(job, 0, Math.max(periodInMinutes, MIN_JOB_PERIOD), TimeUnit.MINUTES);
     }
 
     public void unschedule() {
