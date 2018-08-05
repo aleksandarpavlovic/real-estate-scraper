@@ -1,15 +1,16 @@
-package com.paki.scrape;
+package com.paki.scrape.scraper;
 
 import com.google.gson.*;
-import com.paki.dto.realties.RealtiesDTOTransformer;
 import com.paki.dto.realties.RealtyDTO;
+import com.paki.dto.transformers.RealtiesDTOTransformer;
 import com.paki.realties.Realty;
 import com.paki.realties.enums.*;
 import com.paki.realties.locations.LocationsGenerator;
 import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
-import com.paki.scrape.halooglasi.HaloOglasiScraper;
-import com.paki.scrape.nekretnine_rs.NekretnineRsScraper;
+import com.paki.scrape.entities.Search;
+import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
+import com.paki.scrape.scraper.nekretnine_rs.NekretnineRsScraper;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -20,7 +21,7 @@ public class ProbaScraper {
 
     public static void main(String[] args) {
         ProbaScraper proba = new ProbaScraper();
-        proba.scrape(new Search(testCriteria()));
+        proba.scrape(new Search(RealtyType.APARTMENT, testCriteria()));
     }
 
     private void scrape(Search search) {

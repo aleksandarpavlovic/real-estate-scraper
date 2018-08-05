@@ -1,4 +1,4 @@
-package com.paki.scrape;
+package com.paki.scrape.entities;
 
 public enum ScraperType {
     HALO_OGLASI,

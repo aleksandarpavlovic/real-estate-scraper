@@ -1,7 +1,9 @@
-package com.paki.scrape;
+package com.paki.scrape.scraper;
 
-import com.paki.scrape.halooglasi.HaloOglasiScraper;
-import com.paki.scrape.nekretnine_rs.NekretnineRsScraper;
+import com.paki.scrape.entities.ScraperType;
+import com.paki.scrape.entities.Search;
+import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
+import com.paki.scrape.scraper.nekretnine_rs.NekretnineRsScraper;
 
 public class ScraperFactory {
     public Scraper createScraper(ScraperType scraperType, Search search) {

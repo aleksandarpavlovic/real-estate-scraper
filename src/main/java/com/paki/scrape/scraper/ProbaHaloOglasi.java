@@ -1,9 +1,10 @@
-package com.paki.scrape;
+package com.paki.scrape.scraper;
 
 import com.paki.realties.enums.*;
 import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
-import com.paki.scrape.halooglasi.HaloOglasiScraper;
+import com.paki.scrape.entities.Search;
+import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -13,7 +14,7 @@ import java.util.Set;
 public class ProbaHaloOglasi {
 
     public static void main(String[] args) {
-        HaloOglasiScraper scraper = new HaloOglasiScraper(new Search(testCriteria()));
+        HaloOglasiScraper scraper = new HaloOglasiScraper(new Search(RealtyType.APARTMENT, testCriteria()));
         try {
             scraper.scrapeNext().stream().forEach(System.out::println);
         } catch (IOException e) {

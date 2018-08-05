@@ -1,4 +1,4 @@
-package com.paki.scrape;
+package com.paki.scrape.entities;
 
 import com.paki.scrape.top_ad.TopAdCondition;
 import lombok.AllArgsConstructor;

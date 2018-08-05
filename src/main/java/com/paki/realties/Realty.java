@@ -43,7 +43,8 @@ public abstract class Realty {
     @Enumerated(EnumType.STRING)
     private RegistrationType registered;
 
-    public Realty(String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+    public Realty(AdSource source, String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+        this.source = source;
         this.externalId = externalId;
         this.title = title;
         this.description = description;

@@ -1,4 +1,4 @@
-package com.paki.scrape;
+package com.paki.scrape.scraper;
 
 import com.paki.realties.Realty;
 import com.paki.realties.enums.AdType;
@@ -9,6 +9,7 @@ import com.paki.scrape.criteria.BaseCriteria;
 import com.paki.scrape.criteria.RangeWithUnitCriteria;
 import com.paki.scrape.criteria.SingleValueCriteria;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
+import com.paki.scrape.entities.Search;
 
 import java.io.IOException;
 import java.math.BigDecimal;

@@ -1,6 +1,7 @@
-package com.paki.dto.realties;
+package com.paki.dto.transformers;
 
 import com.paki.dto.ValueDTO;
+import com.paki.dto.realties.*;
 import com.paki.realties.*;
 import com.paki.realties.enums.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;

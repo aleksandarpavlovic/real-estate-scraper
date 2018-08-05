@@ -1,7 +1,9 @@
-package com.paki.scrape.top_ad;
+package com.paki.scrape.services;
 
 import com.paki.realties.Realty;
-import com.paki.scrape.SearchProfile;
+import com.paki.scrape.entities.SearchProfile;
+import com.paki.scrape.top_ad.TopAdCondition;
+import com.paki.scrape.top_ad.TopAdDefinition;
 
 import java.util.Collections;
 import java.util.List;

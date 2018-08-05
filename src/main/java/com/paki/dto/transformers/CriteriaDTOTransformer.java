@@ -1,7 +1,8 @@
-package com.paki.dto.criteria;
+package com.paki.dto.transformers;
 
 import com.google.gson.*;
 import com.paki.dto.ValueDTO;
+import com.paki.dto.criteria.*;
 import com.paki.dto.criteria.criteria_definition.CriteriaDefinitionDTO;
 import com.paki.dto.criteria.criteria_definition.CriteriaDefinitionsDTO;
 import com.paki.dto.criteria.criteria_definition.LocationCriteriaDefinitionDTO;
