@@ -17,6 +17,12 @@ import java.util.Set;
 @Service
 public class CriteriaService {
 
+    public void normalizeLocationCriteria(Collection<BaseCriteria> criteria) {
+        criteria.stream()
+                .filter(c -> c instanceof LocationCriteria)
+                .map(c -> (LocationCriteria) c)
+                .forEach(this::normalizeLocationCriteria);
+    }
     /**
      * replaces group of locations with their parent if all children of the parent are in criteria
      * @param criteria

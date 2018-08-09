@@ -36,4 +36,9 @@ public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty
 
     @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs WHERE rs.search.id = :searchid AND rs.realty.id = r.id")
     Page<T> findBySearchId(@Param("searchid") Long searchId, Pageable pageRequest);
+
+    @Query("SELECT r.id FROM #{#entityName} r WHERE 0 = (SELECT COUNT(*) FROM RealtySearchRelation rs WHERE rs.realty.id = r.id)")
+    List<Long> findIdsOfHangingRealties();
+
+    void deleteByIdIn(List<Long> ids);
 }

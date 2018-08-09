@@ -19,6 +19,7 @@ public class RealtyPriceChange {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "realtyId")
     private Realty realty;
 
     private Long changeRunNumber;
