@@ -38,7 +38,7 @@ public class ProbaHaloOglasi {
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT.name()));
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REGISTRATION, RegistrationType.REGISTERED.name()));
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.APARTMENT_TYPE, ApartmentType.DUPLEX.name()));
-        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.HEATING_TYPE, Arrays.asList(HeatingType.GAS.name())));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.HEATING_TYPE, new HashSet<>(Arrays.asList(HeatingType.GAS.name()))));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.PRICE, 12, 123123));
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 123, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5.name(), RoomCount.RC_5_0.name()));

@@ -16,4 +16,17 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
         this.from = from;
         this.to = to;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        if (!(obj instanceof RangeCriteria))
+            return false;
+
+        RangeCriteria other = (RangeCriteria) obj;
+
+        return this.getFrom().equals(other.getFrom()) && this.getTo().equals(other.getTo());
+    }
 }

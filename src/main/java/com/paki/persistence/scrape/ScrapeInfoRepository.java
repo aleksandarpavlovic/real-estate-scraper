@@ -1,4 +1,4 @@
-package com.paki.persistence;
+package com.paki.persistence.scrape;
 
 import com.paki.scrape.entities.ScrapeInfo;
 import org.springframework.data.jpa.repository.JpaRepository;

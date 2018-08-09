@@ -1,7 +1,9 @@
-package com.paki.persistence;
+package com.paki.persistence.realties;
 
 import com.paki.realties.Realty;
 import com.paki.realties.enums.AdSource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -28,4 +30,10 @@ public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty
     List<BigDecimal> findAllPrices();
 
     List<T> findByPriceLessThan(BigDecimal price);
+
+    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs WHERE rs.search.id = :searchid AND rs.realty.id = r.id")
+    List<T> findBySearchId(@Param("searchid") Long searchId);
+
+    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs WHERE rs.search.id = :searchid AND rs.realty.id = r.id")
+    Page<T> findBySearchId(@Param("searchid") Long searchId, Pageable pageRequest);
 }

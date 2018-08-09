@@ -17,4 +17,16 @@ public class SingleValueCriteria extends BaseCriteria {
         super(name);
         this.value = value;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+        if (!(obj instanceof SingleValueCriteria))
+            return false;
+
+        SingleValueCriteria other = (SingleValueCriteria) obj;
+
+        return other.getValue().equals(this.getValue());
+    }
 }

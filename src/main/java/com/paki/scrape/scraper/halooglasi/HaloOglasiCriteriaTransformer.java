@@ -1,7 +1,6 @@
 package com.paki.scrape.scraper.halooglasi;
 
 import com.paki.realties.enums.*;
-import com.paki.realties.locations.Location;
 import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
 
@@ -224,8 +223,8 @@ public class HaloOglasiCriteriaTransformer {
 
         private void transformLocationCriteria(LocationCriteria criteria, HaloOglasiRequest request) {
             List<String> locations = new LinkedList<>();
-            for (Location location: criteria.getLocations()) {
-                List<String> haloOglasiLocation = HaloOglasiLocationMapper.getLocation(location.getId());
+            for (String locationId: criteria.getLocations()) {
+                List<String> haloOglasiLocation = HaloOglasiLocationMapper.getLocation(locationId);
                 if (haloOglasiLocation != null)
                     locations.addAll(haloOglasiLocation);
             }
@@ -238,7 +237,7 @@ public class HaloOglasiCriteriaTransformer {
                 request.updateFieldOrQueries(new HaloOglasiRequest.FieldORQuery(criteriaDefinitionMappings.get(criteria.getName()), getMappings(criteria.getValues())));
         }
 
-        private List<String> getMappings(List<String> values) {
+        private List<String> getMappings(Set<String> values) {
             List<String> mappings = new ArrayList<>();
             for (Object value: values) {
                 String mapping = criteriaDefinitionMappings.get(value);

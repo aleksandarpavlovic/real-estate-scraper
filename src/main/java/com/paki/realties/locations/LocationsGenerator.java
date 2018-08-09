@@ -1,14 +1,28 @@
 package com.paki.realties.locations;
 
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 public class LocationsGenerator {
 
     private static final List<Location> locations;
+    private static final Map<String, Location> locationsMap;
 
     static {
         locations = generate();
+        locationsMap = toMap(locations);
+    }
+
+    private static Map<String, Location> toMap(List<Location> locations) {
+        Map<String, Location> map = new HashMap<>();
+        for (Location location: locations) {
+            map.put(location.getId(), location);
+            if (location.getSublocations() != null && !location.getSublocations().isEmpty())
+                map.putAll(toMap(location.getSublocations()));
+        }
+        return map;
     }
 
     private static List<Location> generate() {
@@ -527,4 +541,5 @@ public class LocationsGenerator {
     public static List<Location> getLocations() {
         return locations;
     }
+    public static Location getLocation(String id) { return locationsMap.get(id); }
 }

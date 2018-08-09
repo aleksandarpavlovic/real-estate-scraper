@@ -14,7 +14,7 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"externalId", "source"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"externalId"}))
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Realty {
     @Id

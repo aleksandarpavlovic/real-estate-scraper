@@ -1,24 +1,40 @@
 package com.paki.scrape.criteria;
 
-import com.paki.realties.locations.Location;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.ElementCollection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
 public class LocationCriteria extends BaseCriteria {
-    @ManyToMany
-    private Set<Location> locations;
+    @ElementCollection
+    private Set<String> locations;
 
-    public LocationCriteria(String name, Set<Location> locations) {
+    public LocationCriteria(String name, Set<String> locations) {
         super(name);
         this.locations = locations;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        if (!(obj instanceof LocationCriteria))
+            return false;
+
+        LocationCriteria other = (LocationCriteria) obj;
+
+        if (this.getLocations().size() != other.getLocations().size())
+            return false;
+
+        Set<String> vals = new HashSet<>(this.getLocations());
+        vals.removeAll(other.getLocations());
+        return vals.isEmpty();
     }
 }

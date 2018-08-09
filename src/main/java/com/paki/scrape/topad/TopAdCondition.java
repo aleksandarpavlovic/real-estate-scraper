@@ -1,5 +1,6 @@
 package com.paki.scrape.topad;
 
+import com.paki.scrape.entities.SearchProfile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +16,11 @@ public class TopAdCondition {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "searchProfileId")
+    private SearchProfile searchProfile;
+
     @ManyToOne
     private TopAdDefinition definition;
 

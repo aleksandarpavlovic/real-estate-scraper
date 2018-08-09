@@ -1,6 +1,6 @@
 package com.paki;
 
-import com.paki.persistence.ApartmentRepository;
+import com.paki.persistence.realties.ApartmentRepository;
 import com.paki.realties.Apartment;
 import com.paki.realties.enums.AdSource;
 import org.springframework.boot.CommandLineRunner;

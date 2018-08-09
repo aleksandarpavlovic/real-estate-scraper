@@ -1,11 +1,13 @@
 package com.paki.scrape.services;
 
-import com.paki.persistence.ApartmentRepository;
-import com.paki.persistence.HouseRepository;
-import com.paki.persistence.LandRepository;
-import com.paki.persistence.RealtyRepository;
+import com.paki.persistence.realties.ApartmentRepository;
+import com.paki.persistence.realties.HouseRepository;
+import com.paki.persistence.realties.LandRepository;
+import com.paki.persistence.realties.RealtyRepository;
 import com.paki.realties.Realty;
+import com.paki.realties.enums.AreaMeasurementUnit;
 import com.paki.realties.enums.RealtyType;
+import com.paki.realties.util.UnitConversionUtil;
 import com.paki.scrape.entities.ScrapeInfo;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.entities.SearchProfile;
@@ -16,10 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.math.RoundingMode;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +29,29 @@ public class TopAdService {
     private HouseRepository houseRepository;
     private LandRepository landRepository;
     private CriteriaService criteriaService;
+
+    private static final Comparator<Realty> PRICE_PER_AREA_COMPARATOR;
+
+    static {
+        PRICE_PER_AREA_COMPARATOR = new Comparator<Realty>() {
+            @Override
+            public int compare(Realty r1, Realty r2) {
+                BigDecimal r1AreaM2 = UnitConversionUtil.convertArea(r1.getSurfaceArea(), r1.getAreaMeasurementUnit(), AreaMeasurementUnit.SQUARE_METER);
+                BigDecimal r2AreaM2 = UnitConversionUtil.convertArea(r2.getSurfaceArea(), r2.getAreaMeasurementUnit(), AreaMeasurementUnit.SQUARE_METER);
+                if (r1AreaM2 == BigDecimal.ZERO && r2AreaM2 == BigDecimal.ZERO)
+                    return r1.getPrice().compareTo(r2.getPrice());
+                else if (r1AreaM2 == BigDecimal.ZERO)
+                    return 1;
+                else if (r2AreaM2 == BigDecimal.ZERO)
+                    return -1;
+                else {
+                    BigDecimal r1PricePerM2 = r1.getPrice().divide(r1AreaM2, 2, RoundingMode.CEILING);
+                    BigDecimal r2PricePerM2 = r2.getPrice().divide(r2AreaM2, 2, RoundingMode.CEILING);
+                    return r1PricePerM2.compareTo(r2PricePerM2);
+                }
+            }
+        };
+    }
 
     @Autowired
     public TopAdService(ApartmentRepository apartmentRepository
@@ -42,19 +65,9 @@ public class TopAdService {
     }
 
     public Optional<Map<TopAdCondition, List<? extends Realty>>> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile) {
-        List<TopAdCondition> conditions = searchProfile.getTopAdConditions();
+        Set<TopAdCondition> conditions = searchProfile.getTopAdConditions();
         if (conditions == null || conditions.isEmpty())
             return Optional.empty();
-
-//        Map<TopAdCondition, List<Realty>> resultMap = null;
-//        for (TopAdCondition topAdCondition: searchProfile.getTopAdConditions()) {
-//            List<Realty> realties = getTopAds(searchProfile.getName(), topAdCondition);
-//            if (!realties.isEmpty()) {
-//                if (resultMap == null)
-//                    resultMap = new HashMap<>();
-//                resultMap.put(topAdCondition, realties);
-//            }
-//        }
 
         Map<TopAdCondition, List<? extends Realty>> resultMap = searchProfile.getTopAdConditions().stream().collect(Collectors.toMap(condition -> condition, condition -> getTopAds(scrapeInfo, searchProfile, condition)));
         if (resultMap.isEmpty())
@@ -110,7 +123,14 @@ public class TopAdService {
     }
 
     private List<? extends Realty> fetchLatestWithTopPricePerArea(ScrapeInfo scrapeInfo, SearchProfile searchProfile, String conditionParameter) {
-        return Collections.emptyList();
+        RealtyRepository realtyRepository = inferRealtyRepository(searchProfile.getSearch());
+
+        Integer percent = Integer.valueOf(conditionParameter);
+        List<Realty> realties = realtyRepository.findBySearchId(searchProfile.getSearch().getId());
+        realties.sort(PRICE_PER_AREA_COMPARATOR);
+
+        int thresholdIndex = (int)((double)realties.size() * percent) / 100;
+        return realties.stream().limit(thresholdIndex).filter(realty -> realty.getScrapeRunNumber() == scrapeInfo.getLastRunNumber()).collect(Collectors.toList());
     }
 
     private RealtyRepository<? extends Realty> inferRealtyRepository(Search search) {

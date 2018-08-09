@@ -22,8 +22,11 @@ public class Search {
     @Enumerated(EnumType.STRING)
     RealtyType realtyType;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "searchId")
+    @OneToOne
+    @JoinColumn(name = "searchProfileId")
+    SearchProfile searchProfile;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "search")
     Set<BaseCriteria> criteria;
 
     @Builder

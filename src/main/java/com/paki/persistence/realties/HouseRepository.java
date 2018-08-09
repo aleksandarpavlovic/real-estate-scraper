@@ -1,4 +1,4 @@
-package com.paki.persistence;
+package com.paki.persistence.realties;
 
 import com.paki.realties.House;
 import org.springframework.stereotype.Repository;

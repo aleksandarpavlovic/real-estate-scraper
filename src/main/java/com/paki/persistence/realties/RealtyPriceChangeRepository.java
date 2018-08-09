@@ -1,6 +1,6 @@
-package com.paki.persistence;
+package com.paki.persistence.realties;
 
-import com.paki.scrape.entities.RealtyPriceChange;
+import com.paki.realties.RealtyPriceChange;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

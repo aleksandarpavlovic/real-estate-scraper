@@ -2,6 +2,7 @@ package com.paki.scrape.services;
 
 import com.paki.realties.enums.RealtyType;
 import com.paki.realties.locations.Location;
+import com.paki.realties.locations.LocationsGenerator;
 import com.paki.scrape.criteria.BaseCriteria;
 import com.paki.scrape.criteria.LocationCriteria;
 import com.paki.scrape.criteria.SingleValueCriteria;
@@ -22,7 +23,8 @@ public class CriteriaService {
      */
     public void normalizeLocationCriteria(LocationCriteria criteria) {
         Set<Location> locationsToRemove = new HashSet<>();
-        for (Location location: criteria.getLocations()) {
+        for (String locationId: criteria.getLocations()) {
+            Location location = LocationsGenerator.getLocation(locationId);
             if (criteria.getLocations().containsAll(location.getSublocations())) {
                 locationsToRemove.addAll(location.getSublocations());
             }

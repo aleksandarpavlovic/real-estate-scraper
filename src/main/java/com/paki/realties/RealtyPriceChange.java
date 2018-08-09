@@ -1,6 +1,5 @@
-package com.paki.scrape.entities;
+package com.paki.realties;
 
-import com.paki.realties.Realty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

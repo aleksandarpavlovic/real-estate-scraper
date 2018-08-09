@@ -5,14 +5,19 @@ import com.paki.dto.realties.*;
 import com.paki.realties.*;
 import com.paki.realties.enums.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
+import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+@Component
 public class RealtiesDTOTransformer {
 
     private static Map<Object, String> realty2dtoMappings = new HashMap<>();
@@ -75,6 +80,12 @@ public class RealtiesDTOTransformer {
         addToRealtyMappings(AreaMeasurementUnit.SQUARE_METER, "m2");
         addToRealtyMappings(AreaMeasurementUnit.ARE, "ar");
         addToRealtyMappings(AreaMeasurementUnit.HECTARE, "hektar");
+    }
+
+    public List<? extends RealtyDTO> transformRealtiesToDTO(Collection<? extends Realty> realties) {
+        return realties.stream()
+                .map(this::transformRealtyToDTO)
+                .collect(Collectors.toList());
     }
 
     public RealtyDTO transformRealtyToDTO(Realty realty) {

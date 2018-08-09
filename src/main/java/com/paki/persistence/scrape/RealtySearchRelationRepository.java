@@ -1,4 +1,4 @@
-package com.paki.persistence;
+package com.paki.persistence.scrape;
 
 import com.paki.scrape.entities.RealtySearchRelation;
 import com.paki.scrape.entities.RealtySearchRelationPK;

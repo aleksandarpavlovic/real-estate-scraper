@@ -1,7 +1,6 @@
 package com.paki.scrape.scraper.nekretniners;
 
 import com.paki.realties.enums.*;
-import com.paki.realties.locations.Location;
 import com.paki.realties.util.UnitConversionUtil;
 import com.paki.scrape.criteria.*;
 
@@ -162,8 +161,8 @@ public class NekretnineRsCriteriaTransformer {
         } else if (BUILD_TYPE.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("stanje-objekta", concatenate(getMappings(criteria.getValues()))));
         } else if (HEATING_TYPE.equals(criteriaName)) {
-            NekretnineRsRequest.Path heatingTypePath = new NekretnineRsRequest.Path("vrsta-grejanja", concatenate(getMappings(listIntersection(criteria.getValues(), Arrays.asList(HeatingType.CENTRAL.name(), HeatingType.OWN_CENTRAL.name())))));
-            NekretnineRsRequest.Path fuelTypePath = new NekretnineRsRequest.Path("vrsta-goriva", concatenate(getMappings(listIntersection(criteria.getValues(), Arrays.asList(HeatingType.ELECTRIC.name(), HeatingType.GAS.name())))));
+            NekretnineRsRequest.Path heatingTypePath = new NekretnineRsRequest.Path("vrsta-grejanja", concatenate(getMappings(intersection(criteria.getValues(), Arrays.asList(HeatingType.CENTRAL.name(), HeatingType.OWN_CENTRAL.name())))));
+            NekretnineRsRequest.Path fuelTypePath = new NekretnineRsRequest.Path("vrsta-goriva", concatenate(getMappings(intersection(criteria.getValues(), Arrays.asList(HeatingType.ELECTRIC.name(), HeatingType.GAS.name())))));
             if (heatingTypePath.getValue().isEmpty()) {
                 request.updatePath(fuelTypePath);
             } else if (fuelTypePath.getValue().isEmpty()) {
@@ -179,12 +178,12 @@ public class NekretnineRsCriteriaTransformer {
     public void transformLocationCriteria(LocationCriteria criteria, NekretnineRsRequest request) {
         List<String> sublocations = new LinkedList<>();
         List<String> cities = new LinkedList<>();
-        for (Location location: criteria.getLocations()) {
-            String sublocation = NekretnineRsLocationMapper.getLocation(location.getId());
+        for (String locationId: criteria.getLocations()) {
+            String sublocation = NekretnineRsLocationMapper.getLocation(locationId);
             if (sublocation != null)
                 sublocations.add(sublocation);
             else {
-                String city = NekretnineRsLocationMapper.getCity(location.getId());
+                String city = NekretnineRsLocationMapper.getCity(locationId);
                 if (city != null)
                     cities.add(city);
             }
@@ -197,8 +196,8 @@ public class NekretnineRsCriteriaTransformer {
         request.getDivergentPaths().add(new NekretnineRsRequest.DivergentPaths(locationPaths));
     }
 
-    private List<String> listIntersection(List<String> first, List<String> second) {
-        List<String> firstCopy = new ArrayList<>(first);
+    private Set<String> intersection(Collection<String> first, Collection<String> second) {
+        Set<String> firstCopy = new HashSet<>(first);
         firstCopy.retainAll(second);
         return firstCopy;
     }
@@ -211,7 +210,7 @@ public class NekretnineRsCriteriaTransformer {
         return value1.toString() + VALUE_SEPARATOR + value2.toString();
     }
 
-    private List<String> getMappings(List<String> values) {
+    private List<String> getMappings(Set<String> values) {
         List<String> mappings = new ArrayList<>();
         for (Object value: values) {
             String mapping = criteriaDefinitionMappings.get(value);
