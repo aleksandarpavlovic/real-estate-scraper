@@ -31,4 +31,9 @@ public class TopAdParameterizedCondition extends TopAdCondition {
         TopAdParameterizedCondition other = (TopAdParameterizedCondition) obj;
         return other.getParameter().equals(this.getParameter());
     }
+
+    @Override
+    public String toString() {
+        return super.toString().replaceFirst("\\?.+?\\?", parameter);
+    }
 }

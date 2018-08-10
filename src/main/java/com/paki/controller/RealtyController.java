@@ -22,6 +22,13 @@ public class RealtyController {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
 
+    private static final String PAGE = "page";
+    private static final String SORT = "sort";
+    private static final String SORT_PRICE_ASC = "price-asc";
+    private static final String SORT_PRICE_DESC = "price-desc";
+    private static final String SORT_DATE_ASC = "date-asc";
+    private static final String SORT_DATE_DESC = "date-desc";
+
     private final RealtyService realtyService;
     private final RealtiesDTOTransformer dtoTransformer;
 
@@ -33,8 +40,8 @@ public class RealtyController {
 
     @GetMapping(value = "/search/{searchId}")
     List<? extends RealtyDTO> getRealties(@PathVariable("searchId") Long searchId,
-                                          @RequestParam(name = "sort", defaultValue = "price-asc", required = false) String sort,
-                                          @RequestParam(name = "page", defaultValue = "0", required = false) int page,
+                                          @RequestParam(name = SORT, defaultValue = SORT_PRICE_ASC, required = false) String sort,
+                                          @RequestParam(name = PAGE, defaultValue = "0", required = false) int page,
                                           UriComponentsBuilder uriBuilder,
                                           HttpServletResponse response) {
         Pageable pageRequest = PageRequest.of(page, DEFAULT_PAGE_SIZE, getSort(sort));
@@ -44,13 +51,13 @@ public class RealtyController {
     }
 
     private Sort getSort(String sortDTO) {
-        if ("price-asc".equals(sortDTO))
+        if (SORT_PRICE_ASC.equals(sortDTO))
             return Sort.by("price").ascending();
-        if ("price-desc".equals(sortDTO))
+        if (SORT_PRICE_DESC.equals(sortDTO))
             return Sort.by("price").descending();
-        if ("date-asc".equals(sortDTO))
+        if (SORT_DATE_ASC.equals(sortDTO))
             return Sort.by("publishDate").ascending();
-        if ("date-desc".equals(sortDTO))
+        if (SORT_DATE_DESC.equals(sortDTO))
             return Sort.by("publishDate").descending();
         return Sort.unsorted();
     }
@@ -61,28 +68,28 @@ public class RealtyController {
         List<String> linkHeaderElements = new ArrayList<>();
         if (hasNextPage(page, totalPages)) {
             String uriNextPage = uriBuilder
-                    .replaceQueryParam("page", page + 1)
-                    .replaceQueryParam("sort", sort)
+                    .replaceQueryParam(PAGE, page + 1)
+                    .replaceQueryParam(SORT, sort)
                     .toUriString();
             linkHeaderElements.add("<" + uriNextPage + ">; rel=\"next\"");
 
             String uriLastPage = uriBuilder
-                    .replaceQueryParam("page", totalPages - 1)
-                    .replaceQueryParam("sort", sort)
+                    .replaceQueryParam(PAGE, totalPages - 1)
+                    .replaceQueryParam(SORT, sort)
                     .toUriString();
             linkHeaderElements.add("<" + uriLastPage + ">; rel=\"last\"");
         }
 
         if (hasPreviousPage(page)) {
             String uriPrevPage = uriBuilder
-                    .replaceQueryParam("page", page - 1)
-                    .replaceQueryParam("sort", sort)
+                    .replaceQueryParam(PAGE, page - 1)
+                    .replaceQueryParam(SORT, sort)
                     .toUriString();
             linkHeaderElements.add("<" + uriPrevPage + ">; rel=\"prev\"");
 
             String uriFirstPage = uriBuilder
-                    .replaceQueryParam("page", 0)
-                    .replaceQueryParam("sort", sort)
+                    .replaceQueryParam(PAGE, 0)
+                    .replaceQueryParam(SORT, sort)
                     .toUriString();
             linkHeaderElements.add("<" + uriFirstPage + ">; rel=\"prev\"");
         }

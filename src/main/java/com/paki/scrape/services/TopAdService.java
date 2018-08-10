@@ -64,19 +64,15 @@ public class TopAdService {
         this.criteriaService = criteriaService;
     }
 
-    public Optional<Map<TopAdCondition, List<? extends Realty>>> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile) {
+    public Map<TopAdCondition, List<? extends Realty>> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile) {
         Set<TopAdCondition> conditions = searchProfile.getTopAdConditions();
         if (conditions == null || conditions.isEmpty())
-            return Optional.empty();
+            return new HashMap<>();
 
-        Map<TopAdCondition, List<? extends Realty>> resultMap = searchProfile.getTopAdConditions().stream().collect(Collectors.toMap(condition -> condition, condition -> getTopAds(scrapeInfo, searchProfile, condition)));
-        if (resultMap.isEmpty())
-            return Optional.empty();
-        else
-            return Optional.of(resultMap);
+        return searchProfile.getTopAdConditions().stream().collect(Collectors.toMap(condition -> condition, condition -> getTopAds(scrapeInfo, searchProfile, condition)));
     }
 
-    public List<? extends Realty> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile, TopAdCondition topAdCondition) {
+    private List<? extends Realty> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile, TopAdCondition topAdCondition) {
         TopAdDefinition definition = topAdCondition.getDefinition();
         switch (definition.getName()) {
             case NEW_AD:

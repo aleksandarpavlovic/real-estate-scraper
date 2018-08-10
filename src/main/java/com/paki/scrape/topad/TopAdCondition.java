@@ -41,4 +41,9 @@ public class TopAdCondition {
     public int hashCode() {
         return super.hashCode();
     }
+
+    @Override
+    public String toString() {
+        return definition.getText();
+    }
 }

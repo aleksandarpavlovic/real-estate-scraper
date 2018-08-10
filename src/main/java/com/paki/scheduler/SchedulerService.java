@@ -31,16 +31,12 @@ public class SchedulerService {
     }
 
     public void schedule(int periodInMinutes) {
-        if (scheduledJob != null) {
-            scheduledJob.cancel(false);
-        }
+        unschedule();
         scheduledJob = scheduler.scheduleWithFixedDelay(job, 0, Math.max(periodInMinutes, MIN_JOB_PERIOD), TimeUnit.MINUTES);
     }
 
     public void unschedule() {
-        if (scheduledJob == null)
-            return;
-        else {
+        if (scheduledJob != null) {
             scheduledJob.cancel(false);
             scheduledJob = null;
         }

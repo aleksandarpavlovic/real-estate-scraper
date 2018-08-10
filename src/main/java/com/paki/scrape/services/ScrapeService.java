@@ -9,13 +9,16 @@ import com.paki.scrape.entities.*;
 import com.paki.scrape.scraper.Scraper;
 import com.paki.scrape.scraper.ScraperFactory;
 import com.paki.scrape.synchronization.GlobalLock;
+import com.paki.scrape.topad.TopAdCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -26,16 +29,20 @@ public class ScrapeService {
     private ScrapeSettingsRepository scrapeSettingsRepository;
     private ScrapeInfoRepository scrapeInfoRepository;
     private RealtyService realtyService;
+    private TopAdService topAdService;
+    private NotificationService notificationService;
     private GlobalLock globalLock;
 
     @Autowired
-    public ScrapeService(SchedulerService schedulerService, ScraperFactory scraperFactory, SearchProfileRepository searchProfileRepository, ScrapeSettingsRepository scrapeSettingsRepository, ScrapeInfoRepository scrapeInfoRepository, RealtyService realtyService, GlobalLock globalLock) {
+    public ScrapeService(SchedulerService schedulerService, ScraperFactory scraperFactory, SearchProfileRepository searchProfileRepository, ScrapeSettingsRepository scrapeSettingsRepository, ScrapeInfoRepository scrapeInfoRepository, RealtyService realtyService, TopAdService topAdService, NotificationService notificationService, GlobalLock globalLock) {
         this.schedulerService = schedulerService;
         this.scraperFactory = scraperFactory;
         this.searchProfileRepository = searchProfileRepository;
         this.scrapeSettingsRepository = scrapeSettingsRepository;
         this.scrapeInfoRepository = scrapeInfoRepository;
         this.realtyService = realtyService;
+        this.topAdService = topAdService;
+        this.notificationService = notificationService;
         this.globalLock = globalLock;
     }
 
@@ -53,12 +60,16 @@ public class ScrapeService {
         try {
             ScrapeInfo scrapeInfo = prepareScrapeInfo();
             List<SearchProfile> profiles = searchProfileRepository.findAll();
+            Map<String, Map<TopAdCondition, List<? extends Realty>>> topAds = new HashMap<>();
+
             for (SearchProfile profile : profiles) {
                 Search search = profile.getSearch();
                 for (ScraperType scraperType : ScraperType.values()) {
                     scrape(scrapeInfo, search, scraperType);
                 }
+                topAds.put(profile.getName(), topAdService.getTopAds(scrapeInfo, profile));
             }
+            notificationService.notify(topAds);
         } finally {
             globalLock.unlock();
         }
