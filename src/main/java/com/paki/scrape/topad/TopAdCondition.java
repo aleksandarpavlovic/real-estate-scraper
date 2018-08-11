@@ -1,5 +1,7 @@
 package com.paki.scrape.topad;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.paki.scrape.entities.SearchProfile;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,9 +14,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, defaultImpl = TopAdCondition.class)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = TopAdParameterizedCondition.class, name = "Parameterized")
+})
 public class TopAdCondition {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "topad_condition_generator")
+    @SequenceGenerator(name="topad_condition_generator", sequenceName = "topad_condition_seq")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

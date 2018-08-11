@@ -5,14 +5,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import java.util.HashSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
 public class LocationCriteria extends BaseCriteria {
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> locations;
 
     public LocationCriteria(String name, Set<String> locations) {

@@ -14,7 +14,8 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class BaseCriteria {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "criteria_generator")
+    @SequenceGenerator(name="criteria_generator", sequenceName = "criteria_seq")
     private Long id;
     private String name;
     @OneToOne(fetch = FetchType.LAZY)

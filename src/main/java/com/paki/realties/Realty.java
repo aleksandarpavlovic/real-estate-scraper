@@ -18,7 +18,8 @@ import java.util.Objects;
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Realty {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "realty_generator")
+    @SequenceGenerator(name="realty_generator", sequenceName = "realty_seq")
     private Long id;
     private Long scrapeRunNumber;
 

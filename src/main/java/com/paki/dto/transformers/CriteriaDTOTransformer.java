@@ -163,19 +163,19 @@ public class CriteriaDTOTransformer {
         } else if (criteria instanceof RangeCriteria) {
             RangeCriteria rangeCriteria = (RangeCriteria) criteria;
             if (CriteriaDefinitions.SURFACE_M2.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.SURFACE_M2, POVRSINA_M2), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getFrom()), transformIntegerToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.SURFACE_M2, POVRSINA_M2), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.SURFACE_ARE.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.SURFACE_ARE, POVRSINA_ARI), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getFrom()), transformIntegerToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.SURFACE_ARE, POVRSINA_ARI), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.PRICE_PER_M2.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE_PER_M2, CENA_PO_M2), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getFrom()), transformIntegerToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE_PER_M2, CENA_PO_M2), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.PRICE_PER_ARE.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE_PER_ARE, CENA_PO_ARU), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getFrom()), transformIntegerToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE_PER_ARE, CENA_PO_ARU), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.PRICE.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE, CENA), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getFrom()), transformIntegerToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.PRICE, CENA), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.FLOOR.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.FLOOR, SPRATNOST), CriteriaDTOType.RANGE, transformFloorToValueDTO(rangeCriteria.getFrom()), transformFloorToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.FLOOR, SPRATNOST), CriteriaDTOType.RANGE, transformFloorToValueDTO(rangeCriteria.getRangeFrom()), transformFloorToValueDTO(rangeCriteria.getRangeTo()));
             else if (CriteriaDefinitions.ROOM_COUNT.equals(rangeCriteria.getName()))
-                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.ROOM_COUNT, BROJ_SOBA), CriteriaDTOType.RANGE, transformToValueDTO(rangeCriteria.getFrom()), transformToValueDTO(rangeCriteria.getTo()));
+                return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.ROOM_COUNT, BROJ_SOBA), CriteriaDTOType.RANGE, transformToValueDTO(rangeCriteria.getRangeFrom()), transformToValueDTO(rangeCriteria.getRangeTo()));
         } else if (criteria instanceof MultiValueCriteria) {
             MultiValueCriteria mvCriteria = (MultiValueCriteria) criteria;
             if (CriteriaDefinitions.ADVERTISER.equals(mvCriteria.getName()))
@@ -306,7 +306,7 @@ public class CriteriaDTOTransformer {
 
     public static void main(String[] args) {
         CriteriaDTOTransformer criteriaDtoTransformer = new CriteriaDTOTransformer();
-        CriteriaDefinitionsDTO dto = criteriaDtoTransformer.transformCriteriaDefinitionsToDTO(CriteriaDefinitions.apartmentCriteriaDefinitions);
+        CriteriaDefinitionsDTO dto = criteriaDtoTransformer.transformCriteriaDefinitionsToDTO(CriteriaDefinitions.getDefinitions(RealtyType.APARTMENT));
 
         class CollectionAdapter implements JsonSerializer<Collection<?>> {
             @Override

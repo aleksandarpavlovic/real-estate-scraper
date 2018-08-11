@@ -10,17 +10,22 @@ import com.google.api.client.util.Base64;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import lombok.Setter;
+import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
 
-public final class GmailService {
+@Service
+public class GmailService {
 
     private static final String APPLICATION_NAME = "Realty Scraper";
 
@@ -43,6 +48,18 @@ public final class GmailService {
                 .getLabelIds().contains("SENT");
     }
 
+    public boolean sendHtmlMessage(String recipientAddress, String subject, String body) throws MessagingException,
+            IOException {
+        Message message = createMessageWithEmail(
+                createHtmlEmail(recipientAddress, gmailCredentials.getUserEmail(), subject, body));
+
+        return createGmail().users()
+                .messages()
+                .send(gmailCredentials.getUserEmail(), message)
+                .execute()
+                .getLabelIds().contains("SENT");
+    }
+
     private Gmail createGmail() {
         Credential credential = authorize();
         return new Gmail.Builder(httpTransport, JSON_FACTORY, credential)
@@ -56,6 +73,19 @@ public final class GmailService {
         email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
         email.setSubject(subject);
         email.setText(bodyText);
+        return email;
+    }
+
+    private MimeMessage createHtmlEmail(String to, String from, String subject, String bodyHtml) throws MessagingException {
+        MimeMessage email = new MimeMessage(Session.getDefaultInstance(new Properties(), null));
+        email.setFrom(new InternetAddress(from));
+        email.addRecipient(javax.mail.Message.RecipientType.TO, new InternetAddress(to));
+        email.setSubject(subject);
+        Multipart mp = new MimeMultipart();
+        MimeBodyPart htmlPart = new MimeBodyPart();
+        htmlPart.setContent(bodyHtml, "text/html; charset=utf-8");
+        mp.addBodyPart(htmlPart);
+        email.setContent(mp);
         return email;
     }
 
@@ -89,7 +119,8 @@ public final class GmailService {
                     .refreshToken("1/DENnbv10UuvOaiWUSPf9AMuvNB4pOfHFsxviviN1NdX-UGF5wqct7KUbtuy8ZhVJ")
                     .build());
 
-            gmailService.sendMessage("alex.pavlovic92@gmail.com", "Subject", "body text");
+//            gmailService.sendMessage("alex.pavlovic92@gmail.com", "Subject", "body text");
+            gmailService.sendHtmlMessage("alex.pavlovic92@gmail.com", "Subject", "nsto");
         } catch (GeneralSecurityException | IOException | MessagingException e) {
             e.printStackTrace();
         }

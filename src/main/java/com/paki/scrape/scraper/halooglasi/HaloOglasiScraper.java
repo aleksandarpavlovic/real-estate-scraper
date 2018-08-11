@@ -20,12 +20,10 @@ import java.util.List;
 public class HaloOglasiScraper extends Scraper {
     private final HaloOglasiCriteriaTransformer criteriaTransformer = new HaloOglasiCriteriaTransformer();
     private final HaloOglasiAdParser parser = new HaloOglasiAdParser();
-    private final Gson gson;
     HaloOglasiRequest request;
 
     public HaloOglasiScraper(Search search) {
         super(search);
-        this.gson = new Gson();
         request = criteriaTransformer.transform(search.getCriteria());
     }
 
@@ -37,26 +35,21 @@ public class HaloOglasiScraper extends Scraper {
         return results;
     }
 
-    private List<Realty> executeRequest(String request) throws IOException{
-        try {
-            Connection.Response response = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
-                    .method(Connection.Method.POST)
-                    .header("Accept", "application/json, text/javascript, */*; q=0.01")
-                    .header("Accept-Encoding", "gzip, deflate, br")
-                    .header("Host", "www.halooglasi.com")
-                    .header("Origin", "https://www.halooglasi.com")
-                    .header("Referer", "https://www.halooglasi.com")
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
-                    .ignoreContentType(true)
-                    .requestBody(request)
-                    .header("Content-Type", "application/json")
-                    .execute();
-            Document doc = prepareForParsing(response.body());
-            return extractRealties(doc);
-        } catch (IOException e) {
-            e.printStackTrace();
-            throw e;
-        }
+    private List<Realty> executeRequest(String request) throws IOException {
+        Connection.Response response = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
+                .method(Connection.Method.POST)
+                .header("Accept", "application/json, text/javascript, */*; q=0.01")
+                .header("Accept-Encoding", "gzip, deflate, br")
+                .header("Host", "www.halooglasi.com")
+                .header("Origin", "https://www.halooglasi.com")
+                .header("Referer", "https://www.halooglasi.com")
+                .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
+                .ignoreContentType(true)
+                .requestBody(request)
+                .header("Content-Type", "application/json")
+                .execute();
+        Document doc = prepareForParsing(response.body());
+        return extractRealties(doc);
     }
 
     private List<Realty> extractRealties(Document doc) {

@@ -19,6 +19,7 @@ public class TopAdDefinition {
     @Id
     @Enumerated(EnumType.STRING)
     private TopAdName name;
+    private TopAdType type;
     private String text;
 
     @Override

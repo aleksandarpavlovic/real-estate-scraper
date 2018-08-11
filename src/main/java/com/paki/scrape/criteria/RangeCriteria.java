@@ -4,17 +4,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.MappedSuperclass;
+
 @Getter
 @Setter
 @NoArgsConstructor
+@MappedSuperclass
 public abstract class RangeCriteria<T> extends BaseCriteria{
-    private T from;
-    private T to;
+    private T rangeFrom;
+    private T rangeTo;
 
-    public RangeCriteria(String name, T from, T to) {
+    public RangeCriteria(String name, T rangeFrom, T rangeTo) {
         super(name);
-        this.from = from;
-        this.to = to;
+        this.rangeFrom = rangeFrom;
+        this.rangeTo = rangeTo;
     }
 
     @Override
@@ -27,6 +30,6 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
 
         RangeCriteria other = (RangeCriteria) obj;
 
-        return this.getFrom().equals(other.getFrom()) && this.getTo().equals(other.getTo());
+        return this.getRangeFrom().equals(other.getRangeFrom()) && this.getRangeTo().equals(other.getRangeTo());
     }
 }

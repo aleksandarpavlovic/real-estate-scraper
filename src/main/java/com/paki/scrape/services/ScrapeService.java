@@ -77,15 +77,15 @@ public class ScrapeService {
 
     public void scrape(ScrapeInfo scrapeInfo, Search search, ScraperType scraperType) {
         Scraper scraper = scraperFactory.createScraper(scraperType, search);
-        while (true) {
-            try {
+        try {
+            while (true) {
                 List<Realty> pageResults = scraper.scrapeNext();
                 if (pageResults.isEmpty())
                     break;
                 realtyService.processScrapedRealties(scrapeInfo, search, pageResults);
-            } catch (IOException e) {
-                e.printStackTrace();
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -106,7 +106,4 @@ public class ScrapeService {
 
         return scrapeInfo;
     }
-
-
-
 }

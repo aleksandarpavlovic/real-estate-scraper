@@ -16,15 +16,16 @@ import java.util.Set;
 @Entity
 public class SearchProfile {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_profile_generator")
+    @SequenceGenerator(name="search_profile_generator", sequenceName = "search_profile_seq")
     private Long id;
 
     @Column(unique = true)
     private String name;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "searchProfile", cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, mappedBy = "searchProfile", cascade = CascadeType.ALL)
     private Search search;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "searchProfile", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "searchProfile", cascade = CascadeType.ALL)
     private Set<TopAdCondition> topAdConditions;
 }

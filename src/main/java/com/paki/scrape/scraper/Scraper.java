@@ -14,6 +14,7 @@ import com.paki.scrape.entities.Search;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -23,6 +24,8 @@ public abstract class Scraper {
     protected final AdType adType;
     protected final RealtyType realtyType;
 
+    private final int MAX_RETRY = 2;
+
     public Scraper(Search search) {
         this.search = search;
         this.adType = determineAdType(search.getCriteria());
@@ -30,7 +33,21 @@ public abstract class Scraper {
     }
 
     public List<Realty> scrapeNext() throws IOException {
-        return filterResults(doScrapeNext());
+        return filterResults(scrapeNextWithRetry());
+    }
+
+    private List<Realty> scrapeNextWithRetry() throws IOException {
+        int tryCount = 0;
+        while (tryCount < MAX_RETRY) {
+            tryCount++;
+            try {
+                return doScrapeNext();
+            } catch (IOException e) {
+                if (tryCount == MAX_RETRY)
+                    throw e;
+            }
+        }
+        return Collections.emptyList();
     }
 
     protected abstract List<Realty> doScrapeNext() throws IOException;
@@ -40,8 +57,8 @@ public abstract class Scraper {
         for (BaseCriteria criteria: search.getCriteria()) {
             if (CriteriaDefinitions.PRICE_PER_M2.equals(criteria.getName()) || CriteriaDefinitions.PRICE_PER_ARE.equals(criteria.getName())) {
                 AreaMeasurementUnit criteriaUnit = ((RangeWithUnitCriteria)criteria).getUnit();
-                BigDecimal from = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getFrom());
-                BigDecimal to = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getTo());
+                BigDecimal from = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeFrom());
+                BigDecimal to = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeTo());
                 filteredResults = filteredResults.stream().filter(realty -> isPricePerAreaUnitInRange(realty, from, to, criteriaUnit)).collect(Collectors.toList());
             }
             break;

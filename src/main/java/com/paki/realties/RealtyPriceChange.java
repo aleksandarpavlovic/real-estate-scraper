@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Entity
 public class RealtyPriceChange {
     @Id()
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "price_change_generator")
+    @SequenceGenerator(name="price_change_generator", sequenceName = "price_change_seq")
     private Long id;
 
     @ManyToOne

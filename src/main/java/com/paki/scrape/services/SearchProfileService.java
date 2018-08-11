@@ -64,7 +64,9 @@ public class SearchProfileService {
         if (dbProfile.isPresent())
             throw new BusinessException("Profil sa imenom: " + profile.getName() + " vec postoji!");
 
+        createBidirectionalLinks(profile);
         criteriaService.normalizeLocationCriteria(profile.getSearch().getCriteria());
+        profile.getSearch().setRealtyType(criteriaService.inferRealtyType(profile.getSearch().getCriteria()));
         profileRepository.save(profile);
     }
 
@@ -81,6 +83,7 @@ public class SearchProfileService {
             if (searchChanged)
                 deleteRealties(dbProfile.get());
             profile.setId(id);
+            createBidirectionalLinks(profile);
             criteriaService.normalizeLocationCriteria(profile.getSearch().getCriteria());
             profileRepository.save(profile);
         } finally {
@@ -138,5 +141,10 @@ public class SearchProfileService {
                 return false;
         }
         return true;
+    }
+
+    private void createBidirectionalLinks(SearchProfile searchProfile) {
+        searchProfile.getSearch().setSearchProfile(searchProfile);
+        searchProfile.getSearch().getCriteria().forEach(c -> c.setSearch(searchProfile.getSearch()));
     }
 }

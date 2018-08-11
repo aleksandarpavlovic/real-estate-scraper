@@ -16,7 +16,8 @@ import java.util.Set;
 @Entity
 public class Search {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "search_generator")
+    @SequenceGenerator(name="search_generator", sequenceName = "search_seq")
     private Long id;
 
     @Enumerated(EnumType.STRING)
@@ -26,7 +27,7 @@ public class Search {
     @JoinColumn(name = "searchProfileId")
     SearchProfile searchProfile;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "search")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "search")
     Set<BaseCriteria> criteria;
 
     @Builder

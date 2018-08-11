@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class ScrapeSettings {
 
     // email recipients to be notified on top-ad occurrence
     @Setter
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private List<String> emailList;
 
     @Builder

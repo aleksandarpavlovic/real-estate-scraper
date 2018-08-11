@@ -9,11 +9,14 @@ import com.paki.scrape.topad.TopAdCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.security.GeneralSecurityException;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
 
@@ -55,17 +58,20 @@ public class NotificationService {
         }
     }
 
+    @Transactional
     public void notify(Map<String, Map<TopAdCondition, List<? extends Realty>>> topAds) {
-        if (topAds != null && !topAds.isEmpty())
+        if (topAds == null || topAds.isEmpty())
             return;
 
         StringBuilder sb = new StringBuilder();
-        sb.append("Pronadjeni su novi oglasi koji vam mogu biti interesantni!" + System.lineSeparator());
+        sb.append(MAIL_TITLE_HTML);
         topAds.forEach((profileName, adMap) -> {
-            sb.append(System.lineSeparator() + "Profil: " + profileName + System.lineSeparator());
+            sb.append(profileHtml(profileName));
             adMap.forEach((condition, ads) -> {
-                sb.append("\tOglasi u kategoriji " + condition.toString() + ":" + System.lineSeparator());
-                ads.forEach(ad -> sb.append("\t\t" + adDescription(ad) + System.lineSeparator()));
+                sb.append(topAdCategoryHtml(condition.toString()));
+                sb.append(MAIL_START_AD_LIST_HTML);
+                ads.forEach(ad -> sb.append(adHtml(ad)));
+                sb.append(MAIL_END_AD_LIST_HTML);
             });
         });
 
@@ -82,7 +88,27 @@ public class NotificationService {
             });
     }
 
-    private String adDescription(Realty ad) {
-        return ad.getTitle() + ", povrsina: " + ad.getSurfaceArea() + ad.getAreaMeasurementUnit().getDisplayValue() + ", cena: " + ad.getPrice() + ", link: " + ad.getUrl();
+    private String profileHtml(String profileName) {
+        return String.format(MAIL_PROFILE_HTML, profileName);
     }
+
+    private String topAdCategoryHtml(String topAdName) {
+        return String.format(MAIL_TOP_AD_HTML, topAdName);
+    }
+
+    private String adHtml(Realty ad) {
+        return String.format(MAIL_AD_HTML, ad.getUrl(), ad.getTitle(), ad.getLocation(), formatPrice(ad.getPrice()), ad.getSurfaceArea().toString(), ad.getAreaMeasurementUnit().getDisplayValue());
+    }
+
+    private static DecimalFormat priceFormat = new DecimalFormat(",###");
+    private String formatPrice(BigDecimal price) {
+        return priceFormat.format(price).replace(',', '.');
+    }
+
+    private static final String MAIL_TITLE_HTML = "<h2>Pronadjeni su novi oglasi koji vam mogu biti interesantni!</h2>";
+    private static final String MAIL_PROFILE_HTML = "<p style=\"font-size: 1.5em;\">Profil <strong><em>%s</em></strong>:</p>";
+    private static final String MAIL_TOP_AD_HTML = "<p style=\"font-size: 1.3em; padding-left: 20px;\">Oglasi u kategoriji <strong><em>%s</em></strong>:</p>";
+    private static final String MAIL_START_AD_LIST_HTML = "<ul>";
+    private static final String MAIL_AD_HTML = "<li style=\"padding-left: 30px;\"><a href=\"%s\">%s, %s, %s &euro;, %s %s</a></li>";
+    private static final String MAIL_END_AD_LIST_HTML = "</ul>";
 }

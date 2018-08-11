@@ -188,16 +188,16 @@ public class HaloOglasiCriteriaTransformer {
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
-                        .from(roomCountMappings.get(criteria.getFrom()))
-                        .to(roomCountMappings.get(criteria.getTo()))
+                        .from(roomCountMappings.get(criteria.getRangeFrom()))
+                        .to(roomCountMappings.get(criteria.getRangeTo()))
                         .build()
                 );
             else if (CriteriaDefinitions.PRICE.equals(criteriaName))
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
-                        .from((Integer)criteria.getFrom())
-                        .to((Integer)criteria.getTo())
+                        .from((Integer)criteria.getRangeFrom())
+                        .to((Integer)criteria.getRangeTo())
                         .unitId(4)
                         .build()
                 );
@@ -205,8 +205,8 @@ public class HaloOglasiCriteriaTransformer {
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                                 .fieldName(criteriaDefinitionMappings.get(criteriaName))
-                                .from((Integer)criteria.getFrom())
-                                .to((Integer)criteria.getTo())
+                                .from((Integer)criteria.getRangeFrom())
+                                .to((Integer)criteria.getRangeTo())
                                 .unitId(unitIdMappings.getOrDefault(((RangeWithUnitCriteria)criteria).getUnit(), 1))
                                 .build()
                 );
@@ -214,8 +214,8 @@ public class HaloOglasiCriteriaTransformer {
                 request.updateRangeQueries(
                         HaloOglasiRequest.RangeQuery.builder()
                         .fieldName(criteriaDefinitionMappings.get(criteriaName))
-                        .from(getFloorMapping((Integer)criteria.getFrom()))
-                        .to(getFloorMapping((Integer)criteria.getTo()))
+                        .from(getFloorMapping((Integer)criteria.getRangeFrom()))
+                        .to(getFloorMapping((Integer)criteria.getRangeTo()))
                         .build()
                 );
             }
