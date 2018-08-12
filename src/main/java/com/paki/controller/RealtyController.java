@@ -9,7 +9,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
@@ -22,12 +25,13 @@ public class RealtyController {
 
     private static final int DEFAULT_PAGE_SIZE = 20;
 
+    private static final String SEARCH = "searchid";
     private static final String PAGE = "page";
     private static final String SORT = "sort";
-    private static final String SORT_PRICE_ASC = "price-asc";
-    private static final String SORT_PRICE_DESC = "price-desc";
-    private static final String SORT_DATE_ASC = "date-asc";
-    private static final String SORT_DATE_DESC = "date-desc";
+    private static final String SORT_PRICE_ASC = "priceasc";
+    private static final String SORT_PRICE_DESC = "pricedesc";
+    private static final String SORT_DATE_ASC = "dateasc";
+    private static final String SORT_DATE_DESC = "datedesc";
 
     private final RealtyService realtyService;
     private final RealtiesDTOTransformer dtoTransformer;
@@ -38,8 +42,9 @@ public class RealtyController {
         this.dtoTransformer = dtoTransformer;
     }
 
-    @GetMapping(value = "/search/{searchId}")
-    List<? extends RealtyDTO> getRealties(@PathVariable("searchId") Long searchId,
+    @GetMapping
+    List<? extends RealtyDTO> getRealties(
+                                          @RequestParam(name = SEARCH, defaultValue = "0", required = false) long searchId,
                                           @RequestParam(name = SORT, defaultValue = SORT_PRICE_ASC, required = false) String sort,
                                           @RequestParam(name = PAGE, defaultValue = "0", required = false) int page,
                                           UriComponentsBuilder uriBuilder,

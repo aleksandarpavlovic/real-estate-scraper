@@ -28,9 +28,9 @@ public class ProbaScraper {
         Scraper hoScraper = new HaloOglasiScraper(search);
         Scraper nrsScraper = new NekretnineRsScraper(search);
         try {
-            List<Realty> hoResults = hoScraper.scrapeNext();
-            List<Realty> nrsResults = nrsScraper.scrapeNext();
-            List<Realty> nrsResults2 = nrsScraper.scrapeNext();
+            Set<Realty> hoResults = hoScraper.scrapeNext();
+            Set<Realty> nrsResults = nrsScraper.scrapeNext();
+            Set<Realty> nrsResults2 = nrsScraper.scrapeNext();
 //            hoResults.forEach(System.out::println);
 //            nrsResults.forEach(System.out::println);
 //            nrsResults2.forEach(System.out::println);

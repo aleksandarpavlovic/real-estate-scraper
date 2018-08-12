@@ -22,7 +22,7 @@ public class ScrapeSettingsController {
         return settingsService.getSettings();
     }
 
-    @PutMapping
+    @PostMapping
     private ResponseEntity saveSettings(@RequestBody ScrapeSettings settings) {
         settingsService.save(settings);
         return ResponseEntity.ok().build();

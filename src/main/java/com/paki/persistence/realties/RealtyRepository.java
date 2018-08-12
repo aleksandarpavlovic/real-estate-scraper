@@ -5,6 +5,7 @@ import com.paki.realties.enums.AdSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty, Long> {
@@ -40,5 +42,6 @@ public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty
     @Query("SELECT r.id FROM #{#entityName} r WHERE 0 = (SELECT COUNT(*) FROM RealtySearchRelation rs WHERE rs.realty.id = r.id)")
     List<Long> findIdsOfHangingRealties();
 
-    void deleteByIdIn(List<Long> ids);
+    @Modifying
+    void deleteByIdIn(Set<Long> ids);
 }

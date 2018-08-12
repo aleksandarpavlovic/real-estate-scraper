@@ -41,14 +41,14 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/testProfile")
+    @PostMapping("/test-profile")
     private ResponseEntity postTestProfile() {
         SearchProfile testProfile = createTestProfile();
         searchProfileService.createSearchProfile(testProfile);
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/settings")
+    @PostMapping("/test-settings")
     private ResponseEntity postSettings() {
         ScrapeSettings settings = createTestSettings();
         settingsService.save(settings);
@@ -58,7 +58,7 @@ public class AdminController {
     private ScrapeSettings createTestSettings() {
         ScrapeSettings settings = new ScrapeSettings();
         settings.setEmailList(Arrays.asList("alex.pavlovic92@gmail.com", "pa173064m@student.etf.bg.ac.rs"));
-        settings.setScheduledPeriod(16);
+        settings.setScheduledPeriod(11116);
         return settings;
     }
 
@@ -74,8 +74,8 @@ public class AdminController {
         Set<BaseCriteria> criteriaList = new HashSet<>();
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.AD_TYPE, AdType.SELL.name()));
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT.name()));
-        criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.ADVERTISER, AdvertiserType.OWNER.name()));
-        criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REGISTRATION, RegistrationType.REGISTERED.name()));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.ADVERTISER, new HashSet<>(Arrays.asList(AdvertiserType.OWNER.name()))));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.REGISTRATION, new HashSet<>(Arrays.asList(RegistrationType.REGISTERED.name()))));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.PRICE, 0, 51000));
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 46, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5.name(), RoomCount.RC_2_0.name()));

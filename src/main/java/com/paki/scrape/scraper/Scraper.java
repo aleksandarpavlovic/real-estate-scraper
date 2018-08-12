@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public abstract class Scraper {
         this.realtyType = determineRealtyType(search.getCriteria());
     }
 
-    public List<Realty> scrapeNext() throws IOException {
+    public Set<Realty> scrapeNext() throws IOException {
         return filterResults(scrapeNextWithRetry());
     }
 
@@ -52,14 +53,14 @@ public abstract class Scraper {
 
     protected abstract List<Realty> doScrapeNext() throws IOException;
 
-    private List<Realty> filterResults(List<Realty> results) {
-        List<Realty> filteredResults = results;
+    private Set<Realty> filterResults(List<Realty> results) {
+        Set<Realty> filteredResults = new HashSet<>(results);
         for (BaseCriteria criteria: search.getCriteria()) {
             if (CriteriaDefinitions.PRICE_PER_M2.equals(criteria.getName()) || CriteriaDefinitions.PRICE_PER_ARE.equals(criteria.getName())) {
                 AreaMeasurementUnit criteriaUnit = ((RangeWithUnitCriteria)criteria).getUnit();
                 BigDecimal from = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeFrom());
                 BigDecimal to = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeTo());
-                filteredResults = filteredResults.stream().filter(realty -> isPricePerAreaUnitInRange(realty, from, to, criteriaUnit)).collect(Collectors.toList());
+                filteredResults = filteredResults.stream().filter(realty -> isPricePerAreaUnitInRange(realty, from, to, criteriaUnit)).collect(Collectors.toSet());
             }
             break;
         }

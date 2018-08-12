@@ -147,11 +147,12 @@ public class HaloOglasiCriteriaTransformer {
             request.setFieldQueries(Collections.emptyList());
             request.setGeoPolygonQuery(new Object());
             request.setHasValueQueries(Collections.emptyList());
-            request.setMultiFieldORQueries(Collections.emptyList());
             if (request.getFieldORQueries() == null)
                 request.setFieldORQueries(Collections.emptyList());
             if (request.getRangeQueries() == null)
                 request.setRangeQueries(Collections.emptyList());
+            if (request.getMultiFieldORQueries() == null)
+                request.setMultiFieldORQueries(Collections.emptyList());
             return request;
         }
         private void transformSingleValueCriteria(SingleValueCriteria criteria, HaloOglasiRequest request) {

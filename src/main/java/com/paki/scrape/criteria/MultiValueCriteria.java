@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Entity
 public class MultiValueCriteria extends BaseCriteria {
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> values;
 
     public MultiValueCriteria(String name, Set<String> values) {

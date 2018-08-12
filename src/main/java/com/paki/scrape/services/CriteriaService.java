@@ -40,7 +40,7 @@ public class CriteriaService {
 
     public RealtyType inferRealtyType(Collection<BaseCriteria> criteria) {
         Optional<BaseCriteria> optional = criteria.stream()
-                .filter(c -> CriteriaDefinitions.REALTY_TYPE == c.getName())
+                .filter(c -> CriteriaDefinitions.REALTY_TYPE.equals(c.getName()))
                 .findFirst();
         if (optional.isPresent() && optional.get() instanceof SingleValueCriteria) {
             return RealtyType.get(((SingleValueCriteria) optional.get()).getValue());

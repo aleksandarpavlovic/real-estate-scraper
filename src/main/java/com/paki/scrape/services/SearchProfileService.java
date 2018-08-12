@@ -4,7 +4,8 @@ import com.paki.exceptions.BusinessException;
 import com.paki.persistence.realties.*;
 import com.paki.persistence.scrape.RealtySearchRelationRepository;
 import com.paki.persistence.scrape.SearchProfileRepository;
-import com.paki.scrape.criteria.BaseCriteria;
+import com.paki.persistence.scrape.SearchRepository;
+import com.paki.persistence.scrape.TopAdConditionRepository;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.entities.SearchProfile;
 import com.paki.scrape.synchronization.GlobalLock;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,11 +25,13 @@ public class SearchProfileService {
     private RealtySearchRelationRepository relationRepository;
     private RealtyPriceChangeRepository priceChangeRepository;
     private SearchProfileRepository profileRepository;
+    private SearchRepository searchRepository;
+    private TopAdConditionRepository topAdRepository;
     private GlobalLock globalLock;
     private List<RealtyRepository> realtyRepositories;
 
     @Autowired
-    public SearchProfileService(CriteriaService criteriaService, ApartmentRepository apartmentRepository, HouseRepository houseRepository, LandRepository landRepository, RealtySearchRelationRepository relationRepository, RealtyPriceChangeRepository priceChangeRepository, SearchProfileRepository profileRepository, GlobalLock globalLock) {
+    public SearchProfileService(CriteriaService criteriaService, ApartmentRepository apartmentRepository, HouseRepository houseRepository, LandRepository landRepository, RealtySearchRelationRepository relationRepository, RealtyPriceChangeRepository priceChangeRepository, SearchProfileRepository profileRepository, SearchRepository searchRepository, TopAdConditionRepository topAdRepository, GlobalLock globalLock) {
         this.criteriaService = criteriaService;
         this.apartmentRepository = apartmentRepository;
         this.houseRepository = houseRepository;
@@ -39,6 +39,8 @@ public class SearchProfileService {
         this.relationRepository = relationRepository;
         this.priceChangeRepository = priceChangeRepository;
         this.profileRepository = profileRepository;
+        this.searchRepository = searchRepository;
+        this.topAdRepository = topAdRepository;
         this.globalLock = globalLock;
         this.realtyRepositories = Arrays.asList(apartmentRepository, houseRepository, landRepository);
     }
@@ -49,6 +51,10 @@ public class SearchProfileService {
 
     public List<String> getProfilesNames() {
         return profileRepository.findAll().stream().map(SearchProfile::getName).collect(Collectors.toList());
+    }
+
+    public Optional<SearchProfile> findProfileById(Long id) {
+        return profileRepository.findById(id);
     }
 
     public Optional<SearchProfile> findProfileByName(String name) {
@@ -66,7 +72,8 @@ public class SearchProfileService {
 
         createBidirectionalLinks(profile);
         criteriaService.normalizeLocationCriteria(profile.getSearch().getCriteria());
-        profile.getSearch().setRealtyType(criteriaService.inferRealtyType(profile.getSearch().getCriteria()));
+        if (profile.getSearch().getRealtyType() == null)
+            profile.getSearch().setRealtyType(criteriaService.inferRealtyType(profile.getSearch().getCriteria()));
         profileRepository.save(profile);
     }
 
@@ -79,9 +86,17 @@ public class SearchProfileService {
             if (!dbProfile.isPresent())
                 throw new BusinessException("Azuriranje profila neuspelo. Profil ne postoji u sistemu.");
 
-            boolean searchChanged = !isEqualSearch(dbProfile.get(), profile);
-            if (searchChanged)
+            if (!isEqualSearch(dbProfile.get(), profile)) {
                 deleteRealties(dbProfile.get());
+                deleteOldSearch(dbProfile.get());
+            } else {
+                profile.setSearch(dbProfile.get().getSearch());
+            }
+            if (!isEqualTopAdConditions(dbProfile.get(), profile)) {
+                deleteOldTopAdConditions(dbProfile.get());
+            } else {
+                profile.setTopAdConditions(dbProfile.get().getTopAdConditions());
+            }
             profile.setId(id);
             createBidirectionalLinks(profile);
             criteriaService.normalizeLocationCriteria(profile.getSearch().getCriteria());
@@ -91,6 +106,15 @@ public class SearchProfileService {
         }
     }
 
+    private void deleteOldSearch(SearchProfile profile) {
+        searchRepository.deleteById(profile.getSearch().getId());
+    }
+
+    private void deleteOldTopAdConditions(SearchProfile profile) {
+        topAdRepository.deleteBySearchProfileId(profile.getId());
+    }
+
+    @Transactional
     public void deleteSearchProfile(Long id) {
         if (!globalLock.tryLock())
             throw new BusinessException("Brisanje profila nije moguce tokom trajanja skeniranja oglasa. Pokusajte kasnije.");
@@ -109,21 +133,22 @@ public class SearchProfileService {
     /**
      * Deletes realties related only to this profile.
      * Corresponding RealtyPriceChange and RealtySearchRelation entities must be deleted as well
+     *
      * @param profile
      */
     private void deleteRealties(SearchProfile profile) {
         // delete relations
         relationRepository.deleteBySearchId(profile.getSearch().getId());
-        List<Long> realtiesIds = hangingRealtiesIds();
+        Set<Long> realtiesIds = hangingRealtiesIds();
         // delete price changes
         priceChangeRepository.deleteByRealtyIds(realtiesIds);
         // delete hanging realties
         realtyRepositories.forEach(repo -> repo.deleteByIdIn(realtiesIds));
     }
 
-    private List<Long> hangingRealtiesIds() {
-        List<Long> ids = new ArrayList<>();
-        for (RealtyRepository repo: realtyRepositories)
+    private Set<Long> hangingRealtiesIds() {
+        Set<Long> ids = new HashSet<>();
+        for (RealtyRepository repo : realtyRepositories)
             ids.addAll(repo.findIdsOfHangingRealties());
         return ids;
     }
@@ -132,15 +157,32 @@ public class SearchProfileService {
         Search s1 = p1.getSearch();
         Search s2 = p2.getSearch();
 
-        if (s1.getRealtyType() != s2.getRealtyType())
+        if (s1.getRealtyType() != s2.getRealtyType()) {
             return false;
-        if (s1.getCriteria().size() != s2.getCriteria().size())
-            return false;
-        for (BaseCriteria criteria: s1.getCriteria()) {
-            if (!s2.getCriteria().contains(criteria))
-                return false;
         }
-        return true;
+        if (s1.getCriteria() == null) {
+            return s2.getCriteria() == null;
+        } else if (s2.getCriteria() == null) {
+            return false;
+        }
+        if (s1.getCriteria().size() != s2.getCriteria().size()) {
+            return false;
+        } else {
+            return s1.getCriteria().containsAll(s2.getCriteria());
+        }
+    }
+
+    private boolean isEqualTopAdConditions(SearchProfile p1, SearchProfile p2) {
+        if (p1.getTopAdConditions() == null) {
+            return p2.getTopAdConditions() == null;
+        } else if (p2.getTopAdConditions() == null) {
+            return false;
+        }
+        if (p1.getTopAdConditions().size() != p2.getTopAdConditions().size()) {
+            return false;
+        } else {
+            return p1.getTopAdConditions().containsAll(p2.getTopAdConditions());
+        }
     }
 
     private void createBidirectionalLinks(SearchProfile searchProfile) {

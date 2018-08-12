@@ -234,7 +234,7 @@ public class HaloOglasiAdParser {
         Matcher matcher = surfaceAreaPattern.matcher(elem.ownText());
         if (matcher.find()) {
             String area = matcher.group(1);
-            area.replace(',', '.');
+            area = area.replace(',', '.');
             while(true) {
                 int firstDotIndex = area.indexOf('.');
                 if (firstDotIndex < 0)

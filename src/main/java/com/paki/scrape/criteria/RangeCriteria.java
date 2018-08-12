@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.MappedSuperclass;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -31,5 +32,10 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
         RangeCriteria other = (RangeCriteria) obj;
 
         return this.getRangeFrom().equals(other.getRangeFrom()) && this.getRangeTo().equals(other.getRangeTo());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), rangeFrom, rangeTo);
     }
 }

@@ -9,7 +9,6 @@ import com.paki.scrape.topad.TopAdCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.mail.MessagingException;
@@ -58,7 +57,6 @@ public class NotificationService {
         }
     }
 
-    @Transactional
     public void notify(Map<String, Map<TopAdCondition, List<? extends Realty>>> topAds) {
         if (topAds == null || topAds.isEmpty())
             return;

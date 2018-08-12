@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -35,5 +36,10 @@ public class TopAdParameterizedCondition extends TopAdCondition {
     @Override
     public String toString() {
         return super.toString().replaceFirst("\\?.+?\\?", parameter);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), parameter);
     }
 }

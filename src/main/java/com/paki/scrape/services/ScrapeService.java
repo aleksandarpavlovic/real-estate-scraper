@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ScrapeService {
@@ -79,7 +76,7 @@ public class ScrapeService {
         Scraper scraper = scraperFactory.createScraper(scraperType, search);
         try {
             while (true) {
-                List<Realty> pageResults = scraper.scrapeNext();
+                Set<Realty> pageResults = scraper.scrapeNext();
                 if (pageResults.isEmpty())
                     break;
                 realtyService.processScrapedRealties(scrapeInfo, search, pageResults);

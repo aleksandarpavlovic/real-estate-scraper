@@ -107,8 +107,12 @@ public class NekretnineRsAdParser {
 
     private Apartment updateApartment(Apartment apartment) {
         Document adDoc = getAdDocument(apartment.getUrl());
-        Element adData = adDoc.selectFirst("div.oglasData");
-
+        Element adData = null;
+        try {
+            adData = adDoc.selectFirst("div.oglasData");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         apartment.setSource(AdSource.NEKRETNINE_RS);
         apartment.setExternalId(formCompleteId(parseId(adData)));
         apartment.setDescription(parseAdDescription(adData));

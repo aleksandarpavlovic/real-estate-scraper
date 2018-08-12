@@ -225,7 +225,16 @@ public class CriteriaDTOTransformer {
                 if (rangeDto.getFrom() == null && rangeDto.getTo() == null)
                     return null;
                 else {
-                    if (Arrays.asList(CriteriaDefinitions.SURFACE_M2, CriteriaDefinitions.SURFACE_ARE, CriteriaDefinitions.PRICE_PER_M2, CriteriaDefinitions.PRICE_PER_ARE, CriteriaDefinitions.PRICE, CriteriaDefinitions.FLOOR).contains(rangeDto.getName().getName())) {
+                    if (Arrays.asList(CriteriaDefinitions.SURFACE_M2, CriteriaDefinitions.SURFACE_ARE, CriteriaDefinitions.PRICE_PER_M2, CriteriaDefinitions.PRICE_PER_ARE).contains(rangeDto.getName().getName())) {
+                        AreaMeasurementUnit unit =
+                                Arrays.asList(CriteriaDefinitions.SURFACE_M2, CriteriaDefinitions.PRICE_PER_M2).contains(rangeDto.getName().getName())
+                                        ? AreaMeasurementUnit.SQUARE_METER
+                                        : Arrays.asList(CriteriaDefinitions.SURFACE_ARE, CriteriaDefinitions.PRICE_PER_ARE).contains(rangeDto.getName().getName())
+                                            ? AreaMeasurementUnit.ARE
+                                            : AreaMeasurementUnit.HECTARE;
+                        return new RangeWithUnitCriteria(rangeDto.getName().getName(), Integer.valueOf(rangeDto.getFrom().getName()), Integer.valueOf(rangeDto.getTo().getName()), unit);
+                    }
+                    else if (Arrays.asList(CriteriaDefinitions.PRICE, CriteriaDefinitions.FLOOR).contains(rangeDto.getName().getName())) {
                         return new IntegerRangeCriteria(rangeDto.getName().getName(), Integer.valueOf(rangeDto.getFrom().getName()), Integer.valueOf(rangeDto.getTo().getName()));
                     } else {
                         return new StringRangeCriteria(rangeDto.getName().getName(), rangeDto.getFrom().getName(), rangeDto.getTo().getName());

@@ -1,11 +1,13 @@
 package com.paki.scrape.criteria;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.paki.scrape.entities.Search;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -17,9 +19,12 @@ public abstract class BaseCriteria {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "criteria_generator")
     @SequenceGenerator(name="criteria_generator", sequenceName = "criteria_seq")
     private Long id;
+
     private String name;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "searchId")
+    @JsonBackReference
     private Search search;
 
     public BaseCriteria(String name) {
@@ -36,5 +41,10 @@ public abstract class BaseCriteria {
         BaseCriteria other = (BaseCriteria) obj;
 
         return other.getName().equals(this.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(this.getName());
     }
 }

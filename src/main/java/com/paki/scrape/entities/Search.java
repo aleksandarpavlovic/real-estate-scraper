@@ -1,5 +1,6 @@
 package com.paki.scrape.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.paki.realties.enums.RealtyType;
 import com.paki.scrape.criteria.BaseCriteria;
 import lombok.Builder;
@@ -25,6 +26,7 @@ public class Search {
 
     @OneToOne
     @JoinColumn(name = "searchProfileId")
+    @JsonBackReference
     SearchProfile searchProfile;
 
     @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "search")

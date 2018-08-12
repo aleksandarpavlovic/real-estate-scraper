@@ -18,6 +18,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -52,7 +53,7 @@ public class RealtyService {
         return realtyRepository.findBySearchId(searchId, pageRequest);
     }
 
-    public void processScrapedRealties(ScrapeInfo scrapeInfo, Search search, List<Realty> realties) {
+    public void processScrapedRealties(ScrapeInfo scrapeInfo, Search search, Set<Realty> realties) {
         RealtyRepository<? extends Realty> realtyRepository = inferRealtyRepository(search);
         Map<String, ? extends Realty> dbRealtiesMap = realtyRepository
                 .findByExternalIdIn(mapToIdList(realties))
@@ -104,7 +105,7 @@ public class RealtyService {
         }
     }
 
-    private List<String> mapToIdList(List<Realty> realties) {
+    private List<String> mapToIdList(Set<Realty> realties) {
         return realties.stream().map(Realty::getExternalId).collect(Collectors.toList());
     }
 }

@@ -15,6 +15,6 @@ import java.util.Set;
 public class SearchProfileDTO {
     private Long id;
     private String name;
-    private SearchDTO searchDTO;
+    private SearchDTO search;
     private Set<TopAdCondition> topAdConditions;
 }

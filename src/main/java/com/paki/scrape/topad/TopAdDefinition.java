@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -30,5 +31,10 @@ public class TopAdDefinition {
             return false;
         TopAdDefinition other = (TopAdDefinition) obj;
         return this.name == other.getName();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, type, text);
     }
 }

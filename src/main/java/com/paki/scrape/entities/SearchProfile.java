@@ -1,5 +1,6 @@
 package com.paki.scrape.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.paki.scrape.topad.TopAdCondition;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +25,10 @@ public class SearchProfile {
     private String name;
 
     @OneToOne(fetch = FetchType.EAGER, mappedBy = "searchProfile", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Search search;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "searchProfile", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Set<TopAdCondition> topAdConditions;
 }

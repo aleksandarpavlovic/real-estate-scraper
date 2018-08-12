@@ -1,5 +1,6 @@
 package com.paki.scrape.topad;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.paki.scrape.entities.SearchProfile;
@@ -26,6 +27,7 @@ public class TopAdCondition {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "searchProfileId")
+    @JsonBackReference
     private SearchProfile searchProfile;
 
     @ManyToOne
@@ -46,7 +48,7 @@ public class TopAdCondition {
 
     @Override
     public int hashCode() {
-        return super.hashCode();
+        return definition.hashCode();
     }
 
     @Override
