@@ -5,11 +5,9 @@ import com.paki.realties.House;
 import com.paki.realties.Land;
 import com.paki.realties.Realty;
 import com.paki.realties.enums.*;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
-import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -23,6 +21,7 @@ public class NekretnineRsAdParser {
     Pattern surfaceAreaPattern = Pattern.compile("(^[0-9]+)");
     Pattern publishDatePattern = Pattern.compile("(^[0-9\\.]+)");
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
+    Pattern idPattern = Pattern.compile(".*www\\.nekretnine\\.rs/.+?/.+?/([0-9]+)");
 
     public List<Realty> parseApartments(Document doc) {
         List<Realty> ads = new LinkedList<>();
@@ -30,6 +29,8 @@ public class NekretnineRsAdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Apartment apartment = Apartment.builder()
+                        .source(AdSource.NEKRETNINE_RS)
+                        .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
                         .location(parseLocation(rawAd))
@@ -42,7 +43,6 @@ public class NekretnineRsAdParser {
                         .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
                         .build();
 
-                updateApartment(apartment);
                 ads.add(apartment);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -57,6 +57,8 @@ public class NekretnineRsAdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 House house = House.builder()
+                        .source(AdSource.NEKRETNINE_RS)
+                        .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
                         .location(parseLocation(rawAd))
@@ -69,7 +71,6 @@ public class NekretnineRsAdParser {
                         .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
                         .build();
 
-                updateHouse(house);
                 ads.add(house);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -84,6 +85,8 @@ public class NekretnineRsAdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Land land = Land.builder()
+                        .source(AdSource.NEKRETNINE_RS)
+                        .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
                         .location(parseLocation(rawAd))
@@ -96,7 +99,6 @@ public class NekretnineRsAdParser {
                         .areaMeasurementUnit(AreaMeasurementUnit.SQUARE_METER)
                         .build();
 
-                updateLand(land);
                 ads.add(land);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -105,66 +107,38 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
-    private Apartment updateApartment(Apartment apartment) {
-        Document adDoc = getAdDocument(apartment.getUrl());
-        Element adData = null;
-        try {
-            adData = adDoc.selectFirst("div.oglasData");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        apartment.setSource(AdSource.NEKRETNINE_RS);
-        apartment.setExternalId(formCompleteId(parseId(adData)));
+    public Apartment updateApartment(Apartment apartment, Document adDoc) {
+        Element adData = adDoc.selectFirst("div.oglasData");
         apartment.setDescription(parseAdDescription(adData));
         apartment.setRoomCount(getRoomCount(parseRoomCount(adData)));
         apartment.setRegistered(parseRegistered(adData));
-
         return apartment;
     }
 
-    private House updateHouse(House house) {
-        Document adDoc = getAdDocument(house.getUrl());
+    public House updateHouse(House house, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
-
-        house.setSource(AdSource.NEKRETNINE_RS);
-        house.setExternalId(formCompleteId(parseId(adData)));
         house.setDescription(parseAdDescription(adData));
         house.setRoomCount(getRoomCount(parseRoomCount(adData)));
         house.setRegistered(parseRegistered(adData));
-
         return house;
     }
 
-    private Land updateLand(Land land) {
-        Document adDoc = getAdDocument(land.getUrl());
+    public Land updateLand(Land land, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
-
-        land.setSource(AdSource.NEKRETNINE_RS);
-        land.setExternalId(formCompleteId(parseId(adData)));
         land.setDescription(parseAdDescription(adData));
         land.setRegistered(parseRegistered(adData));
-
         return land;
     }
 
-    private Document getAdDocument(String url) {
-        try {
-            return Jsoup.connect(url)
-                    .header("Host", "www.nekretnine.rs")
-                    .header("User-Agent", "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36")
-                    .get();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private String parseId(Element rawAd) {
-        Element elem = rawAd.selectFirst("div.sLeftGrid > ul > li > div:containsOwn(ID) + div");
-        if (elem == null)
+        String adUrl = parseAdUrl(rawAd);
+        if (adUrl == null)
             return "";
+        Matcher matcher = idPattern.matcher(adUrl);
+        if (matcher.find())
+            return matcher.group(1);
         else
-            return elem.ownText();
+            return null;
     }
 
     private String formCompleteId(String id) {

@@ -165,10 +165,6 @@ public class HaloOglasiCriteriaTransformer {
                 request.setCategoryId(criteriaDefinitionMappings.get(criteria.getValue()));
                 request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(CriteriaDefinitions.REALTY_TYPE), criteriaDefinitionMappings.get(criteria.getValue())));
                 resolveBaseTaxonomy(request);
-            } else if (CriteriaDefinitions.REGISTRATION.equals(criteriaName)) {
-                RegistrationType registration = RegistrationType.get(criteria.getValue());
-                if (registration == RegistrationType.REGISTERED)
-                    request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(CriteriaDefinitions.REGISTRATION), criteriaDefinitionMappings.get(criteria.getValue())));
             } else if (CriteriaDefinitions.APARTMENT_TYPE.equals(criteriaName)) {
                 request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(CriteriaDefinitions.APARTMENT_TYPE), criteriaDefinitionMappings.get(criteria.getValue())));
             }
@@ -234,8 +230,12 @@ public class HaloOglasiCriteriaTransformer {
         }
 
         private void transformMultivalueCriteria(MultiValueCriteria criteria, HaloOglasiRequest request) {
-            if (Arrays.asList(CriteriaDefinitions.ADVERTISER, CriteriaDefinitions.BUILD_TYPE, CriteriaDefinitions.HEATING_TYPE, CriteriaDefinitions.FACILITIES).contains(criteria.getName()))
+            if (Arrays.asList(CriteriaDefinitions.ADVERTISER, CriteriaDefinitions.BUILD_TYPE, CriteriaDefinitions.HEATING_TYPE, CriteriaDefinitions.FACILITIES).contains(criteria.getName())) {
                 request.updateFieldOrQueries(new HaloOglasiRequest.FieldORQuery(criteriaDefinitionMappings.get(criteria.getName()), getMappings(criteria.getValues())));
+            } else if (CriteriaDefinitions.REGISTRATION.equals(criteria.getName())) {
+                if (criteria.getValues().contains(RegistrationType.REGISTERED.name()))
+                    request.updateFieldOrQueries(HaloOglasiRequest.FieldORQuery.from(criteriaDefinitionMappings.get(CriteriaDefinitions.REGISTRATION), criteriaDefinitionMappings.get(RegistrationType.REGISTERED.name())));
+            }
         }
 
         private List<String> getMappings(Set<String> values) {

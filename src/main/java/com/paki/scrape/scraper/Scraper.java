@@ -14,10 +14,7 @@ import com.paki.scrape.entities.Search;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public abstract class Scraper {
@@ -26,6 +23,7 @@ public abstract class Scraper {
     protected final RealtyType realtyType;
 
     private final int MAX_RETRY = 2;
+    private final int SLEEP_PERIOD = 2000;
 
     public Scraper(Search search) {
         this.search = search;
@@ -33,8 +31,40 @@ public abstract class Scraper {
         this.realtyType = determineRealtyType(search.getCriteria());
     }
 
-    public Set<Realty> scrapeNext() throws IOException {
+    public final Set<Realty> scrapeNext() throws IOException {
         return filterResults(scrapeNextWithRetry());
+    }
+
+    public final Set<Realty> scrapeAdditionalFields(Set<Realty> realties) {
+        Set<Realty> updatedRealties = new HashSet<>();
+        for (Realty realty: realties) {
+            scrapeAdditionalFieldsWithRetry(realty).ifPresent(updatedRealties::add);
+        }
+        return updatedRealties;
+    }
+
+    private Optional<Realty> scrapeAdditionalFieldsWithRetry(Realty realty) {
+        int tryCount = 0;
+        while (tryCount < MAX_RETRY) {
+            tryCount++;
+            try {
+                return doScrapeAdditionalFields(realty);
+            } catch (IOException | NullPointerException e) {
+                if (tryCount == MAX_RETRY) {
+                    System.out.println(String.format("Failed to populate additional fields after %d attemps", MAX_RETRY));
+                    return Optional.empty();
+                } else {
+                    try {
+                        // sleep some time in order to prevent service denial
+                        System.out.println(String.format("Failed scraping of page for ad: %s. Will reattempt in %d seconds...", realty.getExternalId(), SLEEP_PERIOD / 1000));
+                        Thread.sleep(SLEEP_PERIOD);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
+            }
+        }
+        return Optional.empty();
     }
 
     private List<Realty> scrapeNextWithRetry() throws IOException {
@@ -46,12 +76,23 @@ public abstract class Scraper {
             } catch (IOException e) {
                 if (tryCount == MAX_RETRY)
                     throw e;
+                else {
+                    try {
+                        // sleep some time in order to prevent service denial
+                        System.out.println(String.format("Failed scraping of ads page. Will reattempt in %d seconds...", SLEEP_PERIOD / 1000));
+                        Thread.sleep(SLEEP_PERIOD);
+                    } catch (InterruptedException e1) {
+                        e1.printStackTrace();
+                    }
+                }
             }
         }
         return Collections.emptyList();
     }
 
     protected abstract List<Realty> doScrapeNext() throws IOException;
+
+    protected abstract Optional<Realty> doScrapeAdditionalFields(Realty realty) throws IOException;
 
     private Set<Realty> filterResults(List<Realty> results) {
         Set<Realty> filteredResults = new HashSet<>(results);
@@ -64,7 +105,7 @@ public abstract class Scraper {
             }
             break;
         }
-        return filteredResults;
+        return filteredResults.stream().filter(realty -> realty.getExternalId() != null).collect(Collectors.toSet());
     }
 
     private boolean isPricePerAreaUnitInRange(Realty realty, BigDecimal from, BigDecimal to, AreaMeasurementUnit rangeUnit) {

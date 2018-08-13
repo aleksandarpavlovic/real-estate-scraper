@@ -15,10 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,12 +50,14 @@ public class RealtyService {
         return realtyRepository.findBySearchId(searchId, pageRequest);
     }
 
-    public void processScrapedRealties(ScrapeInfo scrapeInfo, Search search, Set<Realty> realties) {
+    public Set<Realty> processScrapedRealties(ScrapeInfo scrapeInfo, Search search, Set<Realty> realties) {
         RealtyRepository<? extends Realty> realtyRepository = inferRealtyRepository(search);
         Map<String, ? extends Realty> dbRealtiesMap = realtyRepository
                 .findByExternalIdIn(mapToIdList(realties))
                 .stream()
                 .collect(Collectors.toMap(Realty::getExternalId, r -> r));
+
+        Set<Realty> newRealties = new HashSet<>();
 
         for (Realty realty: realties) {
             Realty dbRealty = dbRealtiesMap.get(realty.getExternalId());
@@ -79,10 +78,17 @@ public class RealtyService {
             } else { // create new realty
                 realty.setScrapeRunNumber(scrapeInfo.getLastRunNumber());
                 dbRealty = realtyRepository.save(realty);
+                newRealties.add(dbRealty);
             }
             realtySearchRepository.save(new RealtySearchRelation(dbRealty, search));
         }
 
+        return newRealties;
+    }
+
+    public Set<Realty> updateRealties(Search search, Set<Realty> realties) {
+        RealtyRepository<? extends Realty> realtyRepository = inferRealtyRepository(search);
+        return new HashSet<>(realtyRepository.saveAll(realties));
     }
 
     private RealtyRepository<? extends Realty> inferRealtyRepository(Search search) {

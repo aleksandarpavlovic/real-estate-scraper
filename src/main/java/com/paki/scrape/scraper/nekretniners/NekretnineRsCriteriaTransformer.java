@@ -108,8 +108,6 @@ public class NekretnineRsCriteriaTransformer {
                 request.updatePath(new NekretnineRsRequest.Path("stambeni-objekti", criteriaDefinitionMappings.get(criteria.getValue())));
             else
                 request.updatePath(new NekretnineRsRequest.Path("zemljista", null));
-        } else if (REGISTRATION.equals(criteriaName)) {
-            request.setRegistered(Optional.of(true));
         } else if (APARTMENT_TYPE.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("tip-stanovi", criteriaDefinitionMappings.get(criteria.getValue())));
         }
@@ -172,6 +170,9 @@ public class NekretnineRsCriteriaTransformer {
             }
         } else if (FACILITIES.equals(criteriaName)) {
             request.updatePath(new NekretnineRsRequest.Path("prateci-objekti-povrsine", concatenate(getMappings(criteria.getValues()))));
+        } else if (REGISTRATION.equals(criteriaName)) {
+            if (criteria.getValues().contains(RegistrationType.REGISTERED.name()))
+                request.setRegistered(Optional.of(true));
         }
     }
 

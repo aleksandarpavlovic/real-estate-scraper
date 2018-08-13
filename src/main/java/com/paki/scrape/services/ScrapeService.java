@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -79,9 +78,11 @@ public class ScrapeService {
                 Set<Realty> pageResults = scraper.scrapeNext();
                 if (pageResults.isEmpty())
                     break;
-                realtyService.processScrapedRealties(scrapeInfo, search, pageResults);
+                Set<Realty> newRealties = realtyService.processScrapedRealties(scrapeInfo, search, pageResults);
+                Set<Realty> completeNewRealties = scraper.scrapeAdditionalFields(newRealties);
+                realtyService.updateRealties(search, completeNewRealties);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

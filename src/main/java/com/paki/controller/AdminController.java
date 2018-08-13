@@ -1,7 +1,6 @@
 package com.paki.controller;
 
 import com.paki.realties.enums.*;
-import com.paki.realties.locations.LocationsGenerator;
 import com.paki.scrape.criteria.*;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
 import com.paki.scrape.entities.ScrapeSettings;
@@ -74,13 +73,13 @@ public class AdminController {
         Set<BaseCriteria> criteriaList = new HashSet<>();
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.AD_TYPE, AdType.SELL.name()));
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT.name()));
-        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.ADVERTISER, new HashSet<>(Arrays.asList(AdvertiserType.OWNER.name()))));
+//        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.ADVERTISER, new HashSet<>(Arrays.asList(AdvertiserType.OWNER.name()))));
         criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.REGISTRATION, new HashSet<>(Arrays.asList(RegistrationType.REGISTERED.name()))));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.PRICE, 0, 51000));
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 46, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5.name(), RoomCount.RC_2_0.name()));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.FLOOR, CriteriaDefinitions.HIGH_GROUND_FLOOR, 1));
-        criteriaList.add(new LocationCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList(LocationsGenerator.getLocations().get(0).getId(), LocationsGenerator.getLocations().get(2).getId(), LocationsGenerator.getLocations().get(1).getSublocations().get(0).getId()))));
+        criteriaList.add(new LocationCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList("1_46", "4"))));//medakovic i kv
 
         return criteriaList;
     }

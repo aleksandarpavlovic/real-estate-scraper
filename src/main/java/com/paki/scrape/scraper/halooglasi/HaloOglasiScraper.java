@@ -16,6 +16,7 @@ import org.jsoup.parser.Parser;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class HaloOglasiScraper extends Scraper {
     private final HaloOglasiCriteriaTransformer criteriaTransformer = new HaloOglasiCriteriaTransformer();
@@ -25,6 +26,11 @@ public class HaloOglasiScraper extends Scraper {
     public HaloOglasiScraper(Search search) {
         super(search);
         request = criteriaTransformer.transform(search.getCriteria());
+    }
+
+    @Override
+    protected Optional<Realty> doScrapeAdditionalFields(Realty realty) throws IOException {
+        return Optional.empty();
     }
 
     @Override

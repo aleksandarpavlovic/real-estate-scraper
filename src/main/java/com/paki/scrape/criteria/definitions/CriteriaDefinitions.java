@@ -70,7 +70,7 @@ public class CriteriaDefinitions {
         realtyTypeCD = new SingleSelectCriteriaDefinition(REALTY_TYPE, RealtyType.values());
         buildTypeCD = new MultiSelectCriteriaDefinition(BUILD_TYPE, BuildType.values());
         heatingTypeCD = new MultiSelectCriteriaDefinition(HEATING_TYPE, HeatingType.values());
-        registeredCD = new MultiSelectCriteriaDefinition(REGISTRATION, RegistrationType.values());
+        registeredCD = new MultiSelectCriteriaDefinition(REGISTRATION, new RegistrationType[] {RegistrationType.REGISTERED});
         apartmentTypeCD = new MultiSelectCriteriaDefinition(APARTMENT_TYPE, ApartmentType.values());
         facilitiesCD = new MultiSelectCriteriaDefinition(FACILITIES, Facilities.values());
         roomCountCD = new RangeSingleSelectCriteriaDefinition(ROOM_COUNT, RoomCount.values());

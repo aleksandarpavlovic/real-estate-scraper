@@ -29,6 +29,7 @@ public class HaloOglasiAdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Apartment apartment = Apartment.builder()
+                        .source(AdSource.HALO_OGLASI)
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -43,7 +44,6 @@ public class HaloOglasiAdParser {
                         .roomCount(getRoomCount(parseRoomCount(rawAd)))
                         .registered(RegistrationType.NA)
                         .build();
-                apartment.setSource(AdSource.HALO_OGLASI);
 
                 ads.add(apartment);
             } catch(Exception e) {
@@ -58,6 +58,7 @@ public class HaloOglasiAdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 House house= House.builder()
+                        .source(AdSource.HALO_OGLASI)
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -72,7 +73,6 @@ public class HaloOglasiAdParser {
                         .roomCount(getRoomCount(parseRoomCount(rawAd)))
                         .registered(RegistrationType.NA)
                         .build();
-                house.setSource(AdSource.HALO_OGLASI);
 
                 ads.add(house);
             } catch(Exception e) {
@@ -87,6 +87,7 @@ public class HaloOglasiAdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Land land= Land.builder()
+                        .source(AdSource.HALO_OGLASI)
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -100,7 +101,6 @@ public class HaloOglasiAdParser {
                         .areaMeasurementUnit(getAreaMeasurementUnit(parseAreaMeasurementUnit(rawAd)))
                         .registered(RegistrationType.NA)
                         .build();
-                land.setSource(AdSource.HALO_OGLASI);
 
                 ads.add(land);
             } catch(Exception e) {
@@ -111,8 +111,7 @@ public class HaloOglasiAdParser {
     }
 
     private String parseId(Element rawAd) {
-        String id = rawAd.attr("data-id");
-        return id != null ? id : "";
+        return rawAd.attr("data-id");
     }
 
     private String formCompleteId(String id) {
