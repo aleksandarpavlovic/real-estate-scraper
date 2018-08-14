@@ -4,8 +4,7 @@ import com.google.gson.Gson;
 import com.paki.realties.enums.*;
 import com.paki.realties.locations.LocationsGenerator;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class CriteriaDefinitions {
 
@@ -59,9 +58,11 @@ public class CriteriaDefinitions {
     public static final LocationCriteriaDefinition locationCD;
     public static final String LOCATION = "Location";
 
-    public static final List<BaseCriteriaDefinition> apartmentCriteriaDefinitions;
-    public static final List<BaseCriteriaDefinition> houseCriteriaDefinitions;
-    public static final List<BaseCriteriaDefinition> landCriteriaDefinitions;
+    private static final List<BaseCriteriaDefinition> apartmentCriteriaDefinitions;
+    private static final List<BaseCriteriaDefinition> houseCriteriaDefinitions;
+    private static final List<BaseCriteriaDefinition> landCriteriaDefinitions;
+
+    private static final Map<RealtyType, List<BaseCriteriaDefinition>> definitionsMap;
 
     static {
         adTypeCD = new SingleSelectCriteriaDefinition(AD_TYPE, AdType.values());
@@ -69,7 +70,7 @@ public class CriteriaDefinitions {
         realtyTypeCD = new SingleSelectCriteriaDefinition(REALTY_TYPE, RealtyType.values());
         buildTypeCD = new MultiSelectCriteriaDefinition(BUILD_TYPE, BuildType.values());
         heatingTypeCD = new MultiSelectCriteriaDefinition(HEATING_TYPE, HeatingType.values());
-        registeredCD = new MultiSelectCriteriaDefinition(REGISTRATION, RegistrationType.values());
+        registeredCD = new MultiSelectCriteriaDefinition(REGISTRATION, new RegistrationType[] {RegistrationType.REGISTERED});
         apartmentTypeCD = new MultiSelectCriteriaDefinition(APARTMENT_TYPE, ApartmentType.values());
         facilitiesCD = new MultiSelectCriteriaDefinition(FACILITIES, Facilities.values());
         roomCountCD = new RangeSingleSelectCriteriaDefinition(ROOM_COUNT, RoomCount.values());
@@ -84,6 +85,15 @@ public class CriteriaDefinitions {
         apartmentCriteriaDefinitions = Arrays.asList(realtyTypeCD, adTypeCD, advertiserTypeCD, registeredCD, priceCD, pricePerM2CD, areaM2CD, locationCD, roomCountCD, floorCD, buildTypeCD, heatingTypeCD, apartmentTypeCD, facilitiesCD);
         houseCriteriaDefinitions = Arrays.asList(realtyTypeCD, adTypeCD, advertiserTypeCD, registeredCD, priceCD, pricePerM2CD, areaM2CD, locationCD, roomCountCD, heatingTypeCD, facilitiesCD);
         landCriteriaDefinitions = Arrays.asList(realtyTypeCD, adTypeCD, advertiserTypeCD, registeredCD, priceCD, pricePerAreCD, areaAreCD, locationCD);
+
+        definitionsMap = new HashMap<>();
+        definitionsMap.put(RealtyType.APARTMENT, apartmentCriteriaDefinitions);
+        definitionsMap.put(RealtyType.HOUSE, houseCriteriaDefinitions);
+        definitionsMap.put(RealtyType.LAND, landCriteriaDefinitions);
+    }
+
+    public static List<BaseCriteriaDefinition> getDefinitions(RealtyType realtyType) {
+        return definitionsMap.getOrDefault(realtyType, Collections.emptyList());
     }
 
     public static void main(String[] args) {

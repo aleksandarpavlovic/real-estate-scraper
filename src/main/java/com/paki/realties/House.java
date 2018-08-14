@@ -17,8 +17,8 @@ import java.time.LocalDate;
 public class House extends Home {
 
     @Builder
-    public House(String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered, RoomCount roomCount) {
-        super(externalId, title, description, location, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, areaMeasurementUnit, registered, roomCount);
+    public House(AdSource source, String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered, RoomCount roomCount) {
+        super(source, externalId, title, description, location, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, areaMeasurementUnit, registered, roomCount);
     }
 
     @Override

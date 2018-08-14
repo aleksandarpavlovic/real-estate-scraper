@@ -6,18 +6,38 @@ import lombok.Setter;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
-import java.util.List;
+import javax.persistence.FetchType;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
 public class MultiValueCriteria extends BaseCriteria {
-    @ElementCollection
-    private List<String> values;
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> values;
 
-    public MultiValueCriteria(String name, List<String> values) {
+    public MultiValueCriteria(String name, Set<String> values) {
         super(name);
         this.values = values;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!super.equals(obj))
+            return false;
+
+        if (!(obj instanceof MultiValueCriteria))
+            return false;
+
+        MultiValueCriteria other = (MultiValueCriteria) obj;
+
+        if (this.getValues().size() != other.getValues().size())
+            return false;
+
+        Set<String> vals = new HashSet<>(this.getValues());
+        vals.removeAll(other.getValues());
+        return vals.isEmpty();
     }
 }
