@@ -188,5 +188,6 @@ public class SearchProfileService {
     private void createBidirectionalLinks(SearchProfile searchProfile) {
         searchProfile.getSearch().setSearchProfile(searchProfile);
         searchProfile.getSearch().getCriteria().forEach(c -> c.setSearch(searchProfile.getSearch()));
+        searchProfile.getTopAdConditions().forEach(c -> c.setSearchProfile(searchProfile));
     }
 }

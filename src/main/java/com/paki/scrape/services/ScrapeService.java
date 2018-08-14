@@ -9,7 +9,6 @@ import com.paki.scrape.entities.*;
 import com.paki.scrape.scraper.Scraper;
 import com.paki.scrape.scraper.ScraperFactory;
 import com.paki.scrape.synchronization.GlobalLock;
-import com.paki.scrape.topad.TopAdCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,7 +55,7 @@ public class ScrapeService {
         try {
             ScrapeInfo scrapeInfo = prepareScrapeInfo();
             List<SearchProfile> profiles = searchProfileRepository.findAll();
-            Map<String, Map<TopAdCondition, List<? extends Realty>>> topAds = new HashMap<>();
+            Map<String, Map<String, List<? extends Realty>>> topAds = new HashMap<>();
 
             for (SearchProfile profile : profiles) {
                 Search search = profile.getSearch();

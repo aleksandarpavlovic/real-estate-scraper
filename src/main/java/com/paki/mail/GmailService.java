@@ -36,7 +36,7 @@ public class GmailService {
     @Setter
     private GmailCredentials gmailCredentials;
 
-    public boolean sendMessage(String recipientAddress, String subject, String body) throws MessagingException,
+    public boolean sendTextMessage(String recipientAddress, String subject, String body) throws MessagingException,
             IOException {
         Message message = createMessageWithEmail(
                 createEmail(recipientAddress, gmailCredentials.getUserEmail(), subject, body));

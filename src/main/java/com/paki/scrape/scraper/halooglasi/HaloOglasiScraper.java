@@ -15,8 +15,8 @@ import org.jsoup.parser.Parser;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public class HaloOglasiScraper extends Scraper {
     private final HaloOglasiCriteriaTransformer criteriaTransformer = new HaloOglasiCriteriaTransformer();
@@ -34,14 +34,14 @@ public class HaloOglasiScraper extends Scraper {
     }
 
     @Override
-    protected List<Realty> doScrapeNext() throws IOException {
+    protected Set<Realty> doScrapeNext() throws IOException {
         Gson gson = new Gson();
-        List<Realty> results = executeRequest(gson.toJson(request));
+        Set<Realty> results = executeRequest(gson.toJson(request));
         request = request.nextPageRequest();
         return results;
     }
 
-    private List<Realty> executeRequest(String request) throws IOException {
+    private Set<Realty> executeRequest(String request) throws IOException {
         Connection.Response response = Jsoup.connect("https://www.halooglasi.com/Quiddita.Widgets.Ad/AdCategoryBasicSearchWidgetAux/GetSidebarData")
                 .method(Connection.Method.POST)
                 .header("Accept", "application/json, text/javascript, */*; q=0.01")
@@ -58,14 +58,14 @@ public class HaloOglasiScraper extends Scraper {
         return extractRealties(doc);
     }
 
-    private List<Realty> extractRealties(Document doc) {
-        List<Realty> realties = parse(doc);
+    private Set<Realty> extractRealties(Document doc) {
+        Set<Realty> realties = parse(doc);
         for (Realty realty: realties)
             realty.setAdType(this.adType);
         return realties;
     }
 
-    private List<Realty> parse(Document doc) {
+    private Set<Realty> parse(Document doc) {
         if (realtyType == RealtyType.APARTMENT)
             return parser.parseApartments(doc);
         if (realtyType == RealtyType.HOUSE)
@@ -73,7 +73,7 @@ public class HaloOglasiScraper extends Scraper {
         if (realtyType == RealtyType.LAND)
             return parser.parseLand(doc);
         else
-            return Collections.emptyList();
+            return Collections.emptySet();
     }
 
     private Document prepareForParsing(String response) {
@@ -86,5 +86,10 @@ public class HaloOglasiScraper extends Scraper {
             sb.append(jsonAd.getAsJsonObject().get("ListHTML").getAsString());
         }
         return Jsoup.parse(Parser.unescapeEntities(sb.toString(), true));
+    }
+
+    @Override
+    public String toString() {
+        return "Halo oglasi Scraper";
     }
 }

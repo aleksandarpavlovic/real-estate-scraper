@@ -137,8 +137,6 @@ public class HaloOglasiCriteriaTransformer {
                     transformSingleValueCriteria((SingleValueCriteria) criteria, request);
                 else if (criteria instanceof RangeCriteria)
                     transformRangeCriteria((RangeCriteria) criteria, request);
-                else if (criteria instanceof LocationCriteria)
-                    transformLocationCriteria((LocationCriteria) criteria, request);
                 else if (criteria instanceof MultiValueCriteria)
                     transformMultivalueCriteria((MultiValueCriteria) criteria, request);
             }
@@ -218,9 +216,9 @@ public class HaloOglasiCriteriaTransformer {
             }
         }
 
-        private void transformLocationCriteria(LocationCriteria criteria, HaloOglasiRequest request) {
+        private void transformLocationCriteria(MultiValueCriteria criteria, HaloOglasiRequest request) {
             List<String> locations = new LinkedList<>();
-            for (String locationId: criteria.getLocations()) {
+            for (String locationId: criteria.getValues()) {
                 List<String> haloOglasiLocation = HaloOglasiLocationMapper.getLocation(locationId);
                 if (haloOglasiLocation != null)
                     locations.addAll(haloOglasiLocation);
@@ -230,7 +228,9 @@ public class HaloOglasiCriteriaTransformer {
         }
 
         private void transformMultivalueCriteria(MultiValueCriteria criteria, HaloOglasiRequest request) {
-            if (Arrays.asList(CriteriaDefinitions.ADVERTISER, CriteriaDefinitions.BUILD_TYPE, CriteriaDefinitions.HEATING_TYPE, CriteriaDefinitions.FACILITIES).contains(criteria.getName())) {
+            if (CriteriaDefinitions.LOCATION.equals(criteria.getName())) {
+                transformLocationCriteria(criteria, request);
+            } else if (Arrays.asList(CriteriaDefinitions.ADVERTISER, CriteriaDefinitions.BUILD_TYPE, CriteriaDefinitions.HEATING_TYPE, CriteriaDefinitions.FACILITIES).contains(criteria.getName())) {
                 request.updateFieldOrQueries(new HaloOglasiRequest.FieldORQuery(criteriaDefinitionMappings.get(criteria.getName()), getMappings(criteria.getValues())));
             } else if (CriteriaDefinitions.REGISTRATION.equals(criteria.getName())) {
                 if (criteria.getValues().contains(RegistrationType.REGISTERED.name()))

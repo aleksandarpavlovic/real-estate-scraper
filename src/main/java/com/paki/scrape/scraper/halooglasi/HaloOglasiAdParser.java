@@ -14,8 +14,8 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,8 +24,8 @@ public class HaloOglasiAdParser {
     Pattern areaUnitPattern = Pattern.compile("[0-9.,]+ (.*)");
     Pattern surfaceAreaPattern = Pattern.compile("([0-9.,]+) .*");
 
-    public List<Realty> parseApartments(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseApartments(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Apartment apartment = Apartment.builder()
@@ -53,8 +53,8 @@ public class HaloOglasiAdParser {
         return ads;
     }
 
-    public List<Realty> parseHouses(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseHouses(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 House house= House.builder()
@@ -82,8 +82,8 @@ public class HaloOglasiAdParser {
         return ads;
     }
 
-    public List<Realty> parseLand(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseLand(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Land land= Land.builder()

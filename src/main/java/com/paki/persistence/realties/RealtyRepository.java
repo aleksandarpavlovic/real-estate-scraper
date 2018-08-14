@@ -22,16 +22,16 @@ public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty
 
     List<T> findByExternalIdIn(Collection<String> externalIds);
 
-    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs, Search s WHERE r.id = rs.realty.id AND s.id = rs.search.id AND scrapeRunNumber = :scraperunnumber AND s.id = :searchid")
+    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs, Search s WHERE r.id = rs.realty.id AND s.id = rs.search.id AND r.scrapeRunNumber = :scraperunnumber AND s.id = :searchid")
     List<T> findByScrapeRunNumberAndSearchId(@Param("scraperunnumber") Long scrapeRunNumber, @Param("searchid") Long searchId);
 
-    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs, Search s, RealtyPriceChange pc WHERE r.id = rs.realty.id AND s.id = rs.search.id AND r.id = pc.realty.id AND scrapeRunNumber = :scraperunnumber AND s.id = :searchid AND pc.delta < 0")
+    @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs, Search s, RealtyPriceChange pc WHERE r.id = rs.realty.id AND s.id = rs.search.id AND r.id = pc.realty.id AND pc.changeRunNumber = :scraperunnumber AND s.id = :searchid AND pc.delta < 0")
     List<T> findDiscountedByScrapeRunNumberAndSearchId(@Param("scraperunnumber") Long scrapeRunNumber, @Param("searchid") Long searchId);
 
     @Query("Select r.price FROM #{#entityName} r ORDER BY r.price")
     List<BigDecimal> findAllPrices();
 
-    List<T> findByPriceLessThan(BigDecimal price);
+    List<T> findByPriceLessThanEqual(BigDecimal price);
 
     @Query("SELECT r FROM #{#entityName} r, RealtySearchRelation rs WHERE rs.search.id = :searchid AND rs.realty.id = r.id")
     List<T> findBySearchId(@Param("searchid") Long searchId);

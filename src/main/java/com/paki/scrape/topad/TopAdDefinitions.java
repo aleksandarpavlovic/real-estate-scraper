@@ -5,17 +5,18 @@ import com.paki.realties.enums.RealtyType;
 import java.util.*;
 
 public class TopAdDefinitions {
-    private static TopAdDefinition newAd;
-    private static TopAdDefinition priceDrop;
-    private static TopAdDefinition priceInTopNPercent;
-    private static TopAdDefinition pricePerM2InTopNPercent;
-    private static TopAdDefinition pricePerAreInTopNPercent;
+    public static TopAdDefinition newAd;
+    public static TopAdDefinition priceDrop;
+    public static TopAdDefinition priceInTopNPercent;
+    public static TopAdDefinition pricePerM2InTopNPercent;
+    public static TopAdDefinition pricePerAreInTopNPercent;
 
     private static List<TopAdDefinition> apartmentTopAdDefinitions;
     private static List<TopAdDefinition> houseTopAdDefinitions;
     private static List<TopAdDefinition> landTopAdDefinitions;
 
     private static Map<RealtyType, List<TopAdDefinition>> definitionsMap;
+    private static Map<TopAdName, TopAdDefinition> topAdNameDefinitionMap;
 
     static {
         newAd = new TopAdDefinition(TopAdName.NEW_AD, TopAdType.PLAIN, "Nov oglas");
@@ -32,9 +33,20 @@ public class TopAdDefinitions {
         definitionsMap.put(RealtyType.APARTMENT, apartmentTopAdDefinitions);
         definitionsMap.put(RealtyType.HOUSE, houseTopAdDefinitions);
         definitionsMap.put(RealtyType.LAND, landTopAdDefinitions);
+
+        topAdNameDefinitionMap = new HashMap<>();
+        topAdNameDefinitionMap.put(TopAdName.NEW_AD, newAd);
+        topAdNameDefinitionMap.put(TopAdName.PRICE_DROP, priceDrop);
+        topAdNameDefinitionMap.put(TopAdName.PRICE_IN_TOP_N_PERCENT, priceInTopNPercent);
+        topAdNameDefinitionMap.put(TopAdName.PRICE_PER_M2_IN_TOP_N_PERCENT, pricePerM2InTopNPercent);
+        topAdNameDefinitionMap.put(TopAdName.PRICE_PER_ARE_IN_TOP_N_PERCENT, pricePerAreInTopNPercent);
     }
 
     public static List<TopAdDefinition> getDefinitions(RealtyType realtyType) {
         return definitionsMap.getOrDefault(realtyType, Collections.emptyList());
+    }
+
+    public static TopAdDefinition getDefinitionByTopAdName(TopAdName name) {
+        return topAdNameDefinitionMap.get(name);
     }
 }

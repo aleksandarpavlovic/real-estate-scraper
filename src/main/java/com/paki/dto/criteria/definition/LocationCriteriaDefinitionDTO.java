@@ -1,8 +1,8 @@
 package com.paki.dto.criteria.definition;
 
+import com.paki.dto.LocationDTO;
 import com.paki.dto.ValueDTO;
 import com.paki.dto.criteria.CriteriaDTOType;
-import com.paki.dto.criteria.LocationDTO;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

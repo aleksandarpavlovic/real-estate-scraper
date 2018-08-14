@@ -14,8 +14,8 @@ import java.util.Objects;
 public class TopAdParameterizedCondition extends TopAdCondition {
     private String parameter;
 
-    public TopAdParameterizedCondition(TopAdDefinition definition, String parameter) {
-        super(definition);
+    public TopAdParameterizedCondition(TopAdName topAdName, String parameter) {
+        super(topAdName);
         this.parameter = parameter;
     }
 

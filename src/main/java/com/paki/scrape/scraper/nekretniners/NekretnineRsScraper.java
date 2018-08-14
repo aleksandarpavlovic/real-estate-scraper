@@ -18,6 +18,7 @@ public class NekretnineRsScraper extends Scraper {
     private final NekretnineRsCriteriaTransformer transformer = new NekretnineRsCriteriaTransformer();
     private final NekretnineRsAdParser parser = new NekretnineRsAdParser();
     NekretnineRsRequest request;
+    Set<Realty> lastRequestRealties = Collections.emptySet();
 
     public NekretnineRsScraper(Search search) {
         super(search);
@@ -31,13 +32,13 @@ public class NekretnineRsScraper extends Scraper {
     }
 
     @Override
-    protected List<Realty> doScrapeNext() throws IOException{
-        List<Realty> results = executeRequest(request);
+    protected Set<Realty> doScrapeNext() throws IOException{
+        Set<Realty> results = executeRequest(request);
         request = request.nextPageRequest();
         return results;
     }
 
-    private List<Realty> executeRequest(NekretnineRsRequest request) throws IOException {
+    private Set<Realty> executeRequest(NekretnineRsRequest request) throws IOException {
         List<String> urls = request.getUrls();
         Set<Realty> realties = new HashSet<>();
         for (String url: urls) {
@@ -49,17 +50,27 @@ public class NekretnineRsScraper extends Scraper {
 
             realties.addAll(extractRealties(response.parse()));
         }
-        return new ArrayList<>(realties);
+
+        if (shouldStop(realties))
+            return Collections.emptySet();
+        lastRequestRealties = realties;
+
+        return realties;
     }
 
-    private List<Realty> extractRealties(Document doc) {
-        List<Realty> realties = parse(doc);
+    private boolean shouldStop(Set<Realty> realties) {
+        return realties.size() == lastRequestRealties.size()
+                && realties.containsAll(lastRequestRealties);
+    }
+
+    private Set<Realty> extractRealties(Document doc) {
+        Set<Realty> realties = parse(doc);
         for (Realty realty: realties)
             realty.setAdType(this.adType);
         return realties;
     }
 
-    private List<Realty> parse(Document doc) {
+    private Set<Realty> parse(Document doc) {
         if (realtyType == RealtyType.APARTMENT)
             return parser.parseApartments(doc);
         if (realtyType == RealtyType.HOUSE)
@@ -67,7 +78,7 @@ public class NekretnineRsScraper extends Scraper {
         if (realtyType == RealtyType.LAND)
             return parser.parseLand(doc);
         else
-            return Collections.emptyList();
+            return Collections.emptySet();
     }
 
     private Optional<Realty> updateRealty(Realty realty, Document doc) {
@@ -91,5 +102,10 @@ public class NekretnineRsScraper extends Scraper {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Nekretnine.rs Scraper";
     }
 }

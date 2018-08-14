@@ -4,7 +4,7 @@ import com.paki.realties.enums.RealtyType;
 import com.paki.realties.locations.Location;
 import com.paki.realties.locations.LocationsGenerator;
 import com.paki.scrape.criteria.BaseCriteria;
-import com.paki.scrape.criteria.LocationCriteria;
+import com.paki.scrape.criteria.MultiValueCriteria;
 import com.paki.scrape.criteria.SingleValueCriteria;
 import com.paki.scrape.criteria.definitions.CriteriaDefinitions;
 import org.springframework.stereotype.Service;
@@ -19,23 +19,24 @@ public class CriteriaService {
 
     public void normalizeLocationCriteria(Collection<BaseCriteria> criteria) {
         criteria.stream()
-                .filter(c -> c instanceof LocationCriteria)
-                .map(c -> (LocationCriteria) c)
+                .filter(c -> c instanceof MultiValueCriteria)
+                .filter(c -> CriteriaDefinitions.LOCATION.equals(c.getName()))
+                .map(c -> (MultiValueCriteria) c)
                 .forEach(this::normalizeLocationCriteria);
     }
     /**
      * replaces group of locations with their parent if all children of the parent are in criteria
      * @param criteria
      */
-    public void normalizeLocationCriteria(LocationCriteria criteria) {
+    public void normalizeLocationCriteria(MultiValueCriteria criteria) {
         Set<Location> locationsToRemove = new HashSet<>();
-        for (String locationId: criteria.getLocations()) {
+        for (String locationId: criteria.getValues()) {
             Location location = LocationsGenerator.getLocation(locationId);
-            if (criteria.getLocations().containsAll(location.getSublocations())) {
+            if (criteria.getValues().containsAll(location.getSublocations())) {
                 locationsToRemove.addAll(location.getSublocations());
             }
         }
-        criteria.getLocations().removeAll(locationsToRemove);
+        criteria.getValues().removeAll(locationsToRemove);
     }
 
     public RealtyType inferRealtyType(Collection<BaseCriteria> criteria) {

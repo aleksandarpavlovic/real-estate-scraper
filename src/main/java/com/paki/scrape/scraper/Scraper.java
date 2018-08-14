@@ -14,7 +14,10 @@ import com.paki.scrape.entities.Search;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Scraper {
@@ -22,7 +25,7 @@ public abstract class Scraper {
     protected final AdType adType;
     protected final RealtyType realtyType;
 
-    private final int MAX_RETRY = 2;
+    private final int MAX_RETRY = 3;
     private final int SLEEP_PERIOD = 2000;
 
     public Scraper(Search search) {
@@ -51,13 +54,13 @@ public abstract class Scraper {
                 return doScrapeAdditionalFields(realty);
             } catch (IOException | NullPointerException e) {
                 if (tryCount == MAX_RETRY) {
-                    System.out.println(String.format("Failed to populate additional fields after %d attemps", MAX_RETRY));
+                    System.out.println(String.format(this.toString() + " failed to populate additional fields after %d attemps", MAX_RETRY));
                     return Optional.empty();
                 } else {
                     try {
                         // sleep some time in order to prevent service denial
-                        System.out.println(String.format("Failed scraping of page for ad: %s. Will reattempt in %d seconds...", realty.getExternalId(), SLEEP_PERIOD / 1000));
-                        Thread.sleep(SLEEP_PERIOD);
+                        System.out.println(String.format(this.toString() + " failed scraping of page for ad: %s in attempt #%d. Will reattempt in %d seconds...", realty.getExternalId(), tryCount, tryCount * SLEEP_PERIOD / 1000));
+                        Thread.sleep(SLEEP_PERIOD * tryCount);
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
@@ -67,35 +70,37 @@ public abstract class Scraper {
         return Optional.empty();
     }
 
-    private List<Realty> scrapeNextWithRetry() throws IOException {
+    private Set<Realty> scrapeNextWithRetry() throws IOException {
         int tryCount = 0;
         while (tryCount < MAX_RETRY) {
             tryCount++;
             try {
                 return doScrapeNext();
             } catch (IOException e) {
-                if (tryCount == MAX_RETRY)
+                if (tryCount == MAX_RETRY) {
+                    System.out.println(String.format(this.toString() + " failed to scrape page after %d attemps. Aborting this scraper...", MAX_RETRY));
                     throw e;
+                }
                 else {
                     try {
                         // sleep some time in order to prevent service denial
-                        System.out.println(String.format("Failed scraping of ads page. Will reattempt in %d seconds...", SLEEP_PERIOD / 1000));
-                        Thread.sleep(SLEEP_PERIOD);
+                        System.out.println(String.format(this.toString() +  "failed scraping of ads page in attempt #%d. Will reattempt in %d seconds...", tryCount, tryCount * SLEEP_PERIOD / 1000));
+                        Thread.sleep(SLEEP_PERIOD * tryCount);
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
                 }
             }
         }
-        return Collections.emptyList();
+        return Collections.emptySet();
     }
 
-    protected abstract List<Realty> doScrapeNext() throws IOException;
+    protected abstract Set<Realty> doScrapeNext() throws IOException;
 
     protected abstract Optional<Realty> doScrapeAdditionalFields(Realty realty) throws IOException;
 
-    private Set<Realty> filterResults(List<Realty> results) {
-        Set<Realty> filteredResults = new HashSet<>(results);
+    private Set<Realty> filterResults(Set<Realty> results) {
+        Set<Realty> filteredResults = results;
         for (BaseCriteria criteria: search.getCriteria()) {
             if (CriteriaDefinitions.PRICE_PER_M2.equals(criteria.getName()) || CriteriaDefinitions.PRICE_PER_ARE.equals(criteria.getName())) {
                 AreaMeasurementUnit criteriaUnit = ((RangeWithUnitCriteria)criteria).getUnit();
@@ -140,5 +145,10 @@ public abstract class Scraper {
             }
         }
         return null;
+    }
+
+    @Override
+    public String toString() {
+        return "Abstract scraper";
     }
 }

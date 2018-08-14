@@ -11,9 +11,7 @@ import com.paki.realties.util.UnitConversionUtil;
 import com.paki.scrape.entities.ScrapeInfo;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.entities.SearchProfile;
-import com.paki.scrape.topad.TopAdCondition;
-import com.paki.scrape.topad.TopAdDefinition;
-import com.paki.scrape.topad.TopAdParameterizedCondition;
+import com.paki.scrape.topad.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,17 +62,41 @@ public class TopAdService {
         this.criteriaService = criteriaService;
     }
 
-    public Map<TopAdCondition, List<? extends Realty>> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile) {
+    public Map<String, List<? extends Realty>> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile) {
         Set<TopAdCondition> conditions = searchProfile.getTopAdConditions();
         if (conditions == null || conditions.isEmpty())
             return new HashMap<>();
 
-        return searchProfile.getTopAdConditions().stream().collect(Collectors.toMap(condition -> condition, condition -> getTopAds(scrapeInfo, searchProfile, condition)));
+        Map<String, List<? extends Realty>> topAds = searchProfile.getTopAdConditions().stream().collect(Collectors.toMap(this::conditionDisplay, condition -> getTopAds(scrapeInfo, searchProfile, condition)));
+        return filteredTopAds(topAds);
+    }
+
+    private Map<String, List<? extends Realty>> filteredTopAds(Map<String, List<? extends Realty>> topAds) {
+        Map<String, List<? extends Realty>> filteredTopAds = new HashMap<>();
+        for (Map.Entry<String, List<? extends Realty>> entry: topAds.entrySet()) {
+            if (entry.getValue() == null || entry.getValue().isEmpty())
+                continue;
+            else
+                filteredTopAds.put(entry.getKey(), entry.getValue());
+        }
+        return filteredTopAds;
+    }
+
+    private String conditionDisplay(TopAdCondition condition) {
+        TopAdDefinition definition = TopAdDefinitions.getDefinitionByTopAdName(condition.getTopAdName());
+        if (definition == null)
+            return "";
+        if (condition instanceof TopAdParameterizedCondition) {
+            TopAdParameterizedCondition parameterizedCondition = (TopAdParameterizedCondition) condition;
+            return definition.getText().replaceFirst("\\?.+?\\?", parameterizedCondition.getParameter());
+        } else {
+            return definition.getText();
+        }
     }
 
     private List<? extends Realty> getTopAds(ScrapeInfo scrapeInfo, SearchProfile searchProfile, TopAdCondition topAdCondition) {
-        TopAdDefinition definition = topAdCondition.getDefinition();
-        switch (definition.getName()) {
+        TopAdName topAdName = topAdCondition.getTopAdName();
+        switch (topAdName) {
             case NEW_AD:
                 return fetchLatest(scrapeInfo, searchProfile);
             case PRICE_DROP:
@@ -115,7 +137,8 @@ public class TopAdService {
         int thresholdPriceIndex = (int)((double)sortedPrices.size() * percent) / 100;
         BigDecimal thresholdPrice = sortedPrices.get(thresholdPriceIndex);
 
-        return realtyRepository.findByPriceLessThan(thresholdPrice);
+        List<Realty> realties = realtyRepository.findByPriceLessThanEqual(thresholdPrice);
+        return realties.stream().filter(realty -> realty.getScrapeRunNumber() == scrapeInfo.getLastRunNumber()).collect(Collectors.toList());
     }
 
     private List<? extends Realty> fetchLatestWithTopPricePerArea(ScrapeInfo scrapeInfo, SearchProfile searchProfile, String conditionParameter) {
@@ -125,7 +148,7 @@ public class TopAdService {
         List<Realty> realties = realtyRepository.findBySearchId(searchProfile.getSearch().getId());
         realties.sort(PRICE_PER_AREA_COMPARATOR);
 
-        int thresholdIndex = (int)((double)realties.size() * percent) / 100;
+        int thresholdIndex = Math.max(1, (int)((double)realties.size() * percent) / 100);
         return realties.stream().limit(thresholdIndex).filter(realty -> realty.getScrapeRunNumber() == scrapeInfo.getLastRunNumber()).collect(Collectors.toList());
     }
 

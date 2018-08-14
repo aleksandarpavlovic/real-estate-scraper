@@ -88,8 +88,6 @@ public class NekretnineRsCriteriaTransformer {
                 transformSingleValueCriteria((SingleValueCriteria) criteria, request);
             else if (criteria instanceof RangeCriteria)
                 transformRangeCriteria((RangeCriteria) criteria, request);
-            else if (criteria instanceof LocationCriteria)
-                transformLocationCriteria((LocationCriteria) criteria, request);
             else if (criteria instanceof MultiValueCriteria)
                 transformMultivalueCriteria((MultiValueCriteria) criteria, request);
         }
@@ -153,7 +151,9 @@ public class NekretnineRsCriteriaTransformer {
 
     private void transformMultivalueCriteria(MultiValueCriteria criteria, NekretnineRsRequest request) {
         String criteriaName = criteria.getName();
-        if (ADVERTISER.equals(criteriaName)) {
+        if (LOCATION.equals(criteriaName)) {
+            transformLocationCriteria(criteria, request);
+        } else if (ADVERTISER.equals(criteriaName)) {
             List<String> mappings = criteria.getValues().stream().map(criteriaDefinitionMappings::get).collect(Collectors.toList());
             request.setAdvertiser(Optional.of(mappings));
         } else if (BUILD_TYPE.equals(criteriaName)) {
@@ -176,10 +176,10 @@ public class NekretnineRsCriteriaTransformer {
         }
     }
 
-    public void transformLocationCriteria(LocationCriteria criteria, NekretnineRsRequest request) {
+    public void transformLocationCriteria(MultiValueCriteria criteria, NekretnineRsRequest request) {
         List<String> sublocations = new LinkedList<>();
         List<String> cities = new LinkedList<>();
-        for (String locationId: criteria.getLocations()) {
+        for (String locationId: criteria.getValues()) {
             String sublocation = NekretnineRsLocationMapper.getLocation(locationId);
             if (sublocation != null)
                 sublocations.add(sublocation);

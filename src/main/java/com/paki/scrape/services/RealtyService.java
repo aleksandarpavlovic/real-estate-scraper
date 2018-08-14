@@ -63,7 +63,7 @@ public class RealtyService {
             Realty dbRealty = dbRealtiesMap.get(realty.getExternalId());
             // if price updated create RealtyPriceChange
             if (dbRealty != null) {
-                if (dbRealty.getPrice() != realty.getPrice()) {
+                if (dbRealty.getPrice().compareTo(realty.getPrice()) != 0) {
                     BigDecimal priceDelta = realty.getPrice().subtract(dbRealty.getPrice());
                     RealtyPriceChange priceChange = RealtyPriceChange.builder()
                             .realty(dbRealty)

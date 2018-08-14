@@ -5,7 +5,6 @@ import com.paki.mail.GmailCredentials;
 import com.paki.mail.GmailService;
 import com.paki.realties.Realty;
 import com.paki.scrape.entities.ScrapeSettings;
-import com.paki.scrape.topad.TopAdCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -57,8 +56,8 @@ public class NotificationService {
         }
     }
 
-    public void notify(Map<String, Map<TopAdCondition, List<? extends Realty>>> topAds) {
-        if (topAds == null || topAds.isEmpty())
+    public void notify(Map<String, Map<String, List<? extends Realty>>> topAds) {
+        if (hasNoAdForNotification(topAds))
             return;
 
         StringBuilder sb = new StringBuilder();
@@ -77,13 +76,29 @@ public class NotificationService {
         if (settings != null && settings.getEmailList() != null && !settings.getEmailList().isEmpty())
             settings.getEmailList().forEach(recipient -> {
                 try {
-                    gmailService.sendMessage(recipient, "Scrape stanova izvestaj", sb.toString());
+                    gmailService.sendHtmlMessage(recipient, "Scrape stanova izvestaj", sb.toString());
                 } catch (MessagingException e) {
                     e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             });
+    }
+
+    boolean hasNoAdForNotification(Map<String, Map<String, List<? extends Realty>>> topAds) {
+        if (topAds == null || topAds.isEmpty())
+            return true;
+
+        for (Map<String, List<? extends Realty>> topAdsPerProfile: topAds.values()) {
+            if (topAdsPerProfile == null || topAdsPerProfile.isEmpty())
+                continue;
+            for (List<? extends Realty> topAdsPerProfileCondition: topAdsPerProfile.values()) {
+                if (topAdsPerProfileCondition != null && !topAdsPerProfileCondition.isEmpty())
+                    return false;
+            }
+        }
+
+        return true;
     }
 
     private String profileHtml(String profileName) {
@@ -103,7 +118,7 @@ public class NotificationService {
         return priceFormat.format(price).replace(',', '.');
     }
 
-    private static final String MAIL_TITLE_HTML = "<h2>Pronadjeni su novi oglasi koji vam mogu biti interesantni!</h2>";
+    private static final String MAIL_TITLE_HTML = "<h2>Pronadjeni su novi oglasi koji Vam mogu biti interesantni!</h2>";
     private static final String MAIL_PROFILE_HTML = "<p style=\"font-size: 1.5em;\">Profil <strong><em>%s</em></strong>:</p>";
     private static final String MAIL_TOP_AD_HTML = "<p style=\"font-size: 1.3em; padding-left: 20px;\">Oglasi u kategoriji <strong><em>%s</em></strong>:</p>";
     private static final String MAIL_START_AD_LIST_HTML = "<ul>";

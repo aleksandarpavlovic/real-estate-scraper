@@ -30,11 +30,10 @@ public class TopAdCondition {
     @JsonBackReference
     private SearchProfile searchProfile;
 
-    @ManyToOne
-    private TopAdDefinition definition;
+    private TopAdName topAdName;
 
-    public TopAdCondition(TopAdDefinition definition) {
-        this.definition = definition;
+    public TopAdCondition(TopAdName topAdName) {
+        this.topAdName = topAdName;
     }
     @Override
     public boolean equals(Object obj) {
@@ -43,16 +42,16 @@ public class TopAdCondition {
         if (obj.getClass() != this.getClass())
             return false;
         TopAdCondition other = (TopAdCondition) obj;
-        return other.definition == this.definition;
+        return other.topAdName == this.topAdName;
     }
 
     @Override
     public int hashCode() {
-        return definition.hashCode();
+        return topAdName.hashCode();
     }
 
     @Override
     public String toString() {
-        return definition.getText();
+        return topAdName.name();
     }
 }

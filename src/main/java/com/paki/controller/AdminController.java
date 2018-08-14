@@ -9,6 +9,9 @@ import com.paki.scrape.entities.SearchProfile;
 import com.paki.scrape.services.ScrapeService;
 import com.paki.scrape.services.SearchProfileService;
 import com.paki.scrape.services.SettingsService;
+import com.paki.scrape.topad.TopAdCondition;
+import com.paki.scrape.topad.TopAdName;
+import com.paki.scrape.topad.TopAdParameterizedCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,6 +69,7 @@ public class AdminController {
         profile.setName("testProfile");
         profile.setSearch(new Search());
         profile.getSearch().setCriteria(testCriteria());
+        profile.setTopAdConditions(testTopAd());
         return profile;
     }
 
@@ -79,9 +83,18 @@ public class AdminController {
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 46, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, RoomCount.RC_0_5.name(), RoomCount.RC_2_0.name()));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.FLOOR, CriteriaDefinitions.HIGH_GROUND_FLOOR, 1));
-        criteriaList.add(new LocationCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList("1_46", "4"))));//medakovic i kv
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList("1_46_3", "4"))));//medakovic2 i kv
 
         return criteriaList;
+    }
+
+    private static Set<TopAdCondition> testTopAd() {
+        Set<TopAdCondition> conditionSet = new HashSet<>();
+        conditionSet.add(new TopAdCondition(TopAdName.NEW_AD));
+        conditionSet.add(new TopAdCondition(TopAdName.PRICE_DROP));
+        conditionSet.add(new TopAdParameterizedCondition(TopAdName.PRICE_IN_TOP_N_PERCENT, "5"));
+        conditionSet.add(new TopAdParameterizedCondition(TopAdName.PRICE_PER_M2_IN_TOP_N_PERCENT, "5"));
+        return conditionSet;
     }
 
 }

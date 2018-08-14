@@ -11,8 +11,8 @@ import org.jsoup.nodes.Element;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,8 +23,8 @@ public class NekretnineRsAdParser {
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
     Pattern idPattern = Pattern.compile(".*www\\.nekretnine\\.rs/.+?/.+?/([0-9]+)");
 
-    public List<Realty> parseApartments(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseApartments(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
@@ -51,8 +51,8 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
-    public List<Realty> parseHouses(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseHouses(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
@@ -79,8 +79,8 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
-    public List<Realty> parseLand(Document doc) {
-        List<Realty> ads = new LinkedList<>();
+    public Set<Realty> parseLand(Document doc) {
+        Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
