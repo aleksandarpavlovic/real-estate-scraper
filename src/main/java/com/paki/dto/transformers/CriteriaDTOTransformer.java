@@ -1,6 +1,7 @@
 package com.paki.dto.transformers;
 
 import com.google.gson.*;
+import com.paki.dto.LocationDTO;
 import com.paki.dto.ValueDTO;
 import com.paki.dto.criteria.*;
 import com.paki.dto.criteria.definition.CriteriaDefinitionDTO;
@@ -150,17 +151,7 @@ public class CriteriaDTOTransformer {
     }
 
     public CriteriaDTO transformCriteriaToDTO(BaseCriteria criteria) {
-        if (criteria instanceof LocationCriteria) {
-            LocationCriteria locationCriteria = (LocationCriteria) criteria;
-            List<ValueDTO> transformedLocations = locationCriteria.getLocations().stream()
-                    .map(v ->
-                    {
-                        Location location = LocationsGenerator.getLocation(v);
-                        return new ValueDTO(v, location.getName());
-                    })
-                    .collect(Collectors.toList());
-            return new MultiValueCriteriaDTO(new ValueDTO(CriteriaDefinitions.LOCATION, LOKACIJA), CriteriaDTOType.MULTI_SELECT_TREE, transformedLocations);
-        } else if (criteria instanceof RangeCriteria) {
+        if (criteria instanceof RangeCriteria) {
             RangeCriteria rangeCriteria = (RangeCriteria) criteria;
             if (CriteriaDefinitions.SURFACE_M2.equals(rangeCriteria.getName()))
                 return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.SURFACE_M2, POVRSINA_M2), CriteriaDTOType.RANGE, transformIntegerToValueDTO(rangeCriteria.getRangeFrom()), transformIntegerToValueDTO(rangeCriteria.getRangeTo()));
@@ -178,6 +169,8 @@ public class CriteriaDTOTransformer {
                 return new RangeCriteriaDTO(new ValueDTO(CriteriaDefinitions.ROOM_COUNT, BROJ_SOBA), CriteriaDTOType.RANGE, transformToValueDTO(rangeCriteria.getRangeFrom()), transformToValueDTO(rangeCriteria.getRangeTo()));
         } else if (criteria instanceof MultiValueCriteria) {
             MultiValueCriteria mvCriteria = (MultiValueCriteria) criteria;
+            if (CriteriaDefinitions.LOCATION.equals(mvCriteria.getName()))
+                return transformLocationCriteriaToDTO(mvCriteria);
             if (CriteriaDefinitions.ADVERTISER.equals(mvCriteria.getName()))
                 return new MultiValueCriteriaDTO(new ValueDTO(CriteriaDefinitions.ADVERTISER, OGLASIVAC), CriteriaDTOType.MULTI_SELECT, transformToValueDTOs(mvCriteria.getValues()));
             else if (CriteriaDefinitions.REGISTRATION.equals(mvCriteria.getName()))
@@ -200,6 +193,17 @@ public class CriteriaDTOTransformer {
         return null;
     }
 
+    private CriteriaDTO transformLocationCriteriaToDTO(MultiValueCriteria criteria) {
+        List<ValueDTO> transformedLocations = criteria.getValues().stream()
+                .map(v ->
+                {
+                    Location location = LocationsGenerator.getLocation(v);
+                    return new ValueDTO(v, location.getName());
+                })
+                .collect(Collectors.toList());
+        return new MultiValueCriteriaDTO(new ValueDTO(CriteriaDefinitions.LOCATION, LOKACIJA), CriteriaDTOType.MULTI_SELECT_TREE, transformedLocations);
+    }
+
     public BaseCriteria transformDTOToCriteria(CriteriaDTO dto) {
         switch (dto.getCriteriaType()) {
             case SINGLE_SELECT:
@@ -215,11 +219,11 @@ public class CriteriaDTOTransformer {
                 else
                     return new MultiValueCriteria(mvDto.getName().getName(), mvDto.getValues().stream().map(v -> v.getName()).collect(Collectors.toSet()));
             case MULTI_SELECT_TREE:
-                MultiValueCriteriaDTO locationDto = (MultiValueCriteriaDTO) dto;
-                if (locationDto.getValues() == null)
+                MultiValueCriteriaDTO mvDTO = (MultiValueCriteriaDTO) dto;
+                if (mvDTO.getValues() == null)
                     return null;
                 else
-                    return transformDTOToLocationCriteria(locationDto);
+                    return transformDTOToLocationCriteria(mvDTO);
             case RANGE:
                 RangeCriteriaDTO rangeDto = (RangeCriteriaDTO) dto;
                 if (rangeDto.getFrom() == null && rangeDto.getTo() == null)
@@ -244,13 +248,13 @@ public class CriteriaDTOTransformer {
         return null;
     }
 
-    private LocationCriteria transformDTOToLocationCriteria(MultiValueCriteriaDTO dto) {
-        LocationCriteria locationCriteria = new LocationCriteria();
+    private MultiValueCriteria transformDTOToLocationCriteria(MultiValueCriteriaDTO dto) {
+        MultiValueCriteria locationCriteria = new MultiValueCriteria();
         locationCriteria.setName(CriteriaDefinitions.LOCATION);
         Set<String> locationSet = dto.getValues().stream()
                 .map(ValueDTO::getName)
                 .collect(Collectors.toSet());
-        locationCriteria.setLocations(locationSet);
+        locationCriteria.setValues(locationSet);
         return locationCriteria;
     }
 
@@ -296,7 +300,7 @@ public class CriteriaDTOTransformer {
     }
 
     private LocationDTO transformLocationToLocationDTO(Location location) {
-        LocationDTO dto = new LocationDTO(new ValueDTO(location.getId(), location.getName()), null, null);
+        LocationDTO dto = new LocationDTO(location.getId(), location.getName(), null);
         if (location.getSublocations() == null || location.getSublocations().isEmpty())
             return dto;
         else {
@@ -354,7 +358,7 @@ public class CriteriaDTOTransformer {
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, null, 123, AreaMeasurementUnit.SQUARE_METER));
         criteriaList.add(new StringRangeCriteria(CriteriaDefinitions.ROOM_COUNT, null, RoomCount.RC_5_0.name()));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.FLOOR, CriteriaDefinitions.HIGH_GROUND_FLOOR, null));
-        criteriaList.add(new LocationCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList(LocationsGenerator.getLocations().get(2).getId(), LocationsGenerator.getLocations().get(1).getSublocations().get(0).getId()))));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.LOCATION, new HashSet<>(Arrays.asList(LocationsGenerator.getLocations().get(2).getId(), LocationsGenerator.getLocations().get(1).getSublocations().get(0).getId()))));
         return criteriaList;
     }
 }

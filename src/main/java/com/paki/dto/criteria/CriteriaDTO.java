@@ -14,7 +14,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = LocationDTO.class, name = "Location"),
         @JsonSubTypes.Type(value = SingleValueCriteriaDTO.class, name = "Single Value"),
         @JsonSubTypes.Type(value = MultiValueCriteriaDTO.class, name = "Multi Value"),
         @JsonSubTypes.Type(value = RangeCriteriaDTO.class, name = "Range")
