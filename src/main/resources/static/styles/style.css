@@ -1,0 +1,253 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 1000px;
+    height: auto;
+    margin: 10px auto;
+    background-color: gainsboro;
+    font-family: Roboto, sans-serif;
+}
+
+header {
+    width: 1000px;
+    height: 120px;
+    background-color:rgb(2, 2, 102);;
+    display: flex;
+    flex-direction: row;
+}
+header img {
+    width: 700px;
+    height: 120px;
+}
+header h1 {
+    margin: 40px auto;
+    color: white;
+}
+header span {
+    color: white;
+    font-size: 20px;
+    margin: 5px;
+    align-self: flex-end;
+}
+
+header span:hover {
+    cursor: pointer;
+}
+
+#settingsBox {
+    display: none;
+    width: 250px;
+    height: 180px;
+    position: absolute;
+    top: 125px;
+    right: 60px;
+    z-index: 1;
+    border: 1px solid darkblue;
+    background-color: gainsboro;
+}
+#settingsBox form {
+    width: 80%;
+    margin: 10px auto;
+}
+main {
+    width: 1000px;
+    height: auto;
+    border-top: none;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+aside {
+    width: 200px;
+    height: auto;
+    background-color: lightgray;
+    border-top: none;
+    font-family: "Times New Roman", Times, serif;
+}
+#izaberiProfil {
+    border-bottom: 1px solid #DDDFE2;
+}
+#izaberiProfil form{
+    margin: 10px auto;
+}
+#izaberiProfil input:nth-child(odd) {
+    width: 75px;
+    margin: 0 10px 0 20px;
+}
+#izaberiProfil input:nth-child(even) {
+    width: 75px;
+}
+#izaberiProfil input:hover {
+    cursor: pointer;
+}
+#izaberiProfil select {
+    width: 160px;
+    margin: 10px 20px;
+}
+
+#imeProfila input[type="text"]{
+    width: 95%;
+    margin: 5% auto;  
+}
+#imeProfila {
+    width: 80%;
+    margin: 0 auto;
+    display: none;
+}
+#tipNekretnine {
+    width: 100%;
+    margin: 5% 10%;
+}
+.cenaIKvadratura {
+    margin: 0 7px;
+}
+.cenaIKvadratura h4 {
+    text-decoration: underline;
+}
+.cenaIKvadratura input {
+    width: 55px;
+    margin: 0 10px 0 0;
+}
+
+.cenaIKvadratura input, select {
+    font-size: 12px;
+}
+.cenaIKvadratura form {
+    font-size: 13px;
+}
+.checkbox {
+    border-bottom: 2px solid #DDDFE2;
+    padding-left: 10%;
+    padding-bottom: 20px;
+    width: 190px;
+}
+.checkbox h4 {
+    text-decoration: underline;
+}
+.checkbox form {
+    border: 2px solid #DDDFE2;
+    width: 140px;
+}
+
+#topConditions {
+    margin: 0 10px;
+}
+#topConditions input {
+    width: 30px;
+}
+section {
+    width: 800px;
+    background-color: #F6F7F9;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#sortiranje {
+    align-self: flex-end;
+    margin: 5px;
+}
+
+.placeholder {
+    margin: 12px;
+    width: 630px;
+    height: 160px;
+    border: 2px solid #BDC7D8;
+    display: flex;
+    flex-direction: row;
+}
+
+.slikaDatumOglasivac {
+    padding: 5px;
+    font-size: 12px;
+}
+
+.slikaOglasa {
+    width: 160px;
+    height: 120px;
+    float: left;
+    padding: 5px;
+    padding-right: 20px;
+    margin-top: 3%;
+}
+.stanInfo {
+    text-align: left;
+    margin-top: -8px;
+    position: relative;
+}
+
+.stanInfo a {
+    text-decoration: none;
+}
+
+.naslovOglasa {
+    color: #4982A3;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.cena {
+    position: absolute;
+    right: 0;
+    top: 10px;
+    padding: 5px;
+    border: 1px solid rgb(2, 2, 102);
+    color: white;
+    background-color: rgb(2, 2, 102);
+    font-weight: bold;
+    border-radius: 5%
+}
+
+.lokacija {
+    /* margin-top: -8px; */
+    font-size: 12px;
+}
+
+.tipKvadraturaSoba {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.opis {
+    font-size: 12px;
+}
+
+
+#pageNumbers {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+}
+#pageNumbers span{
+    margin: 10px;
+}
+
+
+#lokacija ul {
+    list-style: none;
+    padding-left: 15px;
+}
+
+#lokacija > ul > li {
+    padding-left: 15px;
+}
+
+#locationCheckbox {
+    margin-left: -30px;
+    height: 300px;
+    width: 200px;
+    overflow: auto;
+}
+
+#formWrap {
+    display: none;
+}
+
+.btn {
+    width: 60px;
+    margin: 30px 15px 5px 15px;
+}
