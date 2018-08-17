@@ -39,7 +39,7 @@ header span:hover {
 #settingsBox {
     display: none;
     width: 250px;
-    height: 180px;
+    height: 160px;
     position: absolute;
     top: 125px;
     right: 60px;
@@ -50,6 +50,10 @@ header span:hover {
 #settingsBox form {
     width: 80%;
     margin: 10px auto;
+}
+#sendBtn {
+    width: 50px;
+    margin: 10px 100px;
 }
 main {
     width: 1000px;
@@ -73,11 +77,13 @@ aside {
 #izaberiProfil form{
     margin: 10px auto;
 }
-#izaberiProfil input:nth-child(odd) {
+#displayBtn, #newBtn {
+    height: 23px;
     width: 75px;
     margin: 0 10px 0 20px;
 }
-#izaberiProfil input:nth-child(even) {
+#editBtn, #deleteBtn {
+    height: 23px;
     width: 75px;
 }
 #izaberiProfil input:hover {
@@ -88,11 +94,11 @@ aside {
     margin: 10px 20px;
 }
 
-#imeProfila input[type="text"]{
+#profileNameBox input[type="text"]{
     width: 95%;
     margin: 5% auto;  
 }
-#imeProfila {
+#profileNameBox {
     width: 80%;
     margin: 0 auto;
     display: none;
@@ -100,6 +106,11 @@ aside {
 #tipNekretnine {
     width: 100%;
     margin: 5% 10%;
+    display: none;
+}
+#adType {
+    padding-left: 15px;
+    padding-top: 15px;
 }
 .cenaIKvadratura {
     margin: 0 7px;
@@ -201,7 +212,11 @@ section {
     border-radius: 5%
 }
 
-.lokacija {
+#topPrice {
+    margin-left: 26px;
+}
+
+.location {
     /* margin-top: -8px; */
     font-size: 12px;
 }
@@ -227,18 +242,19 @@ section {
 }
 
 
-#lokacija ul {
+#location ul {
     list-style: none;
     padding-left: 15px;
 }
 
-#lokacija > ul > li {
+#location > ul > li {
     padding-left: 15px;
 }
 
-#locationCheckbox {
+#Location {
     margin-left: -30px;
-    height: 300px;
+    margin-top: -15px;
+    height: 220px;
     width: 200px;
     overflow: auto;
 }
@@ -251,3 +267,23 @@ section {
     width: 60px;
     margin: 30px 15px 5px 15px;
 }
+
+.pagination {
+    float:right;
+    margin: 0 auto;
+}
+
+.pagination a {
+    float: left;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}
