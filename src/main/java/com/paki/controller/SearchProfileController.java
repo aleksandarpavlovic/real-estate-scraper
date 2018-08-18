@@ -79,11 +79,11 @@ public class SearchProfileController {
     private ResponseEntity saveNewProfile(@RequestBody SearchProfileDTO dto) {
         try {
             SearchProfile profile = transformer.transformDTOToSearchProfile(dto);
-            profileService.createSearchProfile(profile);
+            SearchProfile savedProfile = profileService.createSearchProfile(profile);
+            return ResponseEntity.ok(transformer.transformSearchProfileToDTO(savedProfile));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.SC_METHOD_FAILURE).body(e.getMessage());
         }
-        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")

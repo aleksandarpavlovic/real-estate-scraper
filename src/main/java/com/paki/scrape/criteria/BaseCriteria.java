@@ -33,12 +33,19 @@ public abstract class BaseCriteria {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == this)
+        if (this == obj)
             return true;
+
         if (!(obj instanceof BaseCriteria))
             return false;
 
         BaseCriteria other = (BaseCriteria) obj;
+        if (this.getName() == null) {
+            if (other.getName() != null)
+                return false;
+        } else if (other.getName() == null) {
+            return false;
+        }
 
         return other.getName().equals(this.getName());
     }

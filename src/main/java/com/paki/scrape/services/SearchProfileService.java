@@ -65,7 +65,7 @@ public class SearchProfileService {
             return Optional.of(profiles.get(0));
     }
 
-    public void createSearchProfile(SearchProfile profile) {
+    public SearchProfile createSearchProfile(SearchProfile profile) {
         Optional<SearchProfile> dbProfile = findProfileByName(profile.getName());
         if (dbProfile.isPresent())
             throw new BusinessException("Profil sa imenom: " + profile.getName() + " vec postoji!");
@@ -74,17 +74,17 @@ public class SearchProfileService {
         criteriaService.normalizeLocationCriteria(profile.getSearch().getCriteria());
         if (profile.getSearch().getRealtyType() == null)
             profile.getSearch().setRealtyType(criteriaService.inferRealtyType(profile.getSearch().getCriteria()));
-        profileRepository.save(profile);
+        return profileRepository.save(profile);
     }
 
     @Transactional
     public void updateSearchProfile(Long id, SearchProfile profile) {
         if (!globalLock.tryLock())
-            throw new BusinessException("Izmena profila nije moguca tokom trajanja skeniranja oglasa. Pokusajte kasnije.");
+            throw new BusinessException("Izmena profila nije moguća tokom trajanja skeniranja oglasa. Pokušajte kasnije.");
         try {
             Optional<SearchProfile> dbProfile = profileRepository.findById(id);
             if (!dbProfile.isPresent())
-                throw new BusinessException("Azuriranje profila neuspelo. Profil ne postoji u sistemu.");
+                throw new BusinessException("Ažuriranje profila neuspelo. Profil ne postoji u sistemu.");
 
             if (!isEqualSearch(dbProfile.get(), profile)) {
                 deleteRealties(dbProfile.get());
@@ -117,7 +117,7 @@ public class SearchProfileService {
     @Transactional
     public void deleteSearchProfile(Long id) {
         if (!globalLock.tryLock())
-            throw new BusinessException("Brisanje profila nije moguce tokom trajanja skeniranja oglasa. Pokusajte kasnije.");
+            throw new BusinessException("Brisanje profila nije moguće tokom trajanja skeniranja oglasa. Pokušajte kasnije.");
         try {
             Optional<SearchProfile> dbProfile = profileRepository.findById(id);
             if (!dbProfile.isPresent())

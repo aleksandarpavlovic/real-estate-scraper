@@ -77,7 +77,7 @@ aside {
 #izaberiProfil form{
     margin: 10px auto;
 }
-#displayBtn, #newBtn {
+#viewBtn, #newBtn {
     height: 23px;
     width: 75px;
     margin: 0 10px 0 20px;
@@ -103,7 +103,7 @@ aside {
     margin: 0 auto;
     display: none;
 }
-#tipNekretnine {
+#realtyTypeDiv {
     width: 100%;
     margin: 5% 10%;
     display: none;
@@ -241,7 +241,6 @@ section {
     margin: 10px;
 }
 
-
 #location ul {
     list-style: none;
     padding-left: 15px;
@@ -259,7 +258,11 @@ section {
     overflow: auto;
 }
 
-#formWrap {
+#criteriaWrap {
+    display: none;
+}
+
+#saveCancelDiv {
     display: none;
 }
 
