@@ -6,8 +6,8 @@ body {
     width: 1000px;
     height: auto;
     margin: 10px auto;
-    background-color: gainsboro;
-    font-family: Roboto, sans-serif;
+    background-color: white;
+    font-family: 'Roboto', sans-serif;
 }
 
 header {
@@ -18,21 +18,22 @@ header {
     flex-direction: row;
 }
 header img {
-    width: 700px;
+    width: 1000px;
     height: 120px;
 }
 header h1 {
     margin: 40px auto;
     color: white;
 }
-header span {
-    color: white;
-    font-size: 20px;
-    margin: 5px;
-    align-self: flex-end;
+#settingsSpan {
+    color: black;
+    font-size: 22px;
+    position: absolute;
+    left: 760px;
+    top: 2px;
 }
 
-header span:hover {
+#settingsSpan:hover {
     cursor: pointer;
 }
 
@@ -41,18 +42,18 @@ header span:hover {
     width: 250px;
     height: 160px;
     position: absolute;
-    top: 125px;
-    right: 60px;
+    top: 155px;
+    right: 70px;
     z-index: 1;
-    border: 1px solid darkblue;
-    background-color: gainsboro;
+    background-color: rgb(206, 204, 204);
+    border-radius: 4px;
 }
 #settingsBox form {
     width: 80%;
     margin: 10px auto;
 }
 #sendBtn {
-    width: 50px;
+    width: 70px;
     margin: 10px 100px;
 }
 main {
@@ -69,7 +70,8 @@ aside {
     height: auto;
     background-color: lightgray;
     border-top: none;
-    font-family: "Times New Roman", Times, serif;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
 }
 #izaberiProfil {
     border-bottom: 1px solid #DDDFE2;
@@ -108,18 +110,18 @@ aside {
     margin: 5% 10%;
     display: none;
 }
+
 #adType {
     padding-left: 15px;
-    padding-top: 15px;
+    padding-top: 25px;
 }
+
 .cenaIKvadratura {
-    margin: 0 7px;
+    margin: 0 20px;
 }
-.cenaIKvadratura h4 {
-    text-decoration: underline;
-}
+
 .cenaIKvadratura input {
-    width: 55px;
+    width: 80px;
     margin: 0 10px 0 0;
 }
 
@@ -130,45 +132,45 @@ aside {
     font-size: 13px;
 }
 .checkbox {
-    border-bottom: 2px solid #DDDFE2;
+    /*border-bottom: 2px solid #DDDFE2;*/
     padding-left: 10%;
     padding-bottom: 20px;
     width: 190px;
 }
-.checkbox h4 {
-    text-decoration: underline;
-}
+
 .checkbox form {
     border: 2px solid #DDDFE2;
-    width: 140px;
+    width: 170px;
 }
 
 #topConditions {
-    margin: 0 10px;
+    margin: 0 0px;
 }
 #topConditions input {
-    width: 30px;
+    width: 20px;
 }
 section {
     width: 800px;
-    background-color: #F6F7F9;
+    background-color: rgb(240, 239, 239);
     display: flex;
     flex-direction: column;
     position: relative;
 }
 
 #sortiranje {
-    align-self: flex-end;
+    margin-left: 600px;
     margin: 5px;
 }
 
-.placeholder {
+div.placeholder {
     margin: 12px;
-    width: 630px;
-    height: 160px;
-    border: 2px solid #BDC7D8;
+    margin-top: 20px;
+    width: 730px;
+    height: 200px;
     display: flex;
     flex-direction: row;
+    background-color: white;
+    border-radius: 5px;
 }
 
 .slikaDatumOglasivac {
@@ -177,57 +179,79 @@ section {
 }
 
 .slikaOglasa {
-    width: 160px;
-    height: 120px;
+    width: 200px;
+    height: 150px;
     float: left;
     padding: 5px;
     padding-right: 20px;
-    margin-top: 3%;
+    margin-top: 5%;
 }
 .stanInfo {
     text-align: left;
     margin-top: -8px;
     position: relative;
+    margin-left: -8px;
 }
 
 .stanInfo a {
     text-decoration: none;
 }
 
+.stanInfo p {
+    margin-top: 25px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 430px;
+}
+
 .naslovOglasa {
-    color: #4982A3;
+    color: black;
     font-size: 17px;
     font-weight: bold;
+    width: 300px;
+}
+
+.date {
+    padding-left: 5px;
 }
 
 .cena {
     position: absolute;
-    right: 0;
-    top: 10px;
+    right: -25px;
+    top: 8px;
     padding: 5px;
     border: 1px solid rgb(2, 2, 102);
     color: white;
     background-color: rgb(2, 2, 102);
     font-weight: bold;
-    border-radius: 5%
+    border-radius: 4px;
 }
 
 #topPrice {
-    margin-left: 26px;
+    margin-left: 23px;
 }
 
-.location {
-    /* margin-top: -8px; */
-    font-size: 12px;
+p.lokacija {
+    margin-top: 5px;
+    font-size: 14px;
 }
 
-.tipKvadraturaSoba {
+p.tipKvadraturaSoba {
     font-weight: bold;
     font-size: 15px;
+    background-color: #F6F7F9;
+    width: 110px;
+    padding: 5px;
+    border-radius: 4px;
 }
 
-.opis {
-    font-size: 12px;
+p.opis {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    height: 45px;
+    width: 500px;
+    overflow: hidden;
 }
 
 
@@ -241,9 +265,19 @@ section {
     margin: 10px;
 }
 
+#location {
+    margin-left: 0px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+#location h4 {
+    margin-left: 0px;
+}
+
 #location ul {
     list-style: none;
-    padding-left: 15px;
+    padding-left: 5px;
 }
 
 #location > ul > li {
@@ -251,11 +285,14 @@ section {
 }
 
 #Location {
-    margin-left: -30px;
     margin-top: -15px;
     height: 220px;
-    width: 200px;
+    width: 170px;
     overflow: auto;
+}
+
+#criteriaWrap form {
+    margin-top: -15px;
 }
 
 #criteriaWrap {

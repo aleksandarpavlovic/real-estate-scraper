@@ -48,6 +48,7 @@ window.onload = function () {
     nextPageBtn.addEventListener("click", fetchRealtiesNextPage);
     lastPageBtn.addEventListener("click", fetchRealtiesLastPage);
     fetchProfilesInfo();
+    getFormApartment();
 }
 
 function disableEditingProfileElements() {
@@ -954,22 +955,43 @@ function getAds(niz) {
     let ispis = "";
     for (let i = 0; i < niz.length; i++) {
         ispis = `<article class="slikaDatumOglasivac">
-        <a href=${niz[i].url.display} target="_blank"><img src=${niz[i].imageUrl.display} class = "slikaOglasa"></a>
-        <p>${niz[i].publishDate.display} |<span> ${niz[i].advertiser.display}</span></p>
-    </article>
-    <article class="stanInfo">
+        <a href=${niz[i].url.display} target="_blank"><img src=${niz[i].imageUrl.display} onerror="this.src='img/no_image.png'" alt="" class = "slikaOglasa"></a>
+        <p class="date">${niz[i].publishDate.display} |<span> ${niz[i].advertiser.display}</span></p>
+        </article>
+        <article class="stanInfo">
         <p><a href=${niz[i].url.display} target="_blank"><span class="naslovOglasa">${niz[i].title.display}</span><span class="cena">${niz[i].price.display} €</span></a></p>
         <p class="lokacija">${niz[i].location.display}</p>
-        <p class="tipKvadraturaSoba"><span class="tipNekretnine"> ${niz[i].realtyType} </span>|<span class="kvadratura"> ${niz[i].surfaceArea.display} </span>|<span class="brSoba"> ${niz[i].rooms.display}</span></p>
+        <p class="tipKvadraturaSoba"><span class="kvadratura" name="surfaces"> ${niz[i].surfaceArea.display} </span>|<span class="brSoba"> ${niz[i].rooms.display}</span></p>
         <p class="opis">${niz[i].description.display}</p>
-    </article>`;
-    let div = document.createElement("div");
-    div.className = "placeholder";
-    adsDiv.appendChild(div);
-    div.innerHTML = ispis;
-    
+        </article>`;
+        let div = document.createElement("div");
+        div.className = "placeholder";
+        adsDiv.appendChild(div);
+        div.innerHTML = ispis;
+    }
+    if (document.getElementsByName('surfaces')) {
+        let surfaces = document.getElementsByName('surfaces');
+        for (let j = 0; j < surfaces.length; j++) {
+            surfaces[j].innerText = surfaces[j].innerText.replace(/m2/g, "m²");
+        }
     }
 }
+
+function getFormApartment() {
+    let xmlhttp = new XMLHttpRequest();
+
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            let obj = JSON.parse(this.responseText);
+            let html = parseCities(obj.locationDefinition.locations);
+            document.getElementById("Location").innerHTML += html;
+        }
+    };
+    xmlhttp.open("GET", "json/new-15.json", true);
+    xmlhttp.send();
+}
+
+//getFormApartment();
 
 function parseCities(cities) {
     let html = "";

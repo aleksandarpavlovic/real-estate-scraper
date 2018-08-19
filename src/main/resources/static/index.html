@@ -6,22 +6,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha484-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script> -->
     <title>Oglasi</title>
 </head>
 <body>
     <header>
         <img src="img/jutro_oglasi.png">
-        <h1>Paki nekretnine</h1>
-        <span><i class="fas fa-cog" title="Settings" id="settings"></i></span>
         <div id="settingsBox">
             <form>
-                Vas e-mail:<br>
+                Vaš e-mail:<br>
                 <input type="text" id="email"><br><br>
-                Ucestalost izvestavanja:
+                Učestalost izveštavanja:
                 <input type="number" id="schedule" placeholder="Vrednost u minutima"><br>
             </form>
-            <button id="sendBtn">Send</button>
+            <button id="sendBtn">Sačuvaj</button>
         </div>
     </header>
 
@@ -31,10 +30,10 @@
                 <form>
                     <select id="profil" required>
                     </select><br>
-                    <input type="button" value="View" id="viewBtn">
-                    <input type="button" value="&#9998; Edit" id="editBtn">
-                    <input type="button" value="New" id="newBtn">
-                    <input type="button" value="&#10007; Delete" id="deleteBtn">
+                    <input type="button" value="Prikaži" id="viewBtn">
+                    <input type="button" value="&#9998; Izmeni" id="editBtn">
+                    <input type="button" value="Novi" id="newBtn">
+                    <input type="button" value="&#10007; Obriši" id="deleteBtn">
                 </form>
             </div>
 
@@ -66,7 +65,7 @@
                         </form>
                     </div>
                     <div class="checkbox">
-                        <h4>Oglasivac:</h4>
+                        <h4>Oglašivač:</h4>
                         <form id="Advertiser">
                             <input type="checkbox" id="AGENCY" value= "AGENCY">Agencija<br>
                             <input type="checkbox" id="OWNER" value= "OWNER">Vlasnik<br>
@@ -74,15 +73,16 @@
                         </form>
                     </div>
                     <div class="checkbox">
-                        <h4>Uknjizenost:</h4>
+                        <h4>Uknjiženost:</h4>
                         <form id="registration">
-                            <input type="checkbox" id="Registration" value= "REGISTERED">Uknjizeno
+                            <input type="checkbox" id="Registration" value= "REGISTERED">Uknjiženo
                         </form>
                     </div>
                     <div id="cena" class="cenaIKvadratura">
                         <h4>Cena:</h4>
                         <form id="Price">
                             OD: <input type="number" id="cenaOd">
+                            <br>
                             DO: <input type="number" id="cenaDo">
                         </form>
                     </div>
@@ -90,7 +90,16 @@
                         <h4>Kvadratura:</h4>
                         <form id="surface">
                             OD: <input type="number" id="kvadraturaOd">
+                            <br>
                             DO: <input type="number" id="kvadraturaDo">
+                        </form>
+                    </div>
+                    <div id="cenaPovrsina" class="cenaIKvadratura">
+                        <h4>Cena/površina:</h4>
+                        <form id="pricePerSurface">
+                            OD: <input type="number" id="cpOd" placeholder="€/m²">
+                            <br>
+                            DO: <input type="number" id="cpDo" placeholder="€/m²">
                         </form>
                     </div>
                     <div id="brojSoba" class="cenaIKvadratura">
@@ -110,7 +119,7 @@
                             <option value="RC_4_5">4.5</option>
                             <option value="RC_5_0">5.0</option>
                             <option value="RC_5_p">5+</option>
-                        </select><br><br>
+                        </select><br>
                             DO: <select id="roomTo">
                             <option value=""></option>
                             <option value="RC_0">0</option>
@@ -168,7 +177,7 @@
                             <option value="28">28</option>
                             <option value="29">29</option>
                             <option value="30">30</option>
-                        </select><br><br>
+                        </select><br>
                             DO: <select id="floorTo">
                             <option value=""></option>
                             <option value="-4">Suteren</option>
@@ -221,7 +230,7 @@
                         <h4>Grejanje:</h4>
                         <form id="heating">
                             <input type="checkbox" id="CENTRAL" value="CENTRAL">Centralno<br>
-                            <input type="checkbox" id="OWN_CENTRAL" value="OWN_CENTRAL">Etazno<br>
+                            <input type="checkbox" id="OWN_CENTRAL" value="OWN_CENTRAL">Etažno<br>
                             <input type="checkbox" id="ELECTRIC" value="ELECTRIC">Struja<br>
                             <input type="checkbox" id="GAS" value="GAS">Gas<br>
                         </form>
@@ -233,46 +242,46 @@
                             <input type="checkbox" id="DUPLEX" value="DUPLEX">Dupleks<br>
                             <input type="checkbox" id="PENTHOUSE" value="PENTHOUSE">Penthaus<br>
                             <input type="checkbox" id="LOFT" value="LOFT">Potkrovlje<br>
-                            <input type="checkbox" id="WITH_YARD" value="WITH_YARD">Sa dvoristem<br>
+                            <input type="checkbox" id="WITH_YARD" value="WITH_YARD">Sa dvorištem<br>
                         </form>
                     </div>
                     <div id="dodatno" class="checkbox">
                         <h4>Dodatno:</h4>
                         <form id="facilities">
                             <input type="checkbox" id="TERRASSE" value="TERRASSE">Terasa<br>
-                            <input type="checkbox" id="LOGGIA" value="LOGGIA">Lodja<br>
+                            <input type="checkbox" id="LOGGIA" value="LOGGIA">Lođa<br>
                             <input type="checkbox" id="BALCONY" value="BALCONY">Balkon<br>
                             <input type="checkbox" id="FRENCH_BALCONY" value="FRENCH_BALCONY">Francuski balkon<br>
-                            <input type="checkbox" id="GARAGE" value="GARAGE">Garaza<br>
+                            <input type="checkbox" id="GARAGE" value="GARAGE">Garaža<br>
                             <input type="checkbox" id="PARKING" value="PARKING">Parking<br>
                         </form>
                     </div>
                     <div id="location" class="checkbox">
                         <h4>Lokacija:</h4>
                         <form id="Location"></form>
-
                     </div>
-                    <div id="topConditions">
+                    <div id="topConditions" class="checkbox">
                         <h4>Top ad conditions</h4>
                         <form id="topAdForm">
                             <input type="checkbox" id="NEW_AD" value="NEW_AD">Novi oglasi<br>
-                            <input type="checkbox" id="PRICE_DROP" value="PRICE_DROP">Cena oglasa snizena<br>
-                            <input type="checkbox" id="PRICE_IN_TOP_N_PERCENT" value="PRICE_IN_TOP_N_PERCENT">Cena u top<input id="topPrice" type="number">% <br>
+                            <input type="checkbox" id="PRICE_DROP" value="PRICE_DROP">Cena oglasa snižena<br>
+                            <input type="checkbox" id="PRICE_IN_TOP_N_PERCENT" value="PRICE_IN_TOP_N_PERCENT">Cena u top <input id="topPrice" type="number">% <br>
                             <input type="checkbox" id="PRICE_PER_M2_IN_TOP_N_PERCENT" value="PRICE_PER_M2_IN_TOP_N_PERCENT">Cena/m² u top <input id="priceM2" type="number">%
                         </form>
                     </div>
                 </div>
                 <div id="saveCancelDiv">
-                    <button id="saveBtn" class="btn">Save</button>
-                    <button id="cancelBtn" class="btn">Cancel</button>
+                    <button id="saveBtn" class="btn">Sačuvaj</button>
+                    <button id="cancelBtn" class="btn">Poništi</button>
                 </div>
             </div>
         </aside>
         <section>
+            <span id="settingsSpan"><i class="fas fa-cog" title="Settings" id="settings"></i></span>
             <div id="sortiranje">
                 <form>
                     <select required id="sortSlct">
-                        <option selected disabled hidden>Sort</option>
+                        <option selected disabled hidden>Sortiranje</option>
                         <option value="dateasc">Po datumu (rastuće)</option>
                         <option value="datedesc" selected="selected">Po datumu (opadajuće)</option>
                         <option value="priceasc">Po ceni (rastuće)</option>
