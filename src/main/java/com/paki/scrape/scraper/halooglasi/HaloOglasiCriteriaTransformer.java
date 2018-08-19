@@ -87,7 +87,7 @@ public class HaloOglasiCriteriaTransformer {
         criteriaDefinitionMappings.put(CriteriaDefinitions.PRICE, "defaultunit_cena_d");
 
         criteriaDefinitionMappings.put(CriteriaDefinitions.SURFACE_M2, "defaultunit_kvadratura_d");
-        criteriaDefinitionMappings.put(CriteriaDefinitions.SURFACE_ARE, "defaultunit_kvadratura_d");
+        criteriaDefinitionMappings.put(CriteriaDefinitions.SURFACE_ARE, "defaultunit_povrsina_d");
 
         criteriaDefinitionMappings.put(CriteriaDefinitions.FLOOR, "sprat_order_i");
 
@@ -202,7 +202,7 @@ public class HaloOglasiCriteriaTransformer {
                                 .fieldName(criteriaDefinitionMappings.get(criteriaName))
                                 .from((Integer)criteria.getRangeFrom())
                                 .to((Integer)criteria.getRangeTo())
-                                .unitId(unitIdMappings.getOrDefault(((RangeWithUnitCriteria)criteria).getUnit(), 1))
+                                .unitId(unitIdMappings.getOrDefault(((RangeWithUnitCriteria)criteria).getUnit().name(), 1))
                                 .build()
                 );
             else if (CriteriaDefinitions.FLOOR.equals(criteriaName)) {
@@ -254,6 +254,8 @@ public class HaloOglasiCriteriaTransformer {
         }
 
         private Integer getFloorMapping(Integer floor) {
+            if (floor == null)
+                return null;
             Integer floorMapping = floorMappings.get(floor);
             if (floorMapping == null) {
                 floorMapping = Integer.valueOf(floor) + 10;

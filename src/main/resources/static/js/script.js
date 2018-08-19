@@ -48,7 +48,7 @@ window.onload = function () {
     nextPageBtn.addEventListener("click", fetchRealtiesNextPage);
     lastPageBtn.addEventListener("click", fetchRealtiesLastPage);
     fetchProfilesInfo();
-    getFormApartment();
+    fetchLocations();
 }
 
 function disableEditingProfileElements() {
@@ -277,6 +277,7 @@ function displayProfile() {
                 displayForm();
             }
         }
+
         if (criteria[i].name.name == "Ad type") {
             document.getElementById(criteria[i].value.name).checked = true;
         }
@@ -319,6 +320,31 @@ function displayProfile() {
                 document.getElementById("kvadraturaDo").value = criteria[i].to.name;
             }
         }
+        if (criteria[i].name.name == "Surface are") {
+            if (criteria[i].from && criteria[i].from.name) {
+                document.getElementById("ariOd").value = criteria[i].from.name;
+            }
+            if (criteria[i].to && criteria[i].to.name) {
+                document.getElementById("ariDo").value = criteria[i].to.name;
+            }
+        }
+        if (criteria[i].name.name == "Price per m2") {
+            if (criteria[i].from && criteria[i].from.name) {
+                document.getElementById("cenaM2Od").value = criteria[i].from.name;
+            }
+            if (criteria[i].to && criteria[i].to.name) {
+                document.getElementById("cenaM2Do").value = criteria[i].to.name;
+            }
+        }
+        if (criteria[i].name.name == "Price per are") {
+            if (criteria[i].from && criteria[i].from.name) {
+                document.getElementById("cenaArOd").value = criteria[i].from.name;
+            }
+            if (criteria[i].to && criteria[i].to.name) {
+                document.getElementById("cenaArDo").value = criteria[i].to.name;
+            }
+        }
+
         if (criteria[i].name.name == "Registration") {
             for (let j = 0; j < criteria[i].values.length; j++) {
                 document.getElementById("Registration").checked = true;
@@ -364,6 +390,9 @@ function displayForm() {
         criteriaWrap.style.display = "block";
         document.getElementById("spratnost").style.display = "block";
         document.getElementById("kvadratura").style.display = "block";
+        document.getElementById("povrsinaAri").style.display = "none";
+        document.getElementById("cenaKvadrat").style.display = "block";
+        document.getElementById("cenaAr").style.display = "none";
         document.getElementById("brojSoba").style.display = "block";
         document.getElementById("gradnja").style.display = "block";
         document.getElementById("grejanje").style.display = "block";
@@ -374,6 +403,9 @@ function displayForm() {
         criteriaWrap.style.display = "block";
         document.getElementById("spratnost").style.display = "none";
         document.getElementById("kvadratura").style.display = "block";
+        document.getElementById("povrsinaAri").style.display = "none";
+        document.getElementById("cenaKvadrat").style.display = "block";
+        document.getElementById("cenaAr").style.display = "none";
         document.getElementById("brojSoba").style.display = "block";
         document.getElementById("gradnja").style.display = "block";
         document.getElementById("grejanje").style.display = "block";
@@ -384,6 +416,9 @@ function displayForm() {
         criteriaWrap.style.display = "block";
         document.getElementById("spratnost").style.display = "none";
         document.getElementById("kvadratura").style.display = "none";
+        document.getElementById("povrsinaAri").style.display = "block";
+        document.getElementById("cenaKvadrat").style.display = "none";
+        document.getElementById("cenaAr").style.display = "block";
         document.getElementById("brojSoba").style.display = "none";
         document.getElementById("gradnja").style.display = "none";
         document.getElementById("grejanje").style.display = "none";
@@ -464,6 +499,22 @@ function createProfileObj() {
 
     let criteria = [];
     search.criteria = criteria;
+
+    let typeOfRealty = {
+        "@type": "Single Value",
+        name: {
+            name: "Realty type",
+            display: "Tip nekretnine"
+        },
+        criteriaType: "SINGLE_SELECT",
+        value: {
+            name: ""
+        }
+    };
+    if (typeRealty.selectedIndex != 0) {
+        typeOfRealty.value.name = typeRealty.options[typeRealty.selectedIndex].value;
+        criteria.push(typeOfRealty);
+    }
 
     let roomObj = {
         "@type": "Range",
@@ -621,47 +672,111 @@ function createProfileObj() {
         criteria.push(adTypeObj);
     }
 
-    let surface = {
-        "@type": "Range",
-        name: {
-            name: "Surface m2",
-            display: "Površina u m2"
-        },
-        criteriaType: "RANGE"
-    };
+    if (typeOfRealty.value.name == "APARTMENT" || typeOfRealty.value.name == "HOUSE") {
+        let surface = {
+            "@type": "Range",
+            name: {
+                name: "Surface m2",
+                display: "Površina u m2"
+            },
+            criteriaType: "RANGE"
+        };
 
-    let surfaceFrom = document.getElementById("kvadraturaOd");
-    let surfaceTo = document.getElementById("kvadraturaDo");
-    let surfaceFromObj = { name: ""};
-    let surfaceToObj = { name: ""};
+        let surfaceFrom = document.getElementById("kvadraturaOd");
+        let surfaceTo = document.getElementById("kvadraturaDo");
+        let surfaceFromObj = { name: ""};
+        let surfaceToObj = { name: ""};
 
-    if (surfaceFrom.value != "") {
-        surfaceFromObj.name = surfaceFrom.value;
-        surface.from = surfaceFromObj;
-    }
-    if (surfaceTo.value != "") {
-        surfaceToObj.name = surfaceTo.value;
-        surface.to = surfaceToObj;
-    }
-
-    if (surfaceFrom.value != "" || surfaceTo.value != "") {
-        criteria.push(surface);
-    }
-
-    let typeOfRealty = {
-        "@type": "Single Value",
-        name: {
-            name: "Realty type",
-            display: "Tip nekretnine"
-        },
-        criteriaType: "SINGLE_SELECT",
-        value: {
-            "name": ""
+        if (surfaceFrom.value != "") {
+            surfaceFromObj.name = surfaceFrom.value;
+            surface.from = surfaceFromObj;
         }
-    };
-    if (typeRealty.selectedIndex != 0) {
-        typeOfRealty.value.name = typeRealty.options[typeRealty.selectedIndex].value;
-        criteria.push(typeOfRealty);
+        if (surfaceTo.value != "") {
+            surfaceToObj.name = surfaceTo.value;
+            surface.to = surfaceToObj;
+        }
+
+        if (surfaceFrom.value != "" || surfaceTo.value != "") {
+            criteria.push(surface);
+        }
+
+        let priceM2 = {
+            "@type": "Range",
+            name: {
+                name: "Price per m2"
+            },
+            criteriaType: "RANGE"
+        };
+
+        let priceFrom = document.getElementById("cenaM2Od");
+        let priceTo = document.getElementById("cenaM2Do");
+        let priceFromObj = { name: ""};
+        let priceToObj = { name: ""};
+
+        if (priceFrom.value != "") {
+            priceFromObj.name = priceFrom.value;
+            priceM2.from = priceFromObj;
+        }
+        if (priceTo.value != "") {
+            priceToObj.name = priceTo.value;
+            priceM2.to = priceToObj;
+        }
+
+        if (priceFrom.value != "" || priceTo.value != "") {
+            criteria.push(priceM2);
+        }
+    } else if (typeOfRealty.value.name == "LAND") {
+        let surface = {
+            "@type": "Range",
+            name: {
+                name: "Surface are"
+            },
+            criteriaType: "RANGE"
+        };
+
+        let surfaceFrom = document.getElementById("ariOd");
+        let surfaceTo = document.getElementById("ariDo");
+        let surfaceFromObj = { name: ""};
+        let surfaceToObj = { name: ""};
+
+        if (surfaceFrom.value != "") {
+            surfaceFromObj.name = surfaceFrom.value;
+            surface.from = surfaceFromObj;
+        }
+        if (surfaceTo.value != "") {
+            surfaceToObj.name = surfaceTo.value;
+            surface.to = surfaceToObj;
+        }
+
+        if (surfaceFrom.value != "" || surfaceTo.value != "") {
+            criteria.push(surface);
+        }
+
+        let priceAre = {
+            "@type": "Range",
+            name: {
+                name: "Price per are",
+            },
+            criteriaType: "RANGE"
+        };
+
+        let priceFrom = document.getElementById("cenaArOd");
+        let priceTo = document.getElementById("cenaArDo");
+        let priceFromObj = { name: ""};
+        let priceToObj = { name: ""};
+
+        if (priceFrom.value != "") {
+            priceFromObj.name = priceFrom.value;
+            priceAre.from = priceFromObj;
+        }
+        if (priceTo.value != "") {
+            priceToObj.name = priceTo.value;
+            priceAre.to = priceToObj;
+        }
+
+        if (priceFrom.value != "" || priceTo.value != "") {
+            criteria.push(priceAre);
+        }
     }
 
     let build = document.getElementById("build");
@@ -932,7 +1047,7 @@ function makePageLinks(linkHeader) {
 }
 
 function formRealtiesUrl() {
-    let url = "http://localhost:8080/realties?searchid=";
+    let url = "http://localhost:8080/realties?profileid=";
     if (profileData && profileData.selectedProfile && profileData.selectedProfile.id) {
         url += profileData.selectedProfile.id;
     } else {
@@ -954,15 +1069,26 @@ function getAds(niz) {
     adsWrap.appendChild(adsDiv);
     let ispis = "";
     for (let i = 0; i < niz.length; i++) {
+        let url = niz[i].url ? niz[i].url.display : "#";
+        let imageUrl = niz[i].imageUrl ? niz[i].imageUrl.display : "";
+        let publishDate = niz[i].publishDate ? niz[i].publishDate.display : "-";
+        let advertiser = niz[i].advertiser ? niz[i].advertiser.display : "-";
+        let title = niz[i].title ? niz[i].title.display : "-";
+        let price = niz[i].price ? niz[i].price.display : "-";
+        let location = niz[i].location ? niz[i].location.display : "-";
+        let surfaceArea = niz[i].surfaceArea ? niz[i].surfaceArea.display : "-";
+        let rooms = niz[i].rooms ? niz[i].rooms.display : "-";
+        let description = niz[i].description ? niz[i].description.display : "-";
+
         ispis = `<article class="slikaDatumOglasivac">
-        <a href=${niz[i].url.display} target="_blank"><img src=${niz[i].imageUrl.display} onerror="this.src='img/no_image.png'" alt="" class = "slikaOglasa"></a>
-        <p class="date">${niz[i].publishDate.display} |<span> ${niz[i].advertiser.display}</span></p>
+        <a href=${url} target="_blank"><img src=${imageUrl} onerror="this.src='img/no_image.png'" alt="" class = "slikaOglasa"></a>
+        <p class="date">${publishDate} |<span> ${advertiser}</span></p>
         </article>
         <article class="stanInfo">
-        <p><a href=${niz[i].url.display} target="_blank"><span class="naslovOglasa">${niz[i].title.display}</span><span class="cena">${niz[i].price.display} €</span></a></p>
-        <p class="lokacija">${niz[i].location.display}</p>
-        <p class="tipKvadraturaSoba"><span class="kvadratura" name="surfaces"> ${niz[i].surfaceArea.display} </span>|<span class="brSoba"> ${niz[i].rooms.display}</span></p>
-        <p class="opis">${niz[i].description.display}</p>
+        <p><a href=${url} target="_blank"><span class="naslovOglasa">${title}</span><span class="cena">${price} €</span></a></p>
+        <p class="lokacija">${location}</p>
+        <p class="tipKvadraturaSoba"><span class="kvadratura" name="surfaces"> ${surfaceArea} </span>|<span class="brSoba"> ${rooms}</span></p>
+        <p class="opis">${description}</p>
         </article>`;
         let div = document.createElement("div");
         div.className = "placeholder";
@@ -977,21 +1103,18 @@ function getAds(niz) {
     }
 }
 
-function getFormApartment() {
+function fetchLocations() {
     let xmlhttp = new XMLHttpRequest();
-
     xmlhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             let obj = JSON.parse(this.responseText);
-            let html = parseCities(obj.locationDefinition.locations);
+            let html = parseCities(obj);
             document.getElementById("Location").innerHTML += html;
         }
     };
-    xmlhttp.open("GET", "json/new-15.json", true);
+    xmlhttp.open("GET", "http://localhost:8080/criteria/locations");
     xmlhttp.send();
 }
-
-//getFormApartment();
 
 function parseCities(cities) {
     let html = "";

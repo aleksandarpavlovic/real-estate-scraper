@@ -2,13 +2,14 @@ package com.paki.scrape.services;
 
 import com.paki.persistence.realties.*;
 import com.paki.persistence.scrape.RealtySearchRelationRepository;
-import com.paki.persistence.scrape.SearchRepository;
+import com.paki.persistence.scrape.SearchProfileRepository;
 import com.paki.realties.Realty;
 import com.paki.realties.RealtyPriceChange;
 import com.paki.realties.enums.RealtyType;
 import com.paki.scrape.entities.RealtySearchRelation;
 import com.paki.scrape.entities.ScrapeInfo;
 import com.paki.scrape.entities.Search;
+import com.paki.scrape.entities.SearchProfile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,29 +26,32 @@ public class RealtyService {
     private LandRepository landRepository;
     private RealtyPriceChangeRepository priceChangeRepository;
     private RealtySearchRelationRepository realtySearchRepository;
-    private SearchRepository searchRepository;
+    private SearchProfileRepository profileRepository;
 
     private CriteriaService criteriaService;
 
     @Autowired
-    public RealtyService(ApartmentRepository apartmentRepository, HouseRepository houseRepository, LandRepository landRepository, RealtyPriceChangeRepository priceChangeRepository, RealtySearchRelationRepository realtySearchRepository, CriteriaService criteriaService, SearchRepository searchRepository) {
+    public RealtyService(ApartmentRepository apartmentRepository, HouseRepository houseRepository, LandRepository landRepository, RealtyPriceChangeRepository priceChangeRepository, RealtySearchRelationRepository realtySearchRepository, CriteriaService criteriaService, SearchProfileRepository profileRepository) {
         this.apartmentRepository = apartmentRepository;
         this.houseRepository = houseRepository;
         this.landRepository = landRepository;
         this.priceChangeRepository = priceChangeRepository;
         this.realtySearchRepository = realtySearchRepository;
         this.criteriaService = criteriaService;
-        this.searchRepository = searchRepository;
+        this.profileRepository = profileRepository;
     }
 
-    public Page<? extends Realty> findPaginatedAndSorted(Long searchId, Pageable pageRequest) {
-        Optional<Search> search = searchRepository.findById(searchId);
-        if (!search.isPresent()) {
+    public Page<? extends Realty> findPaginatedAndSorted(Long searchProfileId, Pageable pageRequest) {
+        Optional<SearchProfile> searchProfile = profileRepository.findById(searchProfileId);
+        if (!searchProfile.isPresent()) {
             return Page.empty();
         }
-
-        RealtyRepository realtyRepository = inferRealtyRepository(search.get());
-        return realtyRepository.findBySearchId(searchId, pageRequest);
+        Search search = searchProfile.get().getSearch();
+        if (search == null) {
+            return Page.empty();
+        }
+        RealtyRepository realtyRepository = inferRealtyRepository(search);
+        return realtyRepository.findBySearchId(search.getId(), pageRequest);
     }
 
     public Set<Realty> processScrapedRealties(ScrapeInfo scrapeInfo, Search search, Set<Realty> realties) {

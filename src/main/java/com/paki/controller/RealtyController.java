@@ -29,7 +29,7 @@ public class RealtyController {
 
     private static final int DEFAULT_PAGE_SIZE = 7;
 
-    private static final String SEARCH = "searchid";
+    private static final String PROFILEID = "profileid";
     private static final String PAGE = "page";
     private static final String SORT = "sort";
     private static final String SORT_PRICE_ASC = "priceasc";
@@ -48,14 +48,14 @@ public class RealtyController {
 
     @GetMapping
     List<? extends RealtyDTO> getRealties(
-                                          @RequestParam(name = SEARCH, defaultValue = "0", required = false) long searchId,
+                                          @RequestParam(name = PROFILEID, defaultValue = "0", required = false) long profileId,
                                           @RequestParam(name = SORT, defaultValue = SORT_PRICE_ASC, required = false) String sort,
                                           @RequestParam(name = PAGE, defaultValue = "1", required = false) int page,
                                           UriComponentsBuilder uriBuilder,
                                           HttpServletResponse response) {
         Pageable pageRequest = PageRequest.of(page - 1, DEFAULT_PAGE_SIZE, getSort(sort));
-        Page<? extends Realty> realtiesPage = realtyService.findPaginatedAndSorted(searchId, pageRequest);
-        buildCustomLinkHeader(uriBuilder, response, searchId, page, realtiesPage.getTotalPages(), sort);
+        Page<? extends Realty> realtiesPage = realtyService.findPaginatedAndSorted(profileId, pageRequest);
+        buildCustomLinkHeader(uriBuilder, response, profileId, page, realtiesPage.getTotalPages(), sort);
         return dtoTransformer.transformRealtiesToDTO(realtiesPage.getContent());
     }
 
@@ -71,8 +71,8 @@ public class RealtyController {
         return Sort.unsorted();
     }
 
-    private void buildXmlLinkHeader(UriComponentsBuilder uriBuilder, HttpServletResponse response, Long searchId, int page, int totalPages, String sort) {
-        uriBuilder.path("/realties/searchid/" + searchId);
+    private void buildXmlLinkHeader(UriComponentsBuilder uriBuilder, HttpServletResponse response, Long profileId, int page, int totalPages, String sort) {
+        uriBuilder.path("/realties/profileid/" + profileId);
 
         List<String> linkHeaderElements = new ArrayList<>();
         if (hasNextPage(page, totalPages)) {
@@ -106,10 +106,10 @@ public class RealtyController {
         response.setHeader("Link", String.join(",", linkHeaderElements));
     }
 
-    private void buildCustomLinkHeader(UriComponentsBuilder uriBuilder, HttpServletResponse response, Long searchId, int page, int totalPages, String sort) {
+    private void buildCustomLinkHeader(UriComponentsBuilder uriBuilder, HttpServletResponse response, Long profileId, int page, int totalPages, String sort) {
         uriBuilder.path("/realties");
 
-        uriBuilder.replaceQueryParam(SEARCH, searchId);
+        uriBuilder.replaceQueryParam(PROFILEID, profileId);
 
         Map<String, String> links = new HashMap<>();
         if (hasNextPage(page, totalPages)) {

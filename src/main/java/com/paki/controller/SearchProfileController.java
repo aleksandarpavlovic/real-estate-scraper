@@ -97,6 +97,16 @@ public class SearchProfileController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("")
+    private ResponseEntity deleteAllProfiles() {
+        try {
+            profileService.deleteAllProfiles();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SC_METHOD_FAILURE).body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     private ResponseEntity deleteProfile(@PathVariable("id") Long id) {
         try {

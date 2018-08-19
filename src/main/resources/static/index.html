@@ -12,7 +12,7 @@
 </head>
 <body>
     <header>
-        <img src="img/jutro_oglasi.png">
+        <img src="img/logo.png">
         <div id="settingsBox">
             <form>
                 Vaš e-mail:<br>
@@ -81,25 +81,41 @@
                     <div id="cena" class="cenaIKvadratura">
                         <h4>Cena:</h4>
                         <form id="Price">
-                            OD: <input type="number" id="cenaOd">
+                            OD: <input type="number" id="cenaOd" placeholder="€">
                             <br>
-                            DO: <input type="number" id="cenaDo">
+                            DO: <input type="number" id="cenaDo" placeholder="€">
                         </form>
                     </div>
                     <div id="kvadratura" class="cenaIKvadratura">
                         <h4>Kvadratura:</h4>
-                        <form id="surface">
-                            OD: <input type="number" id="kvadraturaOd">
+                        <form id="surfaceM2">
+                            OD: <input type="number" id="kvadraturaOd" placeholder="m²">
                             <br>
-                            DO: <input type="number" id="kvadraturaDo">
+                            DO: <input type="number" id="kvadraturaDo" placeholder="m²">
                         </form>
                     </div>
-                    <div id="cenaPovrsina" class="cenaIKvadratura">
-                        <h4>Cena/površina:</h4>
-                        <form id="pricePerSurface">
-                            OD: <input type="number" id="cpOd" placeholder="€/m²">
+                    <div id="povrsinaAri" class="cenaIKvadratura">
+                        <h4>Površina:</h4>
+                        <form id="surfaceAre">
+                            OD: <input type="number" id="ariOd" placeholder="ari">
                             <br>
-                            DO: <input type="number" id="cpDo" placeholder="€/m²">
+                            DO: <input type="number" id="ariDo" placeholder="ari">
+                        </form>
+                    </div>
+                    <div id="cenaKvadrat" class="cenaIKvadratura">
+                        <h4>Cena po kvadratu:</h4>
+                        <form id="pricePerM2">
+                            OD: <input type="number" id="cenaM2Od" placeholder="€/m²">
+                            <br>
+                            DO: <input type="number" id="cenaM2Do" placeholder="€/m²">
+                        </form>
+                    </div>
+                    <div id="cenaAr" class="cenaIKvadratura">
+                        <h4>Cena po aru:</h4>
+                        <form id="pricePerAre">
+                            OD: <input type="number" id="cenaArOd" placeholder="€/ar">
+                            <br>
+                            DO: <input type="number" id="cenaArDo" placeholder="€/ar">
                         </form>
                     </div>
                     <div id="brojSoba" class="cenaIKvadratura">

@@ -39,6 +39,8 @@ public class MultiValueCriteria extends BaseCriteria {
         if (this.getValues() == null) {
             if (other.getValues() != null)
                 return false;
+            else
+                return true;
         } else if (other.getValues() == null) {
             return false;
         }

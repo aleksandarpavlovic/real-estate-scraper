@@ -43,11 +43,11 @@ public abstract class BaseCriteria {
         if (this.getName() == null) {
             if (other.getName() != null)
                 return false;
-        } else if (other.getName() == null) {
+        } else if (!this.getName().equals(other.getName())) {
             return false;
         }
 
-        return other.getName().equals(this.getName());
+        return true;
     }
 
     @Override

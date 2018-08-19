@@ -130,6 +130,20 @@ public class SearchProfileService {
         }
     }
 
+    @Transactional
+    public void deleteAllProfiles() {
+        if (!globalLock.tryLock())
+            throw new BusinessException("Brisanje profila nije moguće tokom trajanja skeniranja oglasa. Pokušajte kasnije.");
+        try {
+            List<Long> allProfilesIds = findAll().stream().map(p -> p.getId()).collect(Collectors.toList());
+            for (Long profileId: allProfilesIds) {
+                deleteSearchProfile(profileId);
+            }
+        } finally {
+            globalLock.unlock();
+        }
+    }
+
     /**
      * Deletes realties related only to this profile.
      * Corresponding RealtyPriceChange and RealtySearchRelation entities must be deleted as well

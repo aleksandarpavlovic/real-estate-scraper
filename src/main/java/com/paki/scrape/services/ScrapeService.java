@@ -54,17 +54,24 @@ public class ScrapeService {
         globalLock.lock();
         try {
             ScrapeInfo scrapeInfo = prepareScrapeInfo();
+            System.out.println("********* Scrape #" + scrapeInfo.getLastRunNumber() + " started at " + scrapeInfo.getLastRunTime() + " *********");
             List<SearchProfile> profiles = searchProfileRepository.findAll();
             Map<String, Map<String, List<? extends Realty>>> topAds = new HashMap<>();
 
             for (SearchProfile profile : profiles) {
+                System.out.println("***** Scraping for profile: " + profile.getName() + "... *****");
                 Search search = profile.getSearch();
                 for (ScraperType scraperType : ScraperType.values()) {
                     scrape(scrapeInfo, search, scraperType);
                 }
                 topAds.put(profile.getName(), topAdService.getTopAds(scrapeInfo, profile));
+                System.out.println("***** Scrape for profile: " + profile.getName() + " completed. *****");
             }
             notificationService.notify(topAds);
+            System.out.println("********* Scrape #" + scrapeInfo.getLastRunNumber() + " finished at " + LocalDateTime.now() + " *********");
+        } catch (Exception e) {
+            System.out.println("********* Scrape interrupted due to unexpected error *********");
+            e.printStackTrace();
         } finally {
             globalLock.unlock();
         }

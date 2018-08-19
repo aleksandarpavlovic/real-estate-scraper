@@ -36,18 +36,18 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
         if (this.getRangeFrom() == null) {
             if (other.getRangeFrom() != null)
                 return false;
-        } else if (other.getRangeFrom() == null) {
+        } else if (!this.getRangeFrom().equals(other.rangeFrom)) {
             return false;
         }
 
         if (this.getRangeTo() == null) {
             if (other.getRangeTo() != null)
                 return false;
-        } else if (other.getRangeTo() == null) {
+        } else if (!this.getRangeTo().equals(other.getRangeTo())) {
             return false;
         }
 
-        return this.getRangeFrom().equals(other.getRangeFrom()) && this.getRangeTo().equals(other.getRangeTo());
+        return true;
     }
 
     @Override

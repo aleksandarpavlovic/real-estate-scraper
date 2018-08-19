@@ -103,12 +103,13 @@ public abstract class Scraper {
         Set<Realty> filteredResults = results;
         for (BaseCriteria criteria: search.getCriteria()) {
             if (CriteriaDefinitions.PRICE_PER_M2.equals(criteria.getName()) || CriteriaDefinitions.PRICE_PER_ARE.equals(criteria.getName())) {
-                AreaMeasurementUnit criteriaUnit = ((RangeWithUnitCriteria)criteria).getUnit();
-                BigDecimal from = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeFrom());
-                BigDecimal to = BigDecimal.valueOf(((RangeWithUnitCriteria) criteria).getRangeTo());
+                RangeWithUnitCriteria rangeCriteria = (RangeWithUnitCriteria) criteria;
+                AreaMeasurementUnit criteriaUnit = rangeCriteria.getUnit();
+                BigDecimal from = BigDecimal.valueOf(rangeCriteria.getRangeFrom() != null ? rangeCriteria.getRangeFrom() : 0);
+                BigDecimal to = BigDecimal.valueOf(rangeCriteria.getRangeTo() != null ? rangeCriteria.getRangeTo() : Long.MAX_VALUE);
                 filteredResults = filteredResults.stream().filter(realty -> isPricePerAreaUnitInRange(realty, from, to, criteriaUnit)).collect(Collectors.toSet());
+                break;
             }
-            break;
         }
         return filteredResults.stream().filter(realty -> realty.getExternalId() != null).collect(Collectors.toSet());
     }

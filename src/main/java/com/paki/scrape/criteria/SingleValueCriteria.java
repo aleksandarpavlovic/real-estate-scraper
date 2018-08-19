@@ -33,11 +33,11 @@ public class SingleValueCriteria extends BaseCriteria {
         if (this.getValue() == null) {
             if (other.getValue() != null)
                 return false;
-        } else if (other.getValue() == null) {
+        } else if (!this.getValue().equals(other.getValue())) {
             return false;
         }
 
-        return other.getValue().equals(this.getValue());
+        return true;
     }
 
     @Override

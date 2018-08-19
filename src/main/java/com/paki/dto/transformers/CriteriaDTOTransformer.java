@@ -310,7 +310,7 @@ public class CriteriaDTOTransformer {
         return dto;
     }
 
-    private List<LocationDTO> transformLocationsToLocationDTOs(List<Location> locations) {
+    public List<LocationDTO> transformLocationsToLocationDTOs(List<Location> locations) {
         if (locations == null || locations.isEmpty())
             return Collections.emptyList();
         else

@@ -37,10 +37,10 @@ public class RangeWithUnitCriteria extends IntegerRangeCriteria {
         if (this.getUnit() == null) {
             if (other.getUnit() != null)
                 return false;
-        } else if (other.getUnit() == null) {
+        } else if (!this.getUnit().equals(other.getUnit())) {
             return false;
         }
 
-        return this.getUnit() == other.getUnit();
+        return true;
     }
 }

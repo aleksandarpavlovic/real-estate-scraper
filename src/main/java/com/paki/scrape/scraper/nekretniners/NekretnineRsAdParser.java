@@ -152,9 +152,13 @@ public class NekretnineRsAdParser {
         Matcher matcher = pricePattern.matcher(elem.ownText());
         if (matcher.find()) {
             String price = matcher.group(1).replaceAll("[^0-9]", "");
-            return new BigDecimal(price);
+            try {
+                return new BigDecimal(price);
+            } catch(Exception e) {
+                return BigDecimal.ZERO;
+            }
         } else
-            return null;
+            return BigDecimal.ZERO;
     }
 
     private BigDecimal parseSurfaceArea(Element rawAd) {
@@ -205,7 +209,7 @@ public class NekretnineRsAdParser {
             return AdvertiserType.AGENCY;
         if ("Investitor".equals(advertiserType))
             return AdvertiserType.INVESTOR;
-        throw new EnumConstantNotPresentException(AdvertiserType.class, advertiserType);
+        return AdvertiserType.OWNER;
     }
 
     private String parseAdTitle(Element rawAd) {
