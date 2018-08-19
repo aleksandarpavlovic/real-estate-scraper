@@ -53,9 +53,13 @@ public class ScrapeService {
     public void scrape() {
         globalLock.lock();
         try {
+            List<SearchProfile> profiles = searchProfileRepository.findAll();
+            if (profiles.isEmpty()) {
+                System.out.println("********* No profiles found. Scraping skipped *********");
+                return;
+            }
             ScrapeInfo scrapeInfo = prepareScrapeInfo();
             System.out.println("********* Scrape #" + scrapeInfo.getLastRunNumber() + " started at " + scrapeInfo.getLastRunTime() + " *********");
-            List<SearchProfile> profiles = searchProfileRepository.findAll();
             Map<String, Map<String, List<? extends Realty>>> topAds = new HashMap<>();
 
             for (SearchProfile profile : profiles) {
@@ -109,5 +113,9 @@ public class ScrapeService {
         scrapeInfoRepository.save(scrapeInfo);
 
         return scrapeInfo;
+    }
+
+    public void deleteScrapeInfo() {
+        scrapeInfoRepository.deleteAll();
     }
 }

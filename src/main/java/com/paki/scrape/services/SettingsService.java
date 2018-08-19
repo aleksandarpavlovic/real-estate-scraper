@@ -30,4 +30,8 @@ public class SettingsService {
         settingsRepository.save(settings);
         schedulerService.schedule(settings.getScheduledPeriod());
     }
+
+    public void deleteSettings() {
+        settingsRepository.deleteAll();
+    }
 }
