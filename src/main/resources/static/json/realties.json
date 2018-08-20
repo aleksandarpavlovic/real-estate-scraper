@@ -1,0 +1,387 @@
+[
+  {
+    "rooms": {
+      "name": "RC_2_5",
+      "display": "2.5"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "2.5 lux stan na Ceraku"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Perfektan duplex odlično pozicioniran, istok-jug orjentacije. Savršeno koncipiran sa 2 toaleta i kupatilom, sa dve terase orjentisane ka dvorištu...."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Beograd, Opština Čukarica, Cerak, Mojkovačka"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "80.000"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/2-5-lux-stan-na-ceraku/5425633334787?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/180426/m/2-5-lux-stan-na-ceraku-5425633334787-71785206165.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "26.07.2018"
+    },
+    "advertiser": {
+      "name": "AGENCY",
+      "display": "Agencija"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "80m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_3_5",
+      "display": "3.5"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "PRELEP STAN BEOCIN"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Prelep stan u Beocinu na odlicnoj lokaciji sa fantasticnim rasporedom i najlepsoj ulici u mestu . Dodjite i uverite se. Cena nije fiksna. Zamena za..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Beočin, Gradska lokacija, Centar, 16 OKTOBAR"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "40.000"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/prelep-stan-beocin/5425485899396?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/170130/m/prelep-stan-beocin-5425485899396-71781851230.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "26.07.2018"
+    },
+    "advertiser": {
+      "name": "OWNER",
+      "display": "Vlasnik"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "75m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_4_0",
+      "display": "4.0"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "Četvorosoban 99 m2 na I spratu, nov, useljiv"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "ID 81-199-1906 Stan ima dva mokra čvora odvojen toalet od (2m2) i kupatilo (7m2 Stan poseduje tri svetle spavaće sobe veličine (16m2, 12m2 i..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Novi Sad, Opština Novi Sad, Telep"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "98.900"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/cetvorosoban-99-m2-na-i-spratu-nov-useljiv/5425627183226?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/171214/m/cetvorosoban-99-m2-na-i-spratu-nov-useljiv-5425627183226-71784155814.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "21.07.2018"
+    },
+    "advertiser": {
+      "name": "AGENCY",
+      "display": "Agencija"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "99m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_3_5",
+      "display": "3.5"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "Čukarica, Sunčana padina - Petra Lekovića"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Čukarica, Sunčana padina - Petra Lekovića 3.5, 102m2, 1/2, GAS, telefon, interfon, podrum, parking. Komforan, funkcionalan dupleks na dobroj..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Beograd, Opština Čukarica, Sunčana padina, Petra Lekovića"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "119.500"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/cukarica-suncana-padina---petra-lekovica/5425627185472?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/171216/m/cukarica-suncana-padina---petra-lekovica-5425627185472-71784170431.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "18.07.2018"
+    },
+    "advertiser": {
+      "name": "AGENCY",
+      "display": "Agencija"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "102m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_3_0",
+      "display": "3.0"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "Stan na Ceraku"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Odlicna lokacija za svaku preporuku,renoviran, I+pk,Ideo -predsoblje, kupatilo, dnevna soba sa kuhinjom i trpezarijom,pk-predsoblje, dve spavace ..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Beograd, Opština Čukarica, Cerak, Mojkovacka"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "80.000"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/stan-na-ceraku/3675279?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/180427/m/stan-na-ceraku-3675279-71785217716.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "12.07.2018"
+    },
+    "advertiser": {
+      "name": "AGENCY",
+      "display": "Agencija"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "80m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_5_0",
+      "display": "5.0"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "Sunčana padina, Petra Lekovića"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Stan u kući, u lepoj ulici na Sunčanoj padini, u blizini škole, vrtića, pošte, bazena i SC \"Košutnjak\". Dupleks. Funkcionalan. Deljiv u dve stambene..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Beograd, Opština Čukarica, Sunčana padina, Petra Lekovića"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "119.500"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/suncana-padina-petra-lekovica/5425627193636?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/171223/m/sucana-padina-petra-lekovica-5425627193636-71784214640.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "08.07.2018"
+    },
+    "advertiser": {
+      "name": "AGENCY",
+      "display": "Agencija"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "102m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  },
+  {
+    "rooms": {
+      "name": "RC_3_0",
+      "display": "3.0"
+    },
+    "realtyType": "APARTMENT",
+    "adSource": {
+      "name": "HALO_OGLASI",
+      "display": "Halo Oglasi"
+    },
+    "adType": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "title": {
+      "name": "Naslov",
+      "display": "Lux stanovi u Loznici"
+    },
+    "description": {
+      "name": "Opis",
+      "display": "Postovani buduci kupci, poceli smo sa radovima na izgradnji viseporodicnog stambenog objekta u centru Loznice. U prilici smo da ponudimo stanove u..."
+    },
+    "location": {
+      "name": "Lokacija",
+      "display": "Loznica, Gradska lokacija, Centar, Zmaj Jovina"
+    },
+    "price": {
+      "name": "Cena",
+      "display": "790"
+    },
+    "url": {
+      "name": "URL",
+      "display": "https://www.halooglasi.com/nekretnine/prodaja-stanova/lux-stanovi-u-loznici/5425629733459?kid=1"
+    },
+    "imageUrl": {
+      "name": "Image URL",
+      "display": "https://img.halooglasi.com//slike/oglasi/Thumbs/180127/m/lux-stanovi-u-loznici-5425629733459-71784439876.jpg"
+    },
+    "publishDate": {
+      "name": "Datum oglasa",
+      "display": "07.07.2018"
+    },
+    "advertiser": {
+      "name": "INVESTOR",
+      "display": "Investitor"
+    },
+    "surfaceArea": {
+      "name": "Površina",
+      "display": "65m2"
+    },
+    "registration": {
+      "name": "NA",
+      "display": ""
+    }
+  }
+]

@@ -25,6 +25,9 @@ public class MultiValueCriteria extends BaseCriteria {
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
         if (!super.equals(obj))
             return false;
 
@@ -32,6 +35,15 @@ public class MultiValueCriteria extends BaseCriteria {
             return false;
 
         MultiValueCriteria other = (MultiValueCriteria) obj;
+
+        if (this.getValues() == null) {
+            if (other.getValues() != null)
+                return false;
+            else
+                return true;
+        } else if (other.getValues() == null) {
+            return false;
+        }
 
         if (this.getValues().size() != other.getValues().size())
             return false;

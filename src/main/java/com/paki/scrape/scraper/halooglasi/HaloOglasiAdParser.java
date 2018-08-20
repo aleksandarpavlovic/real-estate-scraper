@@ -190,7 +190,7 @@ public class HaloOglasiAdParser {
             return AdvertiserType.AGENCY;
         if ("investitor".equals(advertiserType))
             return AdvertiserType.INVESTOR;
-        throw new EnumConstantNotPresentException(AdvertiserType.class, advertiserType);
+        return AdvertiserType.OWNER;
     }
 
     private String parseAdvertiserType(Element rawAd) {
@@ -256,7 +256,7 @@ public class HaloOglasiAdParser {
             return AreaMeasurementUnit.SQUARE_METER;
         if  ("ha".equals(areaUnit))
             return AreaMeasurementUnit.HECTARE;
-        throw new EnumConstantNotPresentException(AreaMeasurementUnit.class, areaUnit);
+        return AreaMeasurementUnit.SQUARE_METER;
     }
 
     private String parseAreaMeasurementUnit(Element rawAd) {

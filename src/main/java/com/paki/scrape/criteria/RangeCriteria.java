@@ -23,6 +23,9 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
         if (!super.equals(obj))
             return false;
 
@@ -30,8 +33,21 @@ public abstract class RangeCriteria<T> extends BaseCriteria{
             return false;
 
         RangeCriteria other = (RangeCriteria) obj;
+        if (this.getRangeFrom() == null) {
+            if (other.getRangeFrom() != null)
+                return false;
+        } else if (!this.getRangeFrom().equals(other.rangeFrom)) {
+            return false;
+        }
 
-        return this.getRangeFrom().equals(other.getRangeFrom()) && this.getRangeTo().equals(other.getRangeTo());
+        if (this.getRangeTo() == null) {
+            if (other.getRangeTo() != null)
+                return false;
+        } else if (!this.getRangeTo().equals(other.getRangeTo())) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

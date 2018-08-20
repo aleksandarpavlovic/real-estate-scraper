@@ -236,12 +236,12 @@ public class CriteriaDTOTransformer {
                                         : Arrays.asList(CriteriaDefinitions.SURFACE_ARE, CriteriaDefinitions.PRICE_PER_ARE).contains(rangeDto.getName().getName())
                                             ? AreaMeasurementUnit.ARE
                                             : AreaMeasurementUnit.HECTARE;
-                        return new RangeWithUnitCriteria(rangeDto.getName().getName(), Integer.valueOf(rangeDto.getFrom().getName()), Integer.valueOf(rangeDto.getTo().getName()), unit);
+                        return new RangeWithUnitCriteria(rangeDto.getName().getName(), rangeDto.getFrom() != null ? Integer.valueOf(rangeDto.getFrom().getName()) : null, rangeDto.getTo() != null ? Integer.valueOf(rangeDto.getTo().getName()) : null, unit);
                     }
                     else if (Arrays.asList(CriteriaDefinitions.PRICE, CriteriaDefinitions.FLOOR).contains(rangeDto.getName().getName())) {
-                        return new IntegerRangeCriteria(rangeDto.getName().getName(), Integer.valueOf(rangeDto.getFrom().getName()), Integer.valueOf(rangeDto.getTo().getName()));
+                        return new IntegerRangeCriteria(rangeDto.getName().getName(), rangeDto.getFrom() != null ? Integer.valueOf(rangeDto.getFrom().getName()) : null, rangeDto.getTo() != null ? Integer.valueOf(rangeDto.getTo().getName()) : null);
                     } else {
-                        return new StringRangeCriteria(rangeDto.getName().getName(), rangeDto.getFrom().getName(), rangeDto.getTo().getName());
+                        return new StringRangeCriteria(rangeDto.getName().getName(), rangeDto.getFrom() != null ? rangeDto.getFrom().getName() : null, rangeDto.getTo() != null ? rangeDto.getTo().getName() : null);
                     }
                 }
         }
@@ -310,7 +310,7 @@ public class CriteriaDTOTransformer {
         return dto;
     }
 
-    private List<LocationDTO> transformLocationsToLocationDTOs(List<Location> locations) {
+    public List<LocationDTO> transformLocationsToLocationDTOs(List<Location> locations) {
         if (locations == null || locations.isEmpty())
             return Collections.emptyList();
         else

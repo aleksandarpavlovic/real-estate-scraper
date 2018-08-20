@@ -21,4 +21,26 @@ public class RangeWithUnitCriteria extends IntegerRangeCriteria {
         super(name, from, to);
         this.unit = unit;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (!super.equals(obj))
+            return false;
+
+        if (!(obj instanceof RangeWithUnitCriteria))
+            return false;
+
+        RangeWithUnitCriteria other = (RangeWithUnitCriteria) obj;
+        if (this.getUnit() == null) {
+            if (other.getUnit() != null)
+                return false;
+        } else if (!this.getUnit().equals(other.getUnit())) {
+            return false;
+        }
+
+        return true;
+    }
 }

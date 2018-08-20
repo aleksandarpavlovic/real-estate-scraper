@@ -32,9 +32,7 @@ public class SchedulerService {
 
     public void schedule(int periodInMinutes) {
         unschedule();
-        // TODO set initial delay to 0 when done testing
-        scheduledJob = scheduler.scheduleWithFixedDelay(job, 1111, Math.max(periodInMinutes, MIN_JOB_PERIOD), TimeUnit.MINUTES);
-//        scheduledJob = scheduler.scheduleWithFixedDelay(job, 0, Math.max(periodInMinutes, MIN_JOB_PERIOD), TimeUnit.MINUTES);
+        scheduledJob = scheduler.scheduleWithFixedDelay(job, 1, Math.max(periodInMinutes, MIN_JOB_PERIOD), TimeUnit.MINUTES);
     }
 
     public void unschedule() {

@@ -26,7 +26,12 @@ public class SettingsService {
     }
 
     public void save(ScrapeSettings settings) {
+        settings.setScheduledPeriod(Math.max(SchedulerService.MIN_JOB_PERIOD, settings.getScheduledPeriod()));
         settingsRepository.save(settings);
         schedulerService.schedule(settings.getScheduledPeriod());
+    }
+
+    public void deleteSettings() {
+        settingsRepository.deleteAll();
     }
 }

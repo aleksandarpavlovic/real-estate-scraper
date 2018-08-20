@@ -114,12 +114,12 @@ public class NekretnineRsCriteriaTransformer {
     private void transformRangeCriteria(RangeCriteria criteria, NekretnineRsRequest request) {
         String criteriaName = criteria.getName();
         if (ROOM_COUNT.equals(criteriaName)) {
-            request.updatePath(new NekretnineRsRequest.Path("sobe", concatenate(roomCountMappings.get(criteria.getRangeFrom()), roomCountMappings.get(criteria.getRangeTo()))));
+            request.updatePath(new NekretnineRsRequest.Path("sobe", concatenate(roomCountMappings.getOrDefault(criteria.getRangeFrom(), 0), roomCountMappings.getOrDefault(criteria.getRangeTo(), Integer.MAX_VALUE))));
         } else if (PRICE.equals(criteriaName)) {
-            request.updatePath(new NekretnineRsRequest.Path("cena", concatenate(criteria.getRangeFrom(), criteria.getRangeTo())));
+            request.updatePath(new NekretnineRsRequest.Path("cena", concatenate(criteria.getRangeFrom() != null ? criteria.getRangeFrom() : 0, criteria.getRangeTo() != null ? criteria.getRangeTo() : Integer.MAX_VALUE)));
         } else if (SURFACE_M2.equals(criteriaName) || SURFACE_ARE.equals(criteriaName)) {
             RangeWithUnitCriteria areaCriteria = (RangeWithUnitCriteria)criteria;
-            request.updatePath(new NekretnineRsRequest.Path("kvadratura", concatenate(convertAreaToM2(areaCriteria.getRangeFrom(), areaCriteria.getUnit()), convertAreaToM2(areaCriteria.getRangeTo(), areaCriteria.getUnit()))));
+            request.updatePath(new NekretnineRsRequest.Path("kvadratura", concatenate(convertAreaToM2(areaCriteria.getRangeFrom() != null ? areaCriteria.getRangeFrom() : 0, areaCriteria.getUnit()), convertAreaToM2(areaCriteria.getRangeTo() != null ? areaCriteria.getRangeTo() : Integer.MAX_VALUE, areaCriteria.getUnit()))));
         } else if (FLOOR.equals(criteriaName)) {
             updateFloors(criteria, request);
         }
@@ -136,7 +136,7 @@ public class NekretnineRsCriteriaTransformer {
         int lower = criteria.getRangeFrom() != null ? criteria.getRangeFrom() : SUBTERRAIN;
         int upper = criteria.getRangeTo() != null ? criteria.getRangeTo() : 1000;
         if (lower > 0) {
-            request.updatePath(new NekretnineRsRequest.Path("na_spratu", concatenate(lower, upper)));
+            request.updatePath(new NekretnineRsRequest.Path("na-spratu", concatenate(lower, upper)));
         } else {
             List<NekretnineRsRequest.Path> paths = IntStream.range(lower, Math.min(0, upper))
                     .mapToObj(lowFloorMappings::get)

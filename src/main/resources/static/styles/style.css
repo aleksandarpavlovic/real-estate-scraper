@@ -1,0 +1,329 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    width: 1000px;
+    height: auto;
+    margin: 10px auto;
+    background-color: white;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    width: 1000px;
+    height: 120px;
+    background-color:rgb(2, 2, 102);;
+    display: flex;
+    flex-direction: row;
+}
+header img {
+    width: 1000px;
+    height: 120px;
+}
+header h1 {
+    margin: 40px auto;
+    color: white;
+}
+#settingsSpan {
+    color: black;
+    font-size: 22px;
+    position: absolute;
+    left: 760px;
+    top: 2px;
+}
+
+#settingsSpan:hover {
+    cursor: pointer;
+}
+
+#settingsBox {
+    display: none;
+    width: 250px;
+    height: 160px;
+    position: absolute;
+    top: 155px;
+    right: 70px;
+    z-index: 1;
+    background-color: rgb(206, 204, 204);
+    border-radius: 4px;
+}
+#settingsBox form {
+    width: 80%;
+    margin: 10px auto;
+}
+#sendBtn {
+    width: 70px;
+    margin: 10px 100px;
+}
+main {
+    width: 1000px;
+    height: auto;
+    border-top: none;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+}
+
+aside {
+    width: 200px;
+    height: auto;
+    background-color: lightgray;
+    border-top: none;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 14px;
+}
+#izaberiProfil {
+    border-bottom: 1px solid #DDDFE2;
+}
+#izaberiProfil form{
+    margin: 10px auto;
+}
+#viewBtn, #newBtn {
+    height: 23px;
+    width: 75px;
+    margin: 0 10px 0 20px;
+}
+#editBtn, #deleteBtn {
+    height: 23px;
+    width: 75px;
+}
+#izaberiProfil input:hover {
+    cursor: pointer;
+}
+#izaberiProfil select {
+    width: 160px;
+    margin: 10px 20px;
+}
+
+#profileNameBox input[type="text"]{
+    width: 95%;
+    margin: 5% auto;  
+}
+#profileNameBox {
+    width: 80%;
+    margin: 0 auto;
+    display: none;
+}
+#realtyTypeDiv {
+    width: 100%;
+    margin: 5% 10%;
+    display: none;
+}
+
+#adType {
+    padding-left: 15px;
+    padding-top: 25px;
+}
+
+.cenaIKvadratura {
+    margin: 0 20px;
+}
+
+.cenaIKvadratura input {
+    width: 80px;
+    margin: 0 10px 0 0;
+}
+
+.cenaIKvadratura input, select {
+    font-size: 12px;
+}
+.cenaIKvadratura form {
+    font-size: 13px;
+}
+.checkbox {
+    /*border-bottom: 2px solid #DDDFE2;*/
+    padding-left: 10%;
+    padding-bottom: 20px;
+    width: 190px;
+}
+
+.checkbox form {
+    border: 2px solid #DDDFE2;
+    width: 170px;
+}
+
+#topConditions {
+    margin: 0 0px;
+}
+#topConditions input {
+    width: 20px;
+}
+section {
+    width: 800px;
+    background-color: rgb(240, 239, 239);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+#sortiranje {
+    margin-left: 600px;
+    margin: 5px;
+}
+
+div.placeholder {
+    margin: 12px;
+    margin-top: 20px;
+    width: 730px;
+    height: 200px;
+    display: flex;
+    flex-direction: row;
+    background-color: white;
+    border-radius: 5px;
+}
+
+.slikaDatumOglasivac {
+    padding: 5px;
+    font-size: 12px;
+}
+
+.slikaOglasa {
+    width: 200px;
+    height: 150px;
+    float: left;
+    padding: 5px;
+    padding-right: 20px;
+    margin-top: 5%;
+}
+.stanInfo {
+    text-align: left;
+    margin-top: -8px;
+    position: relative;
+    margin-left: -8px;
+}
+
+.stanInfo a {
+    text-decoration: none;
+}
+
+.stanInfo p {
+    margin-top: 25px;
+    margin-bottom: 0;
+    padding-bottom: 0;
+    width: 430px;
+}
+
+.naslovOglasa {
+    color: black;
+    font-size: 17px;
+    font-weight: bold;
+    width: 300px;
+}
+
+.date {
+    padding-left: 5px;
+}
+
+.cena {
+    position: absolute;
+    right: -25px;
+    top: 8px;
+    padding: 5px;
+    border: 1px solid rgb(2, 2, 102);
+    color: white;
+    background-color: rgb(2, 2, 102);
+    font-weight: bold;
+    border-radius: 4px;
+}
+
+#topPrice {
+    margin-left: 23px;
+}
+
+p.lokacija {
+    margin-top: 5px;
+    font-size: 14px;
+}
+
+p.tipKvadraturaSoba {
+    font-weight: bold;
+    font-size: 15px;
+    background-color: #F6F7F9;
+    width: 110px;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+p.opis {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    height: 45px;
+    width: 500px;
+    overflow: hidden;
+}
+
+
+#pageNumbers {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 100%;
+}
+#pageNumbers span{
+    margin: 10px;
+}
+
+#location {
+    margin-left: 0px;
+    margin-top: 20px;
+    margin-bottom: 0px;
+}
+
+#location h4 {
+    margin-left: 0px;
+}
+
+#location ul {
+    list-style: none;
+    padding-left: 5px;
+}
+
+#location > ul > li {
+    padding-left: 15px;
+}
+
+#Location {
+    margin-top: -15px;
+    height: 220px;
+    width: 170px;
+    overflow: auto;
+}
+
+#criteriaWrap form {
+    margin-top: -15px;
+}
+
+#criteriaWrap {
+    display: none;
+}
+
+#saveCancelDiv {
+    display: none;
+}
+
+.btn {
+    width: 60px;
+    margin: 30px 15px 5px 15px;
+}
+
+.pagination {
+    float:right;
+    margin: 0 auto;
+}
+
+.pagination a {
+    float: left;
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    transition: background-color .3s;
+}
+
+.pagination a.active {
+    background-color: dodgerblue;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {background-color: #ddd;}

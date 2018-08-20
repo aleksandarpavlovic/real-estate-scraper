@@ -12,6 +12,7 @@ import com.paki.scrape.services.SettingsService;
 import com.paki.scrape.topad.TopAdCondition;
 import com.paki.scrape.topad.TopAdName;
 import com.paki.scrape.topad.TopAdParameterizedCondition;
+import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @RestController
 @RequestMapping("/admin")
@@ -29,17 +32,19 @@ public class AdminController {
     private ScrapeService scrapeService;
     private SearchProfileService searchProfileService;
     private SettingsService settingsService;
+    private ExecutorService executorService;
 
     @Autowired
     public AdminController(ScrapeService scrapeService, SearchProfileService searchProfileService, SettingsService settingsService) {
         this.scrapeService = scrapeService;
         this.searchProfileService = searchProfileService;
         this.settingsService = settingsService;
+        this.executorService = Executors.newSingleThreadExecutor();
     }
 
     @PostMapping("/scrape")
-    private ResponseEntity scrape() {
-        scrapeService.scrape();
+    public ResponseEntity scrape() {
+        executorService.execute(scrapeService::scrape);
         return ResponseEntity.ok().build();
     }
 
@@ -57,9 +62,21 @@ public class AdminController {
         return ResponseEntity.ok().build();
     }
 
+    @PostMapping("/reset")
+    private ResponseEntity cleanDbAndResetState() {
+        try {
+            searchProfileService.deleteAllProfiles();
+            settingsService.deleteSettings();
+            scrapeService.deleteScrapeInfo();
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.SC_METHOD_FAILURE).body(e.getMessage());
+        }
+    }
+
     private ScrapeSettings createTestSettings() {
         ScrapeSettings settings = new ScrapeSettings();
-        settings.setEmailList(Arrays.asList("alex.pavlovic92@gmail.com", "pa173064m@student.etf.bg.ac.rs"));
+        settings.setEmailList(Arrays.asList("alex.pavlovic92@gmail.com"));
         settings.setScheduledPeriod(11116);
         return settings;
     }
@@ -77,7 +94,7 @@ public class AdminController {
         Set<BaseCriteria> criteriaList = new HashSet<>();
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.AD_TYPE, AdType.SELL.name()));
         criteriaList.add(new SingleValueCriteria(CriteriaDefinitions.REALTY_TYPE, RealtyType.APARTMENT.name()));
-//        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.ADVERTISER, new HashSet<>(Arrays.asList(AdvertiserType.OWNER.name()))));
+        criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.ADVERTISER, new HashSet<>(Arrays.asList(AdvertiserType.OWNER.name()))));
         criteriaList.add(new MultiValueCriteria(CriteriaDefinitions.REGISTRATION, new HashSet<>(Arrays.asList(RegistrationType.REGISTERED.name()))));
         criteriaList.add(new IntegerRangeCriteria(CriteriaDefinitions.PRICE, 0, 51000));
         criteriaList.add(new RangeWithUnitCriteria(CriteriaDefinitions.SURFACE_M2, 12, 46, AreaMeasurementUnit.SQUARE_METER));

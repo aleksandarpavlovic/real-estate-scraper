@@ -1,0 +1,124 @@
+[
+  {
+    "value": {
+      "name": "SELL",
+      "display": "Prodaja"
+    },
+    "name": {
+      "name": "Ad type",
+      "display": "Tip oglasa"
+    },
+    "criteriaType": "SINGLE_SELECT"
+  },
+  {
+    "value": {
+      "name": "APARTMENT",
+      "display": "Stan"
+    },
+    "name": {
+      "name": "Realty type",
+      "display": "Tip nekretnine"
+    },
+    "criteriaType": "SINGLE_SELECT"
+  },
+  {
+    "values": [
+      {
+        "name": "REGISTERED",
+        "display": "Uknjiženo"
+      }
+    ],
+    "name": {
+      "name": "Registration",
+      "display": "Uknjiženost"
+    },
+    "criteriaType": "MULTI_SELECT"
+  },
+  {
+    "values": [
+      {
+        "name": "DUPLEX",
+        "display": "Dupleks"
+      }
+    ],
+    "name": {
+      "name": "Apartment type",
+      "display": "Tip stana"
+    },
+    "criteriaType": "MULTI_SELECT"
+  },
+  {
+    "values": [
+      {
+        "name": "GAS",
+        "display": "Gas"
+      }
+    ],
+    "name": {
+      "name": "Heating",
+      "display": "Grejanje"
+    },
+    "criteriaType": "MULTI_SELECT"
+  },
+  {
+    "to": {
+      "name": "123123",
+      "display": "123123"
+    },
+    "name": {
+      "name": "Price",
+      "display": "Cena"
+    },
+    "criteriaType": "RANGE"
+  },
+  {
+    "to": {
+      "name": "123",
+      "display": "123"
+    },
+    "name": {
+      "name": "Surface m2",
+      "display": "Površina u m2"
+    },
+    "criteriaType": "RANGE"
+  },
+  {
+    "to": {
+      "name": "RC_5_0",
+      "display": "5.0"
+    },
+    "name": {
+      "name": "Room count",
+      "display": "Broj soba"
+    },
+    "criteriaType": "RANGE"
+  },
+  {
+    "from": {
+      "name": "-1",
+      "display": "Visoko prizemlje"
+    },
+    "name": {
+      "name": "Floor",
+      "display": "Spratnost"
+    },
+    "criteriaType": "RANGE"
+  },
+  {
+    "values": [
+      {
+        "name": "3",
+        "display": "Kragujevac"
+      },
+      {
+        "name": "2_1",
+        "display": "Adamovićevo naselje"
+      }
+    ],
+    "name": {
+      "name": "Location",
+      "display": "Lokacija"
+    },
+    "criteriaType": "MULTI_SELECT_TREE"
+  }
+]

@@ -53,18 +53,29 @@ public class ScrapeService {
     public void scrape() {
         globalLock.lock();
         try {
-            ScrapeInfo scrapeInfo = prepareScrapeInfo();
             List<SearchProfile> profiles = searchProfileRepository.findAll();
+            if (profiles.isEmpty()) {
+                System.out.println("********* No profiles found. Scraping skipped *********");
+                return;
+            }
+            ScrapeInfo scrapeInfo = prepareScrapeInfo();
+            System.out.println("********* Scrape #" + scrapeInfo.getLastRunNumber() + " started at " + scrapeInfo.getLastRunTime() + " *********");
             Map<String, Map<String, List<? extends Realty>>> topAds = new HashMap<>();
 
             for (SearchProfile profile : profiles) {
+                System.out.println("***** Scraping for profile: " + profile.getName() + "... *****");
                 Search search = profile.getSearch();
                 for (ScraperType scraperType : ScraperType.values()) {
                     scrape(scrapeInfo, search, scraperType);
                 }
                 topAds.put(profile.getName(), topAdService.getTopAds(scrapeInfo, profile));
+                System.out.println("***** Scrape for profile: " + profile.getName() + " completed. *****");
             }
             notificationService.notify(topAds);
+            System.out.println("********* Scrape #" + scrapeInfo.getLastRunNumber() + " finished at " + LocalDateTime.now() + " *********");
+        } catch (Exception e) {
+            System.out.println("********* Scrape interrupted due to unexpected error *********");
+            e.printStackTrace();
         } finally {
             globalLock.unlock();
         }
@@ -102,5 +113,9 @@ public class ScrapeService {
         scrapeInfoRepository.save(scrapeInfo);
 
         return scrapeInfo;
+    }
+
+    public void deleteScrapeInfo() {
+        scrapeInfoRepository.deleteAll();
     }
 }

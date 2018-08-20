@@ -30,7 +30,14 @@ public class TopAdParameterizedCondition extends TopAdCondition {
         if (obj.getClass() != this.getClass())
             return false;
         TopAdParameterizedCondition other = (TopAdParameterizedCondition) obj;
-        return other.getParameter().equals(this.getParameter());
+        if (this.getParameter() == null) {
+            if (other.getParameter() != null)
+                return false;
+        } else if (other.getParameter() == null) {
+            return false;
+        }
+
+        return true;
     }
 
     @Override

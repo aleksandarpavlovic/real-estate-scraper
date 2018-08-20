@@ -78,12 +78,20 @@ public abstract class Realty {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        if (obj instanceof Realty) {
-            return ((Realty) obj).getSource() == this.getSource()
-                    && ((Realty) obj).getExternalId().equals(this.getExternalId());
+        if (!(obj instanceof Realty)) {
+            return false;
+        }
+        Realty other = (Realty) obj;
+        if (other.getSource() != this.getSource())
+            return false;
+        if (this.getExternalId() == null) {
+            if (other.getExternalId() != null)
+                return false;
+        } else if (other.getExternalId() == null) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override
