@@ -2,10 +2,6 @@ package com.paki.realties.locations;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -14,15 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
 public class Location {
-    @Id
-    String id;
-    String name;
-    @ManyToOne
-    Location parent;
-    @OneToMany(mappedBy = "parent")
-    List<Location> sublocations;
+    private String id;
+    private String name;
+    private Location parent;
+    private List<Location> sublocations;
 
     public void addSublocation(Location location) {
         if (sublocations == null)

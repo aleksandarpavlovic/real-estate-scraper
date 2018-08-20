@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -16,5 +17,31 @@ public class SingleValueCriteria extends BaseCriteria {
     public SingleValueCriteria(String name, String value) {
         super(name);
         this.value = value;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (!super.equals(obj))
+            return false;
+        if (!(obj instanceof SingleValueCriteria))
+            return false;
+
+        SingleValueCriteria other = (SingleValueCriteria) obj;
+        if (this.getValue() == null) {
+            if (other.getValue() != null)
+                return false;
+        } else if (!this.getValue().equals(other.getValue())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), this.getValue());
     }
 }

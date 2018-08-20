@@ -14,12 +14,15 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"externalId", "source"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"externalId"}))
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Realty {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "realty_generator")
+    @SequenceGenerator(name="realty_generator", sequenceName = "realty_seq")
     private Long id;
+    private Long scrapeRunNumber;
+
     @Enumerated(EnumType.STRING)
     private AdSource source;
     private String externalId;
@@ -43,7 +46,8 @@ public abstract class Realty {
     @Enumerated(EnumType.STRING)
     private RegistrationType registered;
 
-    public Realty(String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+    public Realty(AdSource source, String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+        this.source = source;
         this.externalId = externalId;
         this.title = title;
         this.description = description;
@@ -74,12 +78,20 @@ public abstract class Realty {
     public boolean equals(Object obj) {
         if (obj == this)
             return true;
-        if (obj instanceof Realty) {
-            return ((Realty) obj).getSource() == this.getSource()
-                    && ((Realty) obj).getExternalId().equals(this.getExternalId());
+        if (!(obj instanceof Realty)) {
+            return false;
+        }
+        Realty other = (Realty) obj;
+        if (other.getSource() != this.getSource())
+            return false;
+        if (this.getExternalId() == null) {
+            if (other.getExternalId() != null)
+                return false;
+        } else if (other.getExternalId() == null) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     @Override

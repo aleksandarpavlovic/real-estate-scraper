@@ -1,15 +1,13 @@
 package com.paki.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public final class ValueDTO {
-    private final String name;
-    private final String display;
+public class ValueDTO {
+    private String name;
+    private String display;
 }

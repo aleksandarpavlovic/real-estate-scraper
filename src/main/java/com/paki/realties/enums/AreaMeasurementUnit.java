@@ -1,14 +1,22 @@
 package com.paki.realties.enums;
 
+import lombok.Getter;
+
 import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public enum AreaMeasurementUnit {
-    SQUARE_METER,
-    ARE,
-    HECTARE;
+    SQUARE_METER("m2"),
+    ARE("ar"),
+    HECTARE("ha");
 
+    @Getter
+    private final String displayValue;
+
+    AreaMeasurementUnit(String displayValue) {
+        this.displayValue = displayValue;
+    }
     private static final Map<String,AreaMeasurementUnit> ENUM_MAP;
 
     static {

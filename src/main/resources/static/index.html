@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha484-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/4.4.1/jquery.min.js"></script> -->
+    <title>Oglasi</title>
+</head>
+<body>
+    <header>
+        <img src="img/logo.png">
+        <div id="settingsBox">
+            <form>
+                Vaš e-mail:<br>
+                <input type="text" id="email"><br><br>
+                Učestalost izveštavanja:
+                <input type="number" id="schedule" placeholder="Vrednost u minutima"><br>
+            </form>
+            <button id="sendBtn">Sačuvaj</button>
+        </div>
+    </header>
+
+    <main>
+        <aside>
+            <div id="izaberiProfil">
+                <form>
+                    <select id="profil" required>
+                    </select><br>
+                    <input type="button" value="Prikaži" id="viewBtn">
+                    <input type="button" value="&#9998; Izmeni" id="editBtn">
+                    <input type="button" value="Novi" id="newBtn">
+                    <input type="button" value="&#10007; Obriši" id="deleteBtn">
+                </form>
+            </div>
+
+            <div id="profileWrap">
+                <div id="profileSubwrap">
+                    <div id="profileNameBox">
+                        Naziv profila:<br>
+                        <form>
+                            <input type="text" id="profileName" size="20" value="" required>
+                        </form>
+                    </div>
+                    <div id="realtyTypeDiv">
+                        <h4>Tip nekretnine:</h4>
+                        <form>
+                            <select id="typeRealty">
+                                <option label=" "></option>
+                                <option id="APARTMENT" value="APARTMENT">Stan</option>
+                                <option id="HOUSE" value="HOUSE">Kuca</option>
+                                <option id="LAND" value="LAND">Zemljiste</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div id="criteriaWrap">
+                    <div>
+                        <form id="adType">
+                            <input type="radio" name="radioAdType" id="SELL" value="SELL" checked>Prodaja<br>
+                            <input type="radio" name="radioAdType" id="RENT" value="RENT">Izdavanje
+                        </form>
+                    </div>
+                    <div class="checkbox">
+                        <h4>Oglašivač:</h4>
+                        <form id="Advertiser">
+                            <input type="checkbox" id="AGENCY" value= "AGENCY">Agencija<br>
+                            <input type="checkbox" id="OWNER" value= "OWNER">Vlasnik<br>
+                            <input type="checkbox" id="INVESTOR" value= "INVESTOR">Investitor<br>
+                        </form>
+                    </div>
+                    <div class="checkbox">
+                        <h4>Uknjiženost:</h4>
+                        <form id="registration">
+                            <input type="checkbox" id="Registration" value= "REGISTERED">Uknjiženo
+                        </form>
+                    </div>
+                    <div id="cena" class="cenaIKvadratura">
+                        <h4>Cena:</h4>
+                        <form id="Price">
+                            OD: <input type="number" id="cenaOd" placeholder="€">
+                            <br>
+                            DO: <input type="number" id="cenaDo" placeholder="€">
+                        </form>
+                    </div>
+                    <div id="kvadratura" class="cenaIKvadratura">
+                        <h4>Kvadratura:</h4>
+                        <form id="surfaceM2">
+                            OD: <input type="number" id="kvadraturaOd" placeholder="m²">
+                            <br>
+                            DO: <input type="number" id="kvadraturaDo" placeholder="m²">
+                        </form>
+                    </div>
+                    <div id="povrsinaAri" class="cenaIKvadratura">
+                        <h4>Površina:</h4>
+                        <form id="surfaceAre">
+                            OD: <input type="number" id="ariOd" placeholder="ari">
+                            <br>
+                            DO: <input type="number" id="ariDo" placeholder="ari">
+                        </form>
+                    </div>
+                    <div id="cenaKvadrat" class="cenaIKvadratura">
+                        <h4>Cena po kvadratu:</h4>
+                        <form id="pricePerM2">
+                            OD: <input type="number" id="cenaM2Od" placeholder="€/m²">
+                            <br>
+                            DO: <input type="number" id="cenaM2Do" placeholder="€/m²">
+                        </form>
+                    </div>
+                    <div id="cenaAr" class="cenaIKvadratura">
+                        <h4>Cena po aru:</h4>
+                        <form id="pricePerAre">
+                            OD: <input type="number" id="cenaArOd" placeholder="€/ar">
+                            <br>
+                            DO: <input type="number" id="cenaArDo" placeholder="€/ar">
+                        </form>
+                    </div>
+                    <div id="brojSoba" class="cenaIKvadratura">
+                        <h4>Broj soba:</h4>
+                        <form id="Room count">
+                            OD: <select id="roomFrom">
+                            <option value=""></option>
+                            <option value="RC_0">0</option>
+                            <option value="RC_0_5">0.5</option>
+                            <option value="RC_1_0">1.0</option>
+                            <option value="RC_1_5">1.5</option>
+                            <option value="RC_2_0">2.0</option>
+                            <option value="RC_2_5">2.5</option>
+                            <option value="RC_3_0">3.0</option>
+                            <option value="RC_3_5">3.5</option>
+                            <option value="RC_4_0">4.0</option>
+                            <option value="RC_4_5">4.5</option>
+                            <option value="RC_5_0">5.0</option>
+                            <option value="RC_5_p">5+</option>
+                        </select><br>
+                            DO: <select id="roomTo">
+                            <option value=""></option>
+                            <option value="RC_0">0</option>
+                            <option value="RC_0_5">0.5</option>
+                            <option value="RC_1_0">1.0</option>
+                            <option value="RC_1_5">1.5</option>
+                            <option value="RC_2_0">2.0</option>
+                            <option value="RC_2_5">2.5</option>
+                            <option value="RC_3_0">3.0</option>
+                            <option value="RC_3_5">3.5</option>
+                            <option value="RC_4_0">4.0</option>
+                            <option value="RC_4_5">4.5</option>
+                            <option value="RC_5_0">5.0</option>
+                            <option value="RC_5_p">5+</option>
+                        </select>
+                        </form>
+                    </div>
+                    <div id="spratnost" class="cenaIKvadratura">
+                        <h4>Spratnost:</h4>
+                        <form id="Floor">
+                            OD: <select id="floorFrom">
+                            <option value=""></option>
+                            <option value="-4">Suteren</option>
+                            <option value="-3">Nisko prizemlje</option>
+                            <option value="-2">Prizemlje</option>
+                            <option value="-1">Visoko prizemlje</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                        </select><br>
+                            DO: <select id="floorTo">
+                            <option value=""></option>
+                            <option value="-4">Suteren</option>
+                            <option value="-3">Nisko prizemlje</option>
+                            <option value="-2">Prizemlje</option>
+                            <option value="-1">Visoko prizemlje</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                            <option value="6">6</option>
+                            <option value="7">7</option>
+                            <option value="8">8</option>
+                            <option value="9">9</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                            <option value="24">24</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="27">27</option>
+                            <option value="28">28</option>
+                            <option value="29">29</option>
+                            <option value="30">30</option>
+                        </select>
+                        </form>
+                    </div>
+                    <div id="gradnja" class="checkbox">
+                        <h4>Gradnja:</h4>
+                        <form id="build">
+                            <input type="checkbox" id="OLD_BUILD" value="OLD_BUILD">Starogradnja<br>
+                            <input type="checkbox" id="NEW_BUILD" value="NEW_BUILD">Novogradnja<br>
+                            <input type="checkbox" id="UNDER_CONSTRUCTION" value="UNDER_CONSTRUCTION">U izgradnji<br>
+                        </form>
+                    </div>
+                    <div id="grejanje" class="checkbox">
+                        <h4>Grejanje:</h4>
+                        <form id="heating">
+                            <input type="checkbox" id="CENTRAL" value="CENTRAL">Centralno<br>
+                            <input type="checkbox" id="OWN_CENTRAL" value="OWN_CENTRAL">Etažno<br>
+                            <input type="checkbox" id="ELECTRIC" value="ELECTRIC">Struja<br>
+                            <input type="checkbox" id="GAS" value="GAS">Gas<br>
+                        </form>
+                    </div>
+                    <div id="apartmentType" class="checkbox">
+                        <h4>Tip stana:</h4>
+                        <form id="typeApartment">
+                            <input type="checkbox" id="WITH_SALON" value="WITH_SALON">Salonac<br>
+                            <input type="checkbox" id="DUPLEX" value="DUPLEX">Dupleks<br>
+                            <input type="checkbox" id="PENTHOUSE" value="PENTHOUSE">Penthaus<br>
+                            <input type="checkbox" id="LOFT" value="LOFT">Potkrovlje<br>
+                            <input type="checkbox" id="WITH_YARD" value="WITH_YARD">Sa dvorištem<br>
+                        </form>
+                    </div>
+                    <div id="dodatno" class="checkbox">
+                        <h4>Dodatno:</h4>
+                        <form id="facilities">
+                            <input type="checkbox" id="TERRASSE" value="TERRASSE">Terasa<br>
+                            <input type="checkbox" id="LOGGIA" value="LOGGIA">Lođa<br>
+                            <input type="checkbox" id="BALCONY" value="BALCONY">Balkon<br>
+                            <input type="checkbox" id="FRENCH_BALCONY" value="FRENCH_BALCONY">Francuski balkon<br>
+                            <input type="checkbox" id="GARAGE" value="GARAGE">Garaža<br>
+                            <input type="checkbox" id="PARKING" value="PARKING">Parking<br>
+                        </form>
+                    </div>
+                    <div id="location" class="checkbox">
+                        <h4>Lokacija:</h4>
+                        <form id="Location"></form>
+                    </div>
+                    <div id="topConditions" class="checkbox">
+                        <h4>Top ad conditions</h4>
+                        <form id="topAdForm">
+                            <input type="checkbox" id="NEW_AD" value="NEW_AD">Novi oglasi<br>
+                            <input type="checkbox" id="PRICE_DROP" value="PRICE_DROP">Cena oglasa snižena<br>
+                            <input type="checkbox" id="PRICE_IN_TOP_N_PERCENT" value="PRICE_IN_TOP_N_PERCENT">Cena u top <input id="topPrice" type="number">% <br>
+                            <input type="checkbox" id="PRICE_PER_M2_IN_TOP_N_PERCENT" value="PRICE_PER_M2_IN_TOP_N_PERCENT">Cena/m² u top <input id="priceM2" type="number">%
+                        </form>
+                    </div>
+                </div>
+                <div id="saveCancelDiv">
+                    <button id="saveBtn" class="btn">Sačuvaj</button>
+                    <button id="cancelBtn" class="btn">Poništi</button>
+                </div>
+            </div>
+        </aside>
+        <section>
+            <span id="settingsSpan"><i class="fas fa-cog" title="Settings" id="settings"></i></span>
+            <div id="sortiranje">
+                <form>
+                    <select required id="sortSlct">
+                        <option selected disabled hidden>Sortiranje</option>
+                        <option value="dateasc">Po datumu (rastuće)</option>
+                        <option value="datedesc" selected="selected">Po datumu (opadajuće)</option>
+                        <option value="priceasc">Po ceni (rastuće)</option>
+                        <option value="pricedesc">Po ceni (opadajuće)</option>
+                    </select>
+                </form>
+            </div>
+
+            <div id="oglasiWrap"></div>
+            <div class="pagination" id="pagination">
+                <a href="#" id="firstpagelink">&laquo;</a>
+                <a href="#" id="prevpagelink">&lt;</a>
+                <a class="active" href="#" id="currentpagelink">1</a>
+                <a href="#" id="nextpagelink">&gt;</a>
+                <a href="#" id="lastpagelink">&raquo;</a>
+            </div>
+        </section>
+    </main>
+    <footer></footer>
+    <script src="js/script.js"></script>
+</body>
+</html>
