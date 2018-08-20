@@ -5,7 +5,7 @@ In order to build the project you need to have Maven and JDK1.8 or higher instal
 2. Go to /target directory
 3. Run command: java -jar <NAME_OF_JAR>
 4. Open Chrome (not tested on other browsers) and hit http://localhost:8080
-5. When done: Ctrl+c or kill -9 <PID> to kill process
+5. When done: Ctrl+c or kill -9 <PID_OF_PROCESS> to kill process
 
 Steps 1 to 3, can be replaced with mvn spring-boot:run but it performs whole build cycle each time.
 
