@@ -1,5 +1,5 @@
 # real-estate-scraper
-In order to build the project you need to have Maven and JDK1.8 or higher installed.
+In order to build the project you need Maven and JDK 8 or higher installed.
 
 1. Build command: mvn clean package
 2. Go to /target directory
