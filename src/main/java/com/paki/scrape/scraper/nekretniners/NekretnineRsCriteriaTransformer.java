@@ -126,6 +126,8 @@ public class NekretnineRsCriteriaTransformer {
     }
 
     private Integer convertAreaToM2(Integer value, AreaMeasurementUnit unit) {
+        if (value.equals(Integer.MAX_VALUE))
+            return value;
         return UnitConversionUtil.convertArea(BigDecimal.valueOf(value), unit, AreaMeasurementUnit.SQUARE_METER).toBigInteger().intValueExact();
     }
 
