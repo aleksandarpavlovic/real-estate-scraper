@@ -1,21 +1,33 @@
 package com.paki.scrape.scraper;
 
-import com.paki.scrape.entities.ScraperType;
+import com.paki.realties.Source;
 import com.paki.scrape.entities.Search;
-import com.paki.scrape.scraper.halooglasi.HaloOglasiScraper;
-import com.paki.scrape.scraper.nekretniners.NekretnineRsScraper;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiFunction;
 
 @Component
 public class ScraperFactory {
-    public Scraper createScraper(ScraperType scraperType, Search search) {
-        switch (scraperType) {
-            case HALO_OGLASI:
-                return new HaloOglasiScraper(search);
-            case NEKRETNINE_RS:
-                return new NekretnineRsScraper(search);
-            default:
-                throw new RuntimeException("Unsupported scraper type exception");
-        }
+
+    private Map<Source, BiFunction<Source, Search, Scraper>> registeredScrapers = new HashMap<>();
+    private BiFunction<Source, Search, Scraper> unsupportedScraperCreator = (source, search) -> {throw new RuntimeException("Unsupported scraper exception");};
+
+    public Scraper createScraper(Source source, Search search) {
+        return registeredScrapers.getOrDefault(source, unsupportedScraperCreator).apply(source, search);
+    }
+
+    public Set<Source> getRegisteredScraperSources() {
+        return registeredScrapers.keySet();
+    }
+
+    public void registerScraper(Source source, BiFunction<Source, Search, Scraper> scraperCreator) {
+        registeredScrapers.put(source, scraperCreator);
+    }
+
+    public void unregisterScraper(Source source) {
+        registeredScrapers.remove(source);
     }
 }

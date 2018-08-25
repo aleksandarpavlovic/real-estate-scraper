@@ -1,9 +1,6 @@
 package com.paki.scrape.scraper.nekretniners;
 
-import com.paki.realties.Apartment;
-import com.paki.realties.House;
-import com.paki.realties.Land;
-import com.paki.realties.Realty;
+import com.paki.realties.*;
 import com.paki.realties.enums.RealtyType;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.scraper.Scraper;
@@ -16,12 +13,13 @@ import java.util.*;
 
 public class NekretnineRsScraper extends Scraper {
     private final NekretnineRsCriteriaTransformer transformer = new NekretnineRsCriteriaTransformer();
-    private final NekretnineRsAdParser parser = new NekretnineRsAdParser();
+    private final NekretnineRsAdParser parser;
     NekretnineRsRequest request;
     Set<Realty> lastRequestRealties = Collections.emptySet();
 
-    public NekretnineRsScraper(Search search) {
-        super(search);
+    public NekretnineRsScraper(Source source, Search search) {
+        super(source, search);
+        parser = new NekretnineRsAdParser(source);
         request = transformer.transform(search.getCriteria());
     }
 

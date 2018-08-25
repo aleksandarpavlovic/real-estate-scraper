@@ -1,10 +1,8 @@
 package com.paki.scrape.scraper.nekretniners;
 
-import com.paki.realties.Apartment;
-import com.paki.realties.House;
-import com.paki.realties.Land;
-import com.paki.realties.Realty;
+import com.paki.realties.*;
 import com.paki.realties.enums.*;
+import com.paki.scrape.scraper.AdParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -16,13 +14,18 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class NekretnineRsAdParser {
+public class NekretnineRsAdParser extends AdParser {
     Pattern pricePattern = Pattern.compile(".+, (.*?) .*");
     Pattern surfaceAreaPattern = Pattern.compile("(^[0-9]+)");
     Pattern publishDatePattern = Pattern.compile("(^[0-9\\.]+)");
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
     Pattern idPattern = Pattern.compile(".*www\\.nekretnine\\.rs/.+?/.+?/([0-9]+)");
 
+    public NekretnineRsAdParser(Source source) {
+        super(source);
+    }
+
+    @Override
     public Set<Realty> parseApartments(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
@@ -51,6 +54,7 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseHouses(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
@@ -79,6 +83,7 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseLand(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
@@ -107,6 +112,7 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Apartment updateApartment(Apartment apartment, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         apartment.setDescription(parseAdDescription(adData));
@@ -115,6 +121,7 @@ public class NekretnineRsAdParser {
         return apartment;
     }
 
+    @Override
     public House updateHouse(House house, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         house.setDescription(parseAdDescription(adData));
@@ -123,6 +130,7 @@ public class NekretnineRsAdParser {
         return house;
     }
 
+    @Override
     public Land updateLand(Land land, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         land.setDescription(parseAdDescription(adData));

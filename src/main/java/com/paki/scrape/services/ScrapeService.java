@@ -4,8 +4,12 @@ import com.paki.persistence.scrape.ScrapeInfoRepository;
 import com.paki.persistence.scrape.ScrapeSettingsRepository;
 import com.paki.persistence.scrape.SearchProfileRepository;
 import com.paki.realties.Realty;
+import com.paki.realties.Source;
 import com.paki.scheduler.SchedulerService;
-import com.paki.scrape.entities.*;
+import com.paki.scrape.entities.ScrapeInfo;
+import com.paki.scrape.entities.ScrapeSettings;
+import com.paki.scrape.entities.Search;
+import com.paki.scrape.entities.SearchProfile;
 import com.paki.scrape.scraper.Scraper;
 import com.paki.scrape.scraper.ScraperFactory;
 import com.paki.scrape.synchronization.GlobalLock;
@@ -65,8 +69,8 @@ public class ScrapeService {
             for (SearchProfile profile : profiles) {
                 System.out.println("***** Scraping for profile: " + profile.getName() + "... *****");
                 Search search = profile.getSearch();
-                for (ScraperType scraperType : ScraperType.values()) {
-                    scrape(scrapeInfo, search, scraperType);
+                for (Source source : scraperFactory.getRegisteredScraperSources()) {
+                    scrape(scrapeInfo, search, source);
                 }
                 topAds.put(profile.getName(), topAdService.getTopAds(scrapeInfo, profile));
                 System.out.println("***** Scrape for profile: " + profile.getName() + " completed. *****");
@@ -81,8 +85,8 @@ public class ScrapeService {
         }
     }
 
-    public void scrape(ScrapeInfo scrapeInfo, Search search, ScraperType scraperType) {
-        Scraper scraper = scraperFactory.createScraper(scraperType, search);
+    public void scrape(ScrapeInfo scrapeInfo, Search search, Source source) {
+        Scraper scraper = scraperFactory.createScraper(source, search);
         try {
             while (true) {
                 Set<Realty> pageResults = scraper.scrapeNext();
