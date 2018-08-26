@@ -1,6 +1,7 @@
 package com.paki.scrape.scraper;
 
 import com.paki.realties.Realty;
+import com.paki.realties.Source;
 import com.paki.realties.enums.AdType;
 import com.paki.realties.enums.AreaMeasurementUnit;
 import com.paki.realties.enums.RealtyType;
@@ -21,6 +22,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class Scraper {
+    protected final Source source;
     protected final Search search;
     protected final AdType adType;
     protected final RealtyType realtyType;
@@ -28,7 +30,8 @@ public abstract class Scraper {
     private final int MAX_RETRY = 3;
     private final int SLEEP_PERIOD = 2000;
 
-    public Scraper(Search search) {
+    public Scraper(Source source, Search search) {
+        this.source = source;
         this.search = search;
         this.adType = determineAdType(search.getCriteria());
         this.realtyType = determineRealtyType(search.getCriteria());

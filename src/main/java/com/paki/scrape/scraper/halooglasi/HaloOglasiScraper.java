@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.paki.realties.Realty;
+import com.paki.realties.Source;
 import com.paki.realties.enums.RealtyType;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.scraper.Scraper;
@@ -20,11 +21,12 @@ import java.util.Set;
 
 public class HaloOglasiScraper extends Scraper {
     private final HaloOglasiCriteriaTransformer criteriaTransformer = new HaloOglasiCriteriaTransformer();
-    private final HaloOglasiAdParser parser = new HaloOglasiAdParser();
+    private final HaloOglasiAdParser parser;
     HaloOglasiRequest request;
 
-    public HaloOglasiScraper(Search search) {
-        super(search);
+    public HaloOglasiScraper(Source source, Search search) {
+        super(source, search);
+        parser = new HaloOglasiAdParser(source);
         request = criteriaTransformer.transform(search.getCriteria());
     }
 

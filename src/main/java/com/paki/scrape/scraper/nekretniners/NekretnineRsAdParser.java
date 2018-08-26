@@ -1,10 +1,11 @@
 package com.paki.scrape.scraper.nekretniners;
 
-import com.paki.realties.Apartment;
-import com.paki.realties.House;
-import com.paki.realties.Land;
-import com.paki.realties.Realty;
-import com.paki.realties.enums.*;
+import com.paki.realties.*;
+import com.paki.realties.enums.AdvertiserType;
+import com.paki.realties.enums.AreaMeasurementUnit;
+import com.paki.realties.enums.RegistrationType;
+import com.paki.realties.enums.RoomCount;
+import com.paki.scrape.scraper.AdParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -16,20 +17,25 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class NekretnineRsAdParser {
+public class NekretnineRsAdParser extends AdParser {
     Pattern pricePattern = Pattern.compile(".+, (.*?) .*");
     Pattern surfaceAreaPattern = Pattern.compile("(^[0-9]+)");
     Pattern publishDatePattern = Pattern.compile("(^[0-9\\.]+)");
     Pattern advertiserTypePattern = Pattern.compile("([a-zA-Z]+)$");
     Pattern idPattern = Pattern.compile(".*www\\.nekretnine\\.rs/.+?/.+?/([0-9]+)");
 
+    public NekretnineRsAdParser(Source source) {
+        super(source);
+    }
+
+    @Override
     public Set<Realty> parseApartments(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Apartment apartment = Apartment.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -51,13 +57,14 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseHouses(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 House house = House.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -79,13 +86,14 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseLand(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div.resultList.fixed")) {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Land land = Land.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -107,6 +115,7 @@ public class NekretnineRsAdParser {
         return ads;
     }
 
+    @Override
     public Apartment updateApartment(Apartment apartment, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         apartment.setDescription(parseAdDescription(adData));
@@ -115,6 +124,7 @@ public class NekretnineRsAdParser {
         return apartment;
     }
 
+    @Override
     public House updateHouse(House house, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         house.setDescription(parseAdDescription(adData));
@@ -123,6 +133,7 @@ public class NekretnineRsAdParser {
         return house;
     }
 
+    @Override
     public Land updateLand(Land land, Document adDoc) {
         Element adData = adDoc.selectFirst("div.oglasData");
         land.setDescription(parseAdDescription(adData));
@@ -142,7 +153,7 @@ public class NekretnineRsAdParser {
     }
 
     private String formCompleteId(String id) {
-        return AdSource.NEKRETNINE_RS + id;
+        return this.getSource().getName() + id;
     }
 
     private BigDecimal parsePrice(Element rawAd) {

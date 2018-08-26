@@ -1,6 +1,9 @@
 package com.paki.realties;
 
-import com.paki.realties.enums.*;
+import com.paki.realties.enums.AdType;
+import com.paki.realties.enums.AdvertiserType;
+import com.paki.realties.enums.AreaMeasurementUnit;
+import com.paki.realties.enums.RegistrationType;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +19,7 @@ import java.time.LocalDate;
 @Entity
 public class Land extends Realty{
     @Builder
-    public Land(AdSource source, String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
+    public Land(Source source, String externalId, String title, String description, String location, AdType adType, BigDecimal price, String url, String imageUrl, LocalDate publishDate, AdvertiserType advertiserType, BigDecimal surfaceArea, AreaMeasurementUnit areaMeasurementUnit, RegistrationType registered) {
         super(source, externalId, title, description, location, adType, price, url, imageUrl, publishDate, advertiserType, surfaceArea, areaMeasurementUnit, registered);
     }
 

@@ -327,3 +327,9 @@ p.opis {
 }
 
 .pagination a:hover:not(.active) {background-color: #ddd;}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}

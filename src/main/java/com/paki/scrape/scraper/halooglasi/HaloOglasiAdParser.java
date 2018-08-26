@@ -1,10 +1,11 @@
 package com.paki.scrape.scraper.halooglasi;
 
-import com.paki.realties.Apartment;
-import com.paki.realties.House;
-import com.paki.realties.Land;
-import com.paki.realties.Realty;
-import com.paki.realties.enums.*;
+import com.paki.realties.*;
+import com.paki.realties.enums.AdvertiserType;
+import com.paki.realties.enums.AreaMeasurementUnit;
+import com.paki.realties.enums.RegistrationType;
+import com.paki.realties.enums.RoomCount;
+import com.paki.scrape.scraper.AdParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
@@ -20,16 +21,21 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-public class HaloOglasiAdParser {
+public class HaloOglasiAdParser extends AdParser {
     Pattern areaUnitPattern = Pattern.compile("[0-9.,]+ (.*)");
     Pattern surfaceAreaPattern = Pattern.compile("([0-9.,]+) .*");
 
+    public HaloOglasiAdParser(Source source) {
+        super(source);
+    }
+
+    @Override
     public Set<Realty> parseApartments(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Apartment apartment = Apartment.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -53,12 +59,13 @@ public class HaloOglasiAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseHouses(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 House house= House.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -82,12 +89,13 @@ public class HaloOglasiAdParser {
         return ads;
     }
 
+    @Override
     public Set<Realty> parseLand(Document doc) {
         Set<Realty> ads = new HashSet<>();
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Land land= Land.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -115,7 +123,7 @@ public class HaloOglasiAdParser {
     }
 
     private String formCompleteId(String id) {
-        return AdSource.HALO_OGLASI + id;
+        return this.getSource().getName() + id;
     }
 
     private BigDecimal parsePrice(Element rawAd) {
@@ -132,17 +140,6 @@ public class HaloOglasiAdParser {
 
         return elem.attr("src");
 
-    }
-
-    private String downloadAdThumbnail(Element rawAd, String directoryPath) {
-        String imageUrl = parseThumbnailUrl(rawAd);
-                try {
-            return getImage(imageUrl, directoryPath);
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Image baseUrl: " + imageUrl);
-            return null;
-        }
     }
 
     private String getImage(String src, String directoryPath) throws IOException {
