@@ -1,7 +1,10 @@
 package com.paki.scrape.scraper.halooglasi;
 
 import com.paki.realties.*;
-import com.paki.realties.enums.*;
+import com.paki.realties.enums.AdvertiserType;
+import com.paki.realties.enums.AreaMeasurementUnit;
+import com.paki.realties.enums.RegistrationType;
+import com.paki.realties.enums.RoomCount;
 import com.paki.scrape.scraper.AdParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,7 +35,7 @@ public class HaloOglasiAdParser extends AdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Apartment apartment = Apartment.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -62,7 +65,7 @@ public class HaloOglasiAdParser extends AdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 House house= House.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -92,7 +95,7 @@ public class HaloOglasiAdParser extends AdParser {
         for (Element rawAd: doc.select("div[class~=product-item product-list-item .*real-estates my-ad-placeholder]")) {
             try {
                 Land land= Land.builder()
-                        .source(AdSource.HALO_OGLASI)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -120,7 +123,7 @@ public class HaloOglasiAdParser extends AdParser {
     }
 
     private String formCompleteId(String id) {
-        return AdSource.HALO_OGLASI + id;
+        return this.getSource().getName() + id;
     }
 
     private BigDecimal parsePrice(Element rawAd) {

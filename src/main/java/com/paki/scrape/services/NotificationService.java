@@ -63,9 +63,11 @@ public class NotificationService {
         StringBuilder sb = new StringBuilder();
         sb.append(MAIL_TITLE_HTML);
         topAds.forEach((profileName, adMap) -> {
+            if (hasNoAdForProfile(adMap))
+                return;
             sb.append(profileHtml(profileName));
             adMap.forEach((condition, ads) -> {
-                sb.append(topAdCategoryHtml(condition.toString()));
+                sb.append(topAdCategoryHtml(condition));
                 sb.append(MAIL_START_AD_LIST_HTML);
                 ads.forEach(ad -> sb.append(adHtml(ad)));
                 sb.append(MAIL_END_AD_LIST_HTML);
@@ -90,14 +92,22 @@ public class NotificationService {
             return true;
 
         for (Map<String, List<? extends Realty>> topAdsPerProfile: topAds.values()) {
-            if (topAdsPerProfile == null || topAdsPerProfile.isEmpty())
+            if(hasNoAdForProfile(topAdsPerProfile))
                 continue;
-            for (List<? extends Realty> topAdsPerProfileCondition: topAdsPerProfile.values()) {
-                if (topAdsPerProfileCondition != null && !topAdsPerProfileCondition.isEmpty())
-                    return false;
-            }
+            else
+                return false;
         }
 
+        return true;
+    }
+
+    boolean hasNoAdForProfile(Map<String, List<? extends Realty>> topAds) {
+        if (topAds == null || topAds.isEmpty())
+            return true;
+        for (List<? extends Realty> topAdsPerCondition: topAds.values()) {
+            if (topAdsPerCondition != null && !topAdsPerCondition.isEmpty())
+                return false;
+        }
         return true;
     }
 

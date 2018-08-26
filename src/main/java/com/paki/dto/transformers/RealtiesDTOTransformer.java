@@ -31,8 +31,6 @@ public class RealtiesDTOTransformer {
     }
 
     static {
-        addToRealtyMappings(AdSource.HALO_OGLASI, "Halo Oglasi");
-        addToRealtyMappings(AdSource.NEKRETNINE_RS, "Nekretnine.rs");
         addToRealtyMappings(AdType.SELL, "Prodaja");
         addToRealtyMappings(AdType.RENT, "Izdavanje");
         addToRealtyMappings(AdvertiserType.AGENCY, "Agencija");
@@ -131,7 +129,7 @@ public class RealtiesDTOTransformer {
     }
 
     private void populateCommonFields(Realty realty, RealtyDTO dto) {
-        dto.setAdSource(transformToValueDTO(realty.getSource()));
+        dto.setAdSource(transformToValueDTO(realty.getSource().getName()));
         dto.setAdType(transformToValueDTO(realty.getAdType()));
         dto.setTitle(new ValueDTO("Naslov", realty.getTitle()));
         dto.setDescription(new ValueDTO("Opis", realty.getDescription()));
@@ -150,15 +148,21 @@ public class RealtiesDTOTransformer {
     }
 
     private ValueDTO transformRegistrationToValueDTO(Object value) {
+        if (value == null)
+            return null;
         String registration = realty2dtoMappings.getOrDefault(value, "");
         return new ValueDTO(value.toString(), registration);
     }
 
     private String formatPrice(BigDecimal price) {
+        if (price == null)
+            return "";
         return priceFormat.format(price).replace(',', '.');
     }
 
     private String formatDate(LocalDate date) {
+        if (date == null)
+            return null;
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         return date.format(dateFormatter);
     }

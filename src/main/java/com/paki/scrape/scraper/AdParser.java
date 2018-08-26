@@ -1,13 +1,15 @@
 package com.paki.scrape.scraper;
 
 import com.paki.realties.*;
+import lombok.Getter;
 import org.jsoup.nodes.Document;
 
 import java.util.Set;
 
 public abstract class AdParser {
 
-    private Source source;
+    @Getter
+    private final Source source;
 
     public AdParser(Source source) {
         this.source = source;

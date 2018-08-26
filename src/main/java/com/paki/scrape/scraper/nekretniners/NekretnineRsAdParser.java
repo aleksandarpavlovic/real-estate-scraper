@@ -1,7 +1,10 @@
 package com.paki.scrape.scraper.nekretniners;
 
 import com.paki.realties.*;
-import com.paki.realties.enums.*;
+import com.paki.realties.enums.AdvertiserType;
+import com.paki.realties.enums.AreaMeasurementUnit;
+import com.paki.realties.enums.RegistrationType;
+import com.paki.realties.enums.RoomCount;
 import com.paki.scrape.scraper.AdParser;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,7 +35,7 @@ public class NekretnineRsAdParser extends AdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Apartment apartment = Apartment.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -61,7 +64,7 @@ public class NekretnineRsAdParser extends AdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 House house = House.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -90,7 +93,7 @@ public class NekretnineRsAdParser extends AdParser {
             try {
                 String adUrl = parseAdUrl(rawAd);
                 Land land = Land.builder()
-                        .source(AdSource.NEKRETNINE_RS)
+                        .source(this.getSource())
                         .externalId(formCompleteId(parseId(rawAd)))
                         .title(parseAdTitle(rawAd))
                         .description(parseAdDescription(rawAd))
@@ -150,7 +153,7 @@ public class NekretnineRsAdParser extends AdParser {
     }
 
     private String formCompleteId(String id) {
-        return AdSource.NEKRETNINE_RS + id;
+        return this.getSource().getName() + id;
     }
 
     private BigDecimal parsePrice(Element rawAd) {

@@ -1,7 +1,6 @@
 package com.paki.persistence.realties;
 
 import com.paki.realties.Realty;
-import com.paki.realties.enums.AdSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,8 +16,6 @@ import java.util.Set;
 
 @Repository
 public interface RealtyRepository<T extends Realty> extends JpaRepository<Realty, Long> {
-
-    List<T> findBySourceAndExternalId(AdSource sources, String externalId);
 
     List<T> findByExternalIdIn(Collection<String> externalIds);
 

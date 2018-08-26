@@ -1,13 +1,10 @@
 package com.paki.scrape.services;
 
 import com.paki.persistence.scrape.ScrapeInfoRepository;
-import com.paki.persistence.scrape.ScrapeSettingsRepository;
 import com.paki.persistence.scrape.SearchProfileRepository;
 import com.paki.realties.Realty;
 import com.paki.realties.Source;
-import com.paki.scheduler.SchedulerService;
 import com.paki.scrape.entities.ScrapeInfo;
-import com.paki.scrape.entities.ScrapeSettings;
 import com.paki.scrape.entities.Search;
 import com.paki.scrape.entities.SearchProfile;
 import com.paki.scrape.scraper.Scraper;
@@ -16,16 +13,13 @@ import com.paki.scrape.synchronization.GlobalLock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
 public class ScrapeService {
-    private SchedulerService schedulerService;
     private ScraperFactory scraperFactory;
     private SearchProfileRepository searchProfileRepository;
-    private ScrapeSettingsRepository scrapeSettingsRepository;
     private ScrapeInfoRepository scrapeInfoRepository;
     private RealtyService realtyService;
     private TopAdService topAdService;
@@ -33,25 +27,14 @@ public class ScrapeService {
     private GlobalLock globalLock;
 
     @Autowired
-    public ScrapeService(SchedulerService schedulerService, ScraperFactory scraperFactory, SearchProfileRepository searchProfileRepository, ScrapeSettingsRepository scrapeSettingsRepository, ScrapeInfoRepository scrapeInfoRepository, RealtyService realtyService, TopAdService topAdService, NotificationService notificationService, GlobalLock globalLock) {
-        this.schedulerService = schedulerService;
+    public ScrapeService(ScraperFactory scraperFactory, SearchProfileRepository searchProfileRepository, ScrapeInfoRepository scrapeInfoRepository, RealtyService realtyService, TopAdService topAdService, NotificationService notificationService, GlobalLock globalLock) {
         this.scraperFactory = scraperFactory;
         this.searchProfileRepository = searchProfileRepository;
-        this.scrapeSettingsRepository = scrapeSettingsRepository;
         this.scrapeInfoRepository = scrapeInfoRepository;
         this.realtyService = realtyService;
         this.topAdService = topAdService;
         this.notificationService = notificationService;
         this.globalLock = globalLock;
-    }
-
-    @PostConstruct
-    public void scheduleScraping() {
-        Optional<ScrapeSettings> settingsOptional = scrapeSettingsRepository.findById(ScrapeSettings.SINGLETON_ID);
-        int period = 0;
-        if (settingsOptional.isPresent())
-            period = settingsOptional.get().getScheduledPeriod();
-        schedulerService.schedule(this::scrape, period);
     }
 
     public void scrape() {
