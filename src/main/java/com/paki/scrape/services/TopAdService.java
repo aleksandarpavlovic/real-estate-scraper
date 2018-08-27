@@ -130,14 +130,14 @@ public class TopAdService {
         RealtyRepository realtyRepository = inferRealtyRepository(searchProfile.getSearch());
 
         Integer percent = Integer.valueOf(conditionParameter);
-        List<BigDecimal> sortedPrices = realtyRepository.findAllPrices();
+        List<BigDecimal> sortedPrices = realtyRepository.findAllPricesBySearchId(searchProfile.getSearch().getId());
         if (sortedPrices.isEmpty())
             return Collections.emptyList();
 
         int thresholdPriceIndex = (int)((double)sortedPrices.size() * percent) / 100;
         BigDecimal thresholdPrice = sortedPrices.get(thresholdPriceIndex);
 
-        List<Realty> realties = realtyRepository.findByPriceLessThanEqual(thresholdPrice);
+        List<Realty> realties = realtyRepository.findBySearchIdAndPriceLessThanEqual(searchProfile.getSearch().getId(), thresholdPrice);
         return realties.stream().filter(realty -> realty.getScrapeRunNumber() == scrapeInfo.getLastRunNumber()).collect(Collectors.toList());
     }
 
