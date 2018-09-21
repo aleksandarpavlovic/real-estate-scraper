@@ -27,7 +27,7 @@ import java.util.Map;
 @RequestMapping("/realties")
 public class RealtyController {
 
-    private static final int DEFAULT_PAGE_SIZE = 7;
+    private static final int DEFAULT_PAGE_SIZE = 10;
 
     private static final String PROFILEID = "profileid";
     private static final String PAGE = "page";
